@@ -1,5 +1,6 @@
 import ElementPlus from 'element-plus'
-import '@/assets/styles/main.css'
+import '@/assets/main.css'
+import '@/assets/element/index.scss'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'

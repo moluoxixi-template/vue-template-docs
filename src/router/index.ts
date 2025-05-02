@@ -15,6 +15,7 @@ const Routes= [
     children: routesChildrens,
   },
 ]
+console.log('Routes', Routes)
 function getRouter(props:any) {
   let base
   const routes = cloneDeep(Routes)

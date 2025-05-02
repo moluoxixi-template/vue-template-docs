@@ -20,7 +20,7 @@ import autoprefixer from 'autoprefixer'
 import tailwindcss from '@tailwindcss/postcss'
 import path from 'path'
 import type { Plugin } from 'postcss'
-
+import scopedCssPrefixPlugin from './plugins/addScopedAndReplacePrefix'
 const external = ['vue', 'vue-router', 'element-plus', 'axios', 'moment', 'radash']
 const cdnModules = [
   {
@@ -91,9 +91,15 @@ function wrapperEnv(env: Record<string, string>) {
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd())
   const viteEnv = wrapperEnv(env)
-  const VITE_GLOB_APP_CODE = process.env.VITE_GLOB_APP_CODE
+  const appCode = process.env.VITE_GLOB_APP_CODE
+  const appTitle = viteEnv.VITE_GLOB_APP_TITLE
   const vuePlugins = [
     pluginVue(),
+    scopedCssPrefixPlugin({
+      prefixScoped: `div[data-qiankun='${appCode}']`,
+      oldPrefix: 'el',
+      newPrefix: appCode
+    }), // 传入你想要添加的前缀
     vueJsx(),
     env.VITE_DEVTOOLS && vueDevTools(),
     // 自动引入
@@ -122,7 +128,7 @@ export default defineConfig(({ mode }) => {
       createHtmlPlugin({
         inject: {
           data: {
-            title: viteEnv.VITE_GLOB_APP_TITLE,
+            title: appTitle,
           },
         },
       }),
