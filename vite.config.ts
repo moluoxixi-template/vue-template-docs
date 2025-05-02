@@ -91,7 +91,7 @@ function wrapperEnv(env: Record<string, string>) {
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd())
   const viteEnv = wrapperEnv(env)
-
+  const VITE_GLOB_APP_CODE = process.env.VITE_GLOB_APP_CODE
   const vuePlugins = [
     pluginVue(),
     vueJsx(),
