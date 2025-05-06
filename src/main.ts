@@ -1,6 +1,5 @@
 import ElementPlus from 'element-plus'
 import '@/assets/main.css'
-import '@/assets/element/index.scss'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
@@ -16,7 +15,7 @@ import App from './App.vue'
 
 import getRouter from './router'
 
-import { useThemeStore } from './stores/theme'
+import { useSystemStore } from './stores/system'
 
 let app:any;
 
@@ -43,18 +42,18 @@ const proxy = (container: HTMLElement) => {
 }
 
 function themeManager(props: QiankunProps) {
-  const themeStore = useThemeStore()
+  const systemStore = useSystemStore()
   try {
     if (props.fn.getTheme) {
       const themeColor = props.fn.getTheme()
       if (themeColor) {
-        themeStore.setTheme(themeColor)
+        systemStore.setTheme(themeColor)
       }
     }
     props.onGlobalStateChange((state:any) => {
       //更换主题
       if (state.action == 'changeTheme') {
-        themeStore.setTheme(state.color)
+        systemStore.setTheme(state.color)
       }
     })
   } catch (e) {
@@ -77,8 +76,8 @@ async function render(props: QiankunProps) {
   app.use(pinia)
 
   // 测试主题变更
-  // const themeStore = useThemeStore()
-  // themeStore.setTheme('red');
+  // const systemStore = useSystemStore()
+  // systemStore.setTheme('red');
   const router = getRouter(props)
   app.use(router)
   app.config.warnHandler = () => null;

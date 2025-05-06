@@ -10,7 +10,7 @@ const routesChildrens = [...pagesRoutes]
 const Routes= [
   {
     path: '/',
-    component: () => import('../layout/index.vue'),
+    component: () => import('./index.vue'),
     redirect: routesChildrens[0] ? routesChildrens[0].path : '',
     children: routesChildrens,
   },

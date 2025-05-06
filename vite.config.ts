@@ -21,6 +21,7 @@ import tailwindcss from '@tailwindcss/postcss'
 import path from 'path'
 import type { Plugin } from 'postcss'
 import scopedCssPrefixPlugin from './plugins/addScopedAndReplacePrefix'
+
 const external = ['vue', 'vue-router', 'element-plus', 'axios', 'moment', 'radash']
 const cdnModules = [
   {
@@ -91,14 +92,14 @@ function wrapperEnv(env: Record<string, string>) {
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd())
   const viteEnv = wrapperEnv(env)
-  const appCode = process.env.VITE_GLOB_APP_CODE
+  const systemCode = viteEnv.VITE_GLOB_APP_CODE;
   const appTitle = viteEnv.VITE_GLOB_APP_TITLE
   const vuePlugins = [
     pluginVue(),
     scopedCssPrefixPlugin({
-      prefixScoped: `div[data-qiankun='${appCode}']`,
+      prefixScoped: `div[data-qiankun='${systemCode}']`,
       oldPrefix: 'el',
-      newPrefix: appCode
+      newPrefix: systemCode,
     }), // 传入你想要添加的前缀
     vueJsx(),
     env.VITE_DEVTOOLS && vueDevTools(),
@@ -216,6 +217,9 @@ export default defineConfig(({ mode }) => {
           : {},
       },
     },
+    define: {
+      __SYSTEM_CODE__: JSON.stringify(systemCode)
+    },
     css: {
       postcss: {
         plugins: [
@@ -225,7 +229,16 @@ export default defineConfig(({ mode }) => {
         ],
       },
       preprocessorOptions: {
-        scss: { api: 'modern-compiler' },
+        scss: {
+          api: 'modern-compiler',
+          additionalData(content: string,filename: string) {
+            if (filename.includes('element')) {
+              const addStr=`$namespace: ${systemCode};`
+              return `${addStr}\n${content}`
+            }
+            return content
+          }
+        },
       },
     },
     resolve: {

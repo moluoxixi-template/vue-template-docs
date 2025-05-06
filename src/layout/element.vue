@@ -1,28 +1,31 @@
 <template>
-  <el-config-provider :locale="zhCn" namespace="residentDoctor" :empty-values="[undefined]">
+  <el-config-provider :locale="zhCn" :namespace="systemCode" :empty-values="[undefined]">
     <div class="height-100" :style="`--el-color-primary: ${themeColor || '#3A77FF'};`">
       <el-container class="w-full h-full">
         <el-header height="30">
-          <el-menu :default-active="defaultTab" :ellipsis="false" mode="horizontal" router>
-           <template v-for="(route, index) in routes" :key="index">
-             <el-menu-item v-if="route.children?.length" :index="route.path">{{ route.name }}</el-menu-item>
-             <template v-else>
-               <el-sub-menu v-for="(route, index) in routes" :key="index" :index="route.path">
-                 <template #title>{{ route.name }}</template>
-                 <template>
-                   <el-menu-item
-                     v-for="(child, i) in route.children"
-                     :key="i"
-                     :index="`${route.path}${child.path}`"
-                   >
-                     {{ child.meta?.title || child.name }}
-                   </el-menu-item>
-                 </template>
-               </el-sub-menu>
-             </template>
-           </template>
+          <div class="w-full h-full bg-[#327bff] flex justify-center">
+            <el-menu :default-active="defaultTab" :ellipsis="false" mode="horizontal" router>
+              <template v-for="(route, index) in routes" :key="index">
+                <el-menu-item v-if="!route.children?.length" :index="route.path">{{ route.name }}
+                </el-menu-item>
+                <template v-else>
+                  <el-sub-menu v-for="(route, index) in routes" :key="index" :index="route.path">
+                    <template #title>{{ route.name }}</template>
+                    <template>
+                      <el-menu-item
+                        v-for="(child, i) in route.children"
+                        :key="i"
+                        :index="`${route.path}${child.path}`"
+                      >
+                        {{ child.meta?.title || child.name }}
+                      </el-menu-item>
+                    </template>
+                  </el-sub-menu>
+                </template>
+              </template>
 
-          </el-menu>
+            </el-menu>
+          </div>
         </el-header>
         <el-main>
           <el-container>
@@ -46,12 +49,16 @@
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import { computed, reactive } from 'vue'
 import { RouterView, useRouter } from 'vue-router'
-import { useThemeStore } from '@/stores/theme'
+import { useSystemStore } from '@/stores/system'
 
 const router = useRouter()
 const routes = reactive(router.options.routes[0].children)
-const themeStore = useThemeStore()
-const themeColor = computed(() => themeStore.themeColor)
+const systemStore = useSystemStore()
+const themeColor = computed(() => systemStore.themeColor)
+const systemCode = computed(() => {
+  console.log('systemStore.systemCode', systemStore.systemCode)
+  return systemStore.systemCode
+})
 const defaultTab = computed(() => router.currentRoute.value.path)
 </script>
 

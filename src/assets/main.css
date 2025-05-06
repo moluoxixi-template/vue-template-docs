@@ -2,3 +2,5 @@
 
 @import './base.css';
 @import './element/index.scss';
+@import "./element/custom.scss";
+@import "./element/fixQiankun.scss";
