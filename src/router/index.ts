@@ -28,7 +28,7 @@ function getRouter(props:any) {
     // }
     base = activeRule
   } else {
-    base = import.meta.env.VITE_QIANKUN_APP_NAME
+    base = import.meta.env.VITE_GLOB_APP_CODE
   }
   const router = createRouter({
     history: createWebHistory(base),

@@ -124,6 +124,7 @@ export default defineConfig(({ mode }) => {
     : []
 
   return {
+    base: `/${systemCode}`,
     plugins: [
       ...vuePlugins,
       createHtmlPlugin({
