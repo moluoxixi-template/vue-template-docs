@@ -1,13 +1,11 @@
-import components from '@/components'
-
 interface modulesTypes {
   path: string
   name: string
   component: () => Promise<unknown>
 }
 
-const modules: modulesTypes[] = []
 export function getRoutes(files) {
+  const modules: modulesTypes[] = []
   return Object.keys(files).reduce((modules = [], name) => {
     const component = files[name]
     if (!component || name == 'install') return modules

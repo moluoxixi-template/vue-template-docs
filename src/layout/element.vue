@@ -3,8 +3,8 @@
     <div class="height-100" :style="`--el-color-primary: ${themeColor || '#3A77FF'};`">
       <el-container class="w-full h-full">
         <el-header height="30">
-          <div class="w-full h-full bg-[#327bff] flex justify-center">
-            <el-menu :default-active="defaultTab" :ellipsis="false" mode="horizontal" router>
+          <div class="w-full h-full bg-[#327bff] flex justify-center" >
+            <el-menu  :default-active="defaultTab" :ellipsis="false" mode="horizontal" router>
               <template v-for="(route, index) in routes" :key="index">
                 <el-menu-item v-if="!route.children?.length" :index="route.path">{{ route.name }}
                 </el-menu-item>
@@ -23,7 +23,6 @@
                   </el-sub-menu>
                 </template>
               </template>
-
             </el-menu>
           </div>
         </el-header>
