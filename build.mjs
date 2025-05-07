@@ -1,4 +1,5 @@
 import compressing from 'compressing'
+import { resolveConfig } from 'vite';
 import path from 'path'
 import fs from 'fs'
 import { fileURLToPath } from 'url'
@@ -8,10 +9,7 @@ const __filename = fileURLToPath(import.meta.url)
 // 获取当前目录名
 const __dirname = path.dirname(__filename)
 
-const viteConfig = await import('./vite.config.ts')
-const viteConfigDefault = viteConfig.default({
-  mode: 'production'
-})
+const viteConfigDefault = await resolveConfig({},'build','production')
 const buildoutputDir = viteConfigDefault.build.outDir
 
 const renameDir = buildoutputDir
@@ -19,9 +17,8 @@ const renameDir = buildoutputDir
 uploadWeb().then((r) => console.log(r))
 
 async function uploadWeb() {
-  let codePath = path.join(__dirname, `/${buildoutputDir}.zip`)
-  let renamePath = path.join(__dirname, `/${renameDir}.zip`)
-  let form = path.join(__dirname, `/${buildoutputDir}`)
+  const renamePath = path.join(__dirname, `/${renameDir}.zip`)
+  const form = path.join(__dirname, `/${buildoutputDir}`)
   try {
     // let ip = '192.168.208.18';
     //服务器前端静态资源存储路径

@@ -9,7 +9,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "run-p type-check \"build-only {@}\" -- & node ./build.mjs",
+    "build:old": "run-p type-check \"build-only {@}\" -- & node ./build.mjs",
+    "build": "vite build & node ./build.mjs",
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build",

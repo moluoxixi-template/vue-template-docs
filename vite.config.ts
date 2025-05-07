@@ -187,6 +187,7 @@ export default defineConfig(({ mode }) => {
         }),
     ],
     build: {
+      outDir: `${systemCode}`,
       // 启用 CSS 代码拆分,使加载模块时,仅加载对应css,而不是打包为一个样式文件
       cssCodeSplit: true,
       // 关闭 sourcemap
