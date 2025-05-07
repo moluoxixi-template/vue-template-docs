@@ -11,6 +11,7 @@ export function getRoutes(files) {
     .reduce((modules = [], name) => {
       const component = files[name]
       const filePath = component.__file
+      if(filePath.includes('components'))return modules;
       const filePathArr = filePath.split('/')
       const startStrs = ['views', 'components', 'layout']
       const endStrs = ['index', 'index.vue']
@@ -26,7 +27,6 @@ export function getRoutes(files) {
 
       const parentName = pathArr.at(-2)
       const parentRoute = modules.find((item) => item.name === parentName)
-      console.log(parentName, parentRoute, name)
       if (parentRoute) {
         const path = `/${pathArr.at(-1)}`
         if (!parentRoute.children) parentRoute.children = []
