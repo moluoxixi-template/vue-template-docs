@@ -7,10 +7,10 @@ const components: Plugin = Object.keys(componentFiles).reduce((modules = {}, mod
   const component: Component = componentFiles[modulePath] as Component
   if (!component) return modules
   if (name) {
-    modules[name] = component
+    modules[name as string] = component
   }
   return modules
-}, {}) as Plugin
+}, {} as any) as Plugin
 components.install = function (app) {
   const componentNames = Object.keys(components)
   componentNames.forEach((name) => {

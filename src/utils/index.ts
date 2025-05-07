@@ -6,16 +6,51 @@ interface modulesTypes {
 
 export function getRoutes(files) {
   const modules: modulesTypes[] = []
-  return Object.keys(files).reduce((modules = [], name) => {
-    const component = files[name]
-    if (!component || name == 'install') return modules
-    modules.push({
-      path: `/${name}`,
-      name,
-      component,
-    })
-    return modules
-  }, modules)
+  return Object.keys(files)
+    .sort((a, b) => (a.length > b.length ? -1 : 1))
+    .reduce((modules = [], name) => {
+      const component = files[name]
+      const filePath = component.__file
+      const filePathArr = filePath.split('/')
+      const startStrs = ['views', 'components', 'layout']
+      const endStrs = ['index', 'index.vue']
+      if (!component || name == 'install') return modules
+      const pathArr = filePathArr
+        .reduce((path, item) => {
+          if ((startStrs.includes(item) || path.length) && !endStrs.includes(item)) {
+            path.push(item)
+          }
+          return path
+        }, [])
+        .slice(1)
+
+      const parentName = pathArr.at(-2)
+      const parentRoute = modules.find((item) => item.name === parentName)
+      console.log(parentName, parentRoute, name)
+      if (parentRoute) {
+        const path = `/${pathArr.at(-1)}`
+        if (!parentRoute.children) parentRoute.children = []
+        parentRoute.children.push({
+          path,
+          name,
+          meta:{
+            title: component.name
+          },
+          component,
+        })
+      } else {
+        const path = pathArr.join('/')
+        modules.push({
+          path,
+          name,
+          meta: {
+            title: component.name
+          },
+          component,
+        })
+      }
+      return modules
+    }, modules)
 }
 
 /**
