@@ -1,39 +1,25 @@
 # vue-template
+Vue 3 + TypeScript + Vite + TailwindCSS + qiankun搭建的vue模板
 
-This template should help get you started developing with Vue 3 in Vite.
+基于文件系统的布局,根据layout目录结构自动生成布局,默认使用element布局
 
-## Recommended IDE Setup
+基于文件系统的路由,根据views目录结构自动生成路由,目前仅支持两级菜单
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+基于env变量的插件配置,项目默认采用VITE_GLOB_APP_CODE作为 路由 + css前缀 + 项目启动前缀 用于适配qiankun
 
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
+## 依赖下载
 ```sh
 pnpm install
 ```
 
-### Compile and Hot-Reload for Development
+### 项目启动
 
 ```sh
 pnpm dev
 ```
 
-### Type-Check, Compile and Minify for Production
+### 项目打包
 
 ```sh
 pnpm build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-pnpm lint
 ```
