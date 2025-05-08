@@ -4,10 +4,16 @@ interface modulesTypes {
   component: () => Promise<unknown>
 }
 
-export function getRoutes(files) {
+export function getRoutes(files:any) {
   const modules: modulesTypes[] = []
   return Object.keys(files)
-    .sort((a, b) => (a.length > b.length ? -1 : 1))
+    .sort((a, b) => {
+      const componentA = files[a]
+      const aLength = componentA.__file.split('/').length
+      const componentB = files[b]
+      const bLength = componentB.__file.split('/').length
+      return bLength > aLength ? -1 : 1
+    })
     .reduce((modules = [], name) => {
       const component = files[name]
       const filePath = component.__file

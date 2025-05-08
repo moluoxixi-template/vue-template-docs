@@ -4,6 +4,22 @@
   "engines": {
     "node": ">=20.0.0"
   },
+  "license": "MIT",
+  "author": "1983531544@qq.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moluoxixi-template/vue-template.git"
+  },
+  "keywords": [
+    "electron",
+    "nest",
+    "elementPlus",
+    "vue3",
+    "typescript",
+    "vite",
+    "pinia",
+    "template"
+  ],
   "version": "0.0.0",
   "private": true,
   "type": "module",
