@@ -15,7 +15,7 @@
                     <el-menu-item
                       v-for="(child, i) in route.children"
                       :key="i"
-                      :index="`${route.path}${child.path}`"
+                      :index="child.path"
                     >
                       {{ child.meta?.title || child.name }}
                     </el-menu-item>

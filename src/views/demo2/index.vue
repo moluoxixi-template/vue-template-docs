@@ -1,12 +1,11 @@
+<template>
+  <router-view />
+</template>
 <script setup lang="ts">
 defineOptions({
-  name: '模板'
+  name: '示例二级菜单'
 })
 </script>
-
-<template>
-<div></div>
-</template>
 
 <style scoped lang="scss">
 

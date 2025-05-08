@@ -1,7 +1,9 @@
 interface modulesTypes {
   path: string
   name: string
+  meta?: any
   component: () => Promise<unknown>
+  children?: modulesTypes[]
 }
 
 export function getRoutes(files:any) {
@@ -23,7 +25,7 @@ export function getRoutes(files:any) {
       const endStrs = ['index', 'index.vue']
       if (!component || name == 'install') return modules
       const pathArr = filePathArr
-        .reduce((path, item) => {
+        .reduce((path: string[], item: string) => {
           if ((startStrs.includes(item) || path.length) && !endStrs.includes(item)) {
             path.push(item)
           }
@@ -34,7 +36,7 @@ export function getRoutes(files:any) {
       const parentName = pathArr.at(-2)
       const parentRoute = modules.find((item) => item.name === parentName)
       if (parentRoute) {
-        const path = `/${pathArr.at(-1)}`
+        const path = `${parentRoute.path}/${pathArr.at(-1)}`
         if (!parentRoute.children) parentRoute.children = []
         parentRoute.children.push({
           path,
@@ -47,7 +49,7 @@ export function getRoutes(files:any) {
       } else {
         const path = pathArr.join('/')
         modules.push({
-          path,
+          path: `/${path}`,
           name,
           meta: {
             title: component.name
