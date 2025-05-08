@@ -61,6 +61,19 @@ export function getRoutes(files:any) {
     }, modules)
 }
 
+export function findDefaultRoute(routes: any[]): string {
+  for (const route of routes) {
+    if (route.meta?.default) {
+      return route.path
+    }
+  }
+  const route = routes[0]
+  if (route.children?.length) {
+    return findDefaultRoute(route.children)
+  }else{
+    return route.path
+  }
+}
 /**
  * 深拷贝对象
  * @param obj 需要拷贝的对象

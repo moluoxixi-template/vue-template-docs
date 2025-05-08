@@ -3,15 +3,16 @@ import { qiankunWindow } from 'vite-plugin-qiankun/dist/helper'
 import { isEmpty, assign } from 'radash'
 import { cloneDeep } from 'lodash'
 import pages from '@/views'
-import { getRoutes } from '@/utils'
+import { getRoutes, findDefaultRoute } from '@/utils'
 
 const pagesRoutes = getRoutes(pages)
 const routesChildrens = [...pagesRoutes]
+console.log('findDefaultRoute(routesChildrens)', findDefaultRoute(routesChildrens))
 const Routes= [
   {
     path: '/',
     component: () => import('./index.vue'),
-    redirect: routesChildrens[0] ? routesChildrens[0].path : '',
+    redirect: findDefaultRoute(routesChildrens),
     children: routesChildrens,
   },
 ]
