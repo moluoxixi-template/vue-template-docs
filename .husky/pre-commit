@@ -2,21 +2,4 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 pnpm lint-staged
-
-# 获取环境变量VITE_GLOB_APP_CODE的值
-APP_CODE=$VITE_GLOB_APP_CODE
-
-# 检查环境变量是否已设置
-if [ -z "$APP_CODE" ]; then
-    echo "环境变量VITE_GLOB_APP_CODE未设置，跳过替换操作。"
-    exit 0
-fi
-
-# 使用sed命令替换.gitlab-ci.yml文件中的字符串
-sed -i "s/appCode/$APP_CODE/g" .gitlab-ci.yml
-
-# 将修改后的文件添加到暂存区
-git add .gitlab-ci.yml
-
-# 如果所有检查都通过，则继续提交
-echo "已使用环境变量VITE_GLOB_APP_CODE的值替换.gitlab-ci.yml文件中的字符串。"
+pnpm CICD
