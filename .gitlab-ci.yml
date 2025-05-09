@@ -1,0 +1,35 @@
+cache:
+  paths:
+    - node_modules/ #node_modules目录缓存起来
+stages: #流水过程，先从build->deploy
+  - build
+  - deploy
+npm-build:
+  stage: build
+  artifacts:
+    paths:
+      - residentNurse/ #生成dist文件
+  only:
+    - develop #develop分支触发
+  tags:
+    - 'npm-deploy' #gitLab-runner的tag（表示使用哪个runner）
+  script:
+    - . /root/.nvm/nvm-0.39.3/nvm.sh #使用nvm切换node.js版本
+    - nvm use 20.12.0
+    - pnpm install #指定python版本
+    - pnpm run build #执行npm构建命令
+
+npm-deploy:
+  stage: deploy
+  only:
+    - develop #dev分支触发
+  tags:
+    - 'npm-deploy' #gitLab-runner的tag（表示使用哪个runner）
+  script:
+    - current_date=$(date +"%Y-%m-%d-%H-%M-%S")
+    - echo $current_date
+    - ssh root@192.168.209.103 "mkdir  /data/opt/hip/nginx/html/appCode_BAK/$current_date"
+    - ssh root@192.168.209.103 "if du -sh "/data/opt/hip/nginx/html/appCode" | grep -q '0\b'; then echo 'empty';else mv -f /data/opt/hip/nginx/html/appCode/* /data/opt/hip/nginx/html/appCode_BAK/$current_date;fi"
+    - scp -r appCode/* root@192.168.209.103:/data/opt/hip/nginx/html/appCode
+
+
