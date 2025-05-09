@@ -8,14 +8,14 @@
  *
  * Copyright (c) 2025 by ${git_name_email}, All Rights Reserved.
  */
-import { BaseApi } from '~/utils/api'
-import {
+import { BaseApi } from '@/api/utils'
+import type {
   User,
   UserListResponse,
   UserDetailResponse,
   CreateUserRequest,
   UpdateUserRequest,
-} from '../models/user'
+} from '@/api/models/user'
 
 export class UserService extends BaseApi {
   constructor() {

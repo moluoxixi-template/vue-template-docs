@@ -1,11 +1,11 @@
-import { BaseApi } from '~/utils/api'
-import {
+import { BaseApi } from '@/api/utils'
+import type {
   Patient,
   PatientListResponse,
   PatientDetailResponse,
   CreatePatientRequest,
   UpdatePatientRequest,
-} from '../models/patient'
+} from '@/api/models/patient'
 
 export class PatientService extends BaseApi {
   constructor() {

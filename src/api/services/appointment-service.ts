@@ -1,11 +1,11 @@
-import { BaseApi } from '~/utils/api'
-import {
+import { BaseApi } from '@/api/utils'
+import type {
   Appointment,
   AppointmentListResponse,
   AppointmentDetailResponse,
   CreateAppointmentRequest,
   UpdateAppointmentRequest,
-} from '../models/appointment'
+} from '@/api/models/appointment'
 
 export class AppointmentService extends BaseApi {
   constructor() {
@@ -16,10 +16,7 @@ export class AppointmentService extends BaseApi {
    * 获取预约列表
    * @param page 页码
    * @param limit 每页条数
-   * @param status 预约状态过滤
-   * @param doctorId 医生ID过滤
-   * @param patientId 患者ID过滤
-   * @param date 日期过滤
+   * @param filters
    */
   async getAppointments(
     page: number = 1,

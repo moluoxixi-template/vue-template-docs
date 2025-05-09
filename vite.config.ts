@@ -94,6 +94,7 @@ export default defineConfig(({ mode }) => {
   const viteEnv = wrapperEnv(env)
   const systemCode = viteEnv.VITE_GLOB_APP_CODE;
   const appTitle = viteEnv.VITE_GLOB_APP_TITLE
+  console.log('appTitle', appTitle)
   const vuePlugins = [
     pluginVue(),
     scopedCssPrefixPlugin({
