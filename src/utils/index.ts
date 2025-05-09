@@ -6,7 +6,7 @@ interface modulesTypes {
   children?: modulesTypes[]
 }
 
-export function getRoutes(files:any) {
+export function getRoutes(files: any) {
   const modules: modulesTypes[] = []
   return Object.keys(files)
     .sort((a, b) => {
@@ -19,7 +19,7 @@ export function getRoutes(files:any) {
     .reduce((modules = [], name) => {
       const component = files[name]
       const filePath = component.__file
-      if(filePath.includes('components'))return modules;
+      if (filePath.includes('components')) return modules
       const filePathArr = filePath.split('/')
       const startStrs = ['views', 'components', 'layout']
       const endStrs = ['index', 'index.vue']
@@ -41,8 +41,8 @@ export function getRoutes(files:any) {
         parentRoute.children.push({
           path,
           name,
-          meta:{
-            title: component.name
+          meta: {
+            title: component.name,
           },
           component,
         })
@@ -52,7 +52,7 @@ export function getRoutes(files:any) {
           path: `/${path}`,
           name,
           meta: {
-            title: component.name
+            title: component.name,
           },
           component,
         })
@@ -70,10 +70,11 @@ export function findDefaultRoute(routes: any[]): string {
   const route = routes[0]
   if (route.children?.length) {
     return findDefaultRoute(route.children)
-  }else{
+  } else {
     return route.path
   }
 }
+
 /**
  * 深拷贝对象
  * @param obj 需要拷贝的对象
@@ -120,3 +121,4 @@ export function cloneDeep(obj: any, map = new WeakMap()): any {
 
   return clone
 }
+

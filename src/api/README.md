@@ -25,10 +25,10 @@ api/
 
 ```typescript
 // 方法1: 使用提供的hook函数
-import { useUserService, usePatientService } from '~/api'
+import { useUserService, usePatientService } from '@/api'
 
 // 方法2: 使用服务集合
-import { services } from '~/api'
+import { services } from '@/api'
 ```
 
 ### 2. 在组件中使用API服务
@@ -36,7 +36,7 @@ import { services } from '~/api'
 ```typescript
 <script setup>
 import { ref } from '#imports'
-import { useUserService } from '~/api'
+import { useUserService } from '@/api'
 
 // 获取用户服务实例
 const userService = useUserService()
@@ -80,7 +80,7 @@ export interface Example {
 }
 
 // 2. 创建服务类 (services/example-service.ts)
-import { BaseApi } from '~/utils/api'
+import { BaseApi } from '@/api/utils'
 import { Example } from '../models/example'
 
 export class ExampleService extends BaseApi {

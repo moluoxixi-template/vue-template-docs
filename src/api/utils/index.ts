@@ -9,6 +9,7 @@
  * Copyright (c) 2025 by ${git_name_email}, All Rights Reserved.
  */
 import axios from 'axios'
+import { addSign } from '@/utils/his6.0'
 import type { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios'
 
 export class BaseApi {
@@ -25,11 +26,7 @@ export class BaseApi {
     // 请求拦截器
     this.instance.interceptors.request.use(
       (config) => {
-        // 在发送请求之前做些什么
-        const token = localStorage.getItem('token')
-        if (token) {
-          config.headers.Authorization = `Bearer ${token}`
-        }
+        addSign(config)
         return config
       },
       (error: AxiosError) => {
