@@ -28,8 +28,8 @@ npm-deploy:
   script:
     - current_date=$(date +"%Y-%m-%d-%H-%M-%S")
     - echo $current_date
-    - ssh root@192.168.209.103 "mkdir  /data/opt/hip/nginx/html/appCode_BAK/$current_date"
-    - ssh root@192.168.209.103 "if du -sh "/data/opt/hip/nginx/html/appCode" | grep -q '0\b'; then echo 'empty';else mv -f /data/opt/hip/nginx/html/appCode/* /data/opt/hip/nginx/html/appCode_BAK/$current_date;fi"
-    - scp -r appCode/* root@192.168.209.103:/data/opt/hip/nginx/html/appCode
+    - ssh root@192.168.209.103 "mkdir  /data/opt/hip/nginx/html/'test'_BAK/$current_date"
+    - ssh root@192.168.209.103 "if du -sh "/data/opt/hip/nginx/html/'test'" | grep -q '0\b'; then echo 'empty';else mv -f /data/opt/hip/nginx/html/'test'/* /data/opt/hip/nginx/html/'test'_BAK/$current_date;fi"
+    - scp -r 'test'/* root@192.168.209.103:/data/opt/hip/nginx/html/'test'
 
 
