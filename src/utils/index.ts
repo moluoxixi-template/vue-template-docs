@@ -6,7 +6,21 @@ interface modulesTypes {
   children?: modulesTypes[]
 }
 
+function findParentRoute(modules: modulesTypes[], parentPath: string): modulesTypes | undefined {
+  for (const route of modules) {
+    if (route.path === parentPath) {
+      return route
+    }
+    if (route.children) {
+      const found = findParentRoute(route.children, parentPath)
+      if (found) return found
+    }
+  }
+  return undefined
+}
+
 export function getRoutes(files: any) {
+  console.log('files', files)
   const modules: modulesTypes[] = []
   return Object.keys(files)
     .sort((a, b) => {
@@ -16,14 +30,15 @@ export function getRoutes(files: any) {
       const bLength = componentB.__file.split('/').length
       return bLength > aLength ? -1 : 1
     })
-    .reduce((modules = [], name) => {
-      const component = files[name]
+    .reduce((modules = [], modulePath) => {
+      const component = files[modulePath]
       const filePath = component.__file
       if (filePath.includes('components')) return modules
       const filePathArr = filePath.split('/')
       const startStrs = ['views', 'components', 'layout']
       const endStrs = ['index', 'index.vue']
-      if (!component || name == 'install') return modules
+      if (!component || modulePath == 'install') return modules
+
       const pathArr = filePathArr
         .reduce((path: string[], item: string) => {
           if ((startStrs.includes(item) || path.length) && !endStrs.includes(item)) {
@@ -32,27 +47,27 @@ export function getRoutes(files: any) {
           return path
         }, [])
         .slice(1)
+      const name = pathArr.at(-1)
+      const path = `/${pathArr.join('/')}`
+      const parentPath = `/${pathArr.slice(0, -1).join('/')}`
 
-      const parentName = pathArr.at(-2)
-      const parentRoute = modules.find((item) => item.name === parentName)
+      const parentRoute = findParentRoute(modules, parentPath)
       if (parentRoute) {
-        const path = `${parentRoute.path}/${pathArr.at(-1)}`
         if (!parentRoute.children) parentRoute.children = []
         parentRoute.children.push({
           path,
-          name,
+          name: path,
           meta: {
-            title: component.name,
+            title: component.name || name,
           },
           component,
         })
       } else {
-        const path = pathArr.join('/')
         modules.push({
-          path: `/${path}`,
-          name,
+          path,
+          name: path,
           meta: {
-            title: component.name,
+            title: component.name || name,
           },
           component,
         })
@@ -121,4 +136,3 @@ export function cloneDeep(obj: any, map = new WeakMap()): any {
 
   return clone
 }
-

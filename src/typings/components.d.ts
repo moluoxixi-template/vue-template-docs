@@ -25,6 +25,7 @@ declare module 'vue' {
     IconTooling: typeof import('./../components/icons/IconTooling.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SubMenu: typeof import('./../components/subMenu.vue')['default']
     TailwindTest: typeof import('./../components/TailwindTest.vue')['default']
     TheWelcome: typeof import('./../components/TheWelcome.vue')['default']
     WelcomeItem: typeof import('./../components/WelcomeItem.vue')['default']

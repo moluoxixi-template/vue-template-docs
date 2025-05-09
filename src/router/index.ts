@@ -4,11 +4,16 @@ import { isEmpty, assign } from 'radash'
 import { cloneDeep } from 'lodash'
 import pages from '@/views'
 import { getRoutes, findDefaultRoute } from '@/utils'
+import type { modulesTypes } from '@/utils'
 
 const pagesRoutes = getRoutes(pages)
-const routesChildrens = [...pagesRoutes]
-console.log('findDefaultRoute(routesChildrens)', findDefaultRoute(routesChildrens))
-const Routes= [
+console.log('pagesRoutes', pagesRoutes)
+const customRoutes: modulesTypes[] = [
+  //   一些路由
+]
+const routesChildrens = customRoutes.length ? [...customRoutes] : [...pagesRoutes]
+
+const Routes = [
   {
     path: '/',
     component: () => import('./index.vue'),
@@ -16,7 +21,8 @@ const Routes= [
     children: routesChildrens,
   },
 ]
-function getRouter(props:any) {
+
+function getRouter(props: any) {
   let base
   const routes = cloneDeep(Routes)
   if (qiankunWindow.__POWERED_BY_QIANKUN__) {
@@ -33,7 +39,7 @@ function getRouter(props:any) {
   }
   const router = createRouter({
     history: createWebHistory(base),
-    routes
+    routes,
   })
   router.beforeEach((to, from, next) => {
     if (isEmpty(history.state.current)) {

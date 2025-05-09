@@ -1,3 +1,13 @@
+<!--
+ * @Author: moluoxixi 1983531544@qq.com
+ * @Date: 2025-05-07 14:08:20
+ * @LastEditors: moluoxixi 1983531544@qq.com
+ * @LastEditTime: 2025-05-09 19:32:19
+ * @FilePath: \vue-template\src\layout\element.vue
+ * @Description:
+ *
+ * Copyright (c) 2025 by ${git_name_email}, All Rights Reserved.
+-->
 <template>
   <el-config-provider :locale="zhCn" :namespace="systemCode" :empty-values="[undefined]">
     <div class="height-100" :style="`--el-color-primary: ${themeColor || '#3A77FF'};`">
@@ -5,23 +15,7 @@
         <el-header height="30">
           <div class="w-full h-full bg-[#327bff] flex justify-center">
             <el-menu :default-active="defaultTab" :ellipsis="false" mode="horizontal" router>
-              <template v-for="(route, index) in routes" :key="index">
-                <el-menu-item v-if="!route.children?.length" :index="route.path"
-                  >{{ route.meta.title || route.name }}
-                </el-menu-item>
-                <template v-else>
-                  <el-sub-menu :key="index" :index="route.path">
-                    <template #title>{{ route.meta.title || route.name }}</template>
-                    <el-menu-item
-                      v-for="(child, i) in route.children"
-                      :key="i"
-                      :index="child.path"
-                    >
-                      {{ child.meta?.title || child.name }}
-                    </el-menu-item>
-                  </el-sub-menu>
-                </template>
-              </template>
+              <subMenu :routes="routes" />
             </el-menu>
           </div>
         </el-header>
@@ -45,6 +39,8 @@
 </template>
 <script setup>
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
+import subMenu from '@/components/subMenu.vue'
+
 import { computed, reactive } from 'vue'
 import { RouterView, useRouter } from 'vue-router'
 import { useSystemStore } from '@/stores/system'

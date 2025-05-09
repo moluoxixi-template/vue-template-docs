@@ -5,7 +5,7 @@
 <script lang="ts">
 import { defineComponent} from 'vue'
 export default defineComponent({
-  name: '示例二级菜单的二级菜单',
+  name: '三级菜单的三级菜单',
   data() {
     return {}
   },
