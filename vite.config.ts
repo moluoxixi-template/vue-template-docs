@@ -19,6 +19,8 @@ import { createHtmlPlugin } from 'vite-plugin-html'
 import autoprefixer from 'autoprefixer'
 import tailwindcss from '@tailwindcss/postcss'
 import path from 'path'
+import qiankun from 'vite-plugin-qiankun'
+
 import type { Plugin } from 'postcss'
 import scopedCssPrefixPlugin from './plugins/addScopedAndReplacePrefix'
 
@@ -97,6 +99,10 @@ export default defineConfig(({ mode }) => {
   console.log('appTitle', appTitle)
   const vuePlugins = [
     pluginVue(),
+    qiankun(systemCode, {
+      //子应用name，须与子应用中package.json中的name属性相同
+      useDevMode: false
+    }),
     scopedCssPrefixPlugin({
       prefixScoped: `div[data-qiankun='${systemCode}']`,
       oldPrefix: 'el',
