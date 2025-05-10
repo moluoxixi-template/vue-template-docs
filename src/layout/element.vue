@@ -10,9 +10,9 @@
 -->
 <template>
   <el-config-provider :locale="zhCn" :namespace="systemCode" :empty-values="[undefined]">
-    <div class="height-100" :style="`--el-color-primary: ${themeColor || '#3A77FF'};`">
+    <div class="h-full" :class="{ 'h-screen': !qiankunWindow.__POWERED_BY_QIANKUN__ }" :style="`--el-color-primary: ${themeColor || '#3A77FF'};`">
       <el-container class="w-full h-full">
-        <el-header height="30">
+        <el-header v-if="!qiankunWindow.__POWERED_BY_QIANKUN__" height="30">
           <div class="w-full h-full bg-[#327bff] flex justify-center">
             <el-menu :default-active="defaultTab" :ellipsis="false" mode="horizontal" router>
               <subMenu :routes="routes" />
@@ -40,7 +40,7 @@
 <script setup>
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import subMenu from '@/components/subMenu.vue'
-
+import { qiankunWindow } from 'vite-plugin-qiankun/dist/helper'
 import { computed, reactive } from 'vue'
 import { RouterView, useRouter } from 'vue-router'
 import { useSystemStore } from '@/stores/system'
