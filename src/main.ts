@@ -76,7 +76,7 @@ async function render(props: QiankunProps) {
     app,
     [ElDrawer, ElDialog, ElPopover, ElTooltip],
     'appendTo',
-    () => container?.id || '#app',
+    () => container || '#app',
   )
   // 注册组件
   for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
