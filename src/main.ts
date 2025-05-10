@@ -1,4 +1,4 @@
-import ElementPlus from 'element-plus'
+// import ElementPlus from 'element-plus'
 import '@/assets/main.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
@@ -67,6 +67,8 @@ async function render(props: QiankunProps) {
   app = createApp(App)
   // 注册指令
   directives(app)
+
+  // app.use(ElementPlus)
   // 注册组件
   for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
@@ -81,7 +83,6 @@ async function render(props: QiankunProps) {
   const router = getRouter(props)
   app.use(router)
   app.config.warnHandler = () => null;
-  app.use(ElementPlus)
 
   if (container) {
     const root = container.querySelector('#app')
