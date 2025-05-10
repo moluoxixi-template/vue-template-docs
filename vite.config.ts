@@ -94,14 +94,14 @@ function wrapperEnv(env: Record<string, string>) {
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd())
   const viteEnv = wrapperEnv(env)
-  const systemCode = viteEnv.VITE_GLOB_APP_CODE;
+  const systemCode = viteEnv.VITE_GLOB_APP_CODE
   const appTitle = viteEnv.VITE_GLOB_APP_TITLE
   console.log('appTitle', appTitle)
   const vuePlugins = [
     pluginVue(),
     qiankun(systemCode, {
       //子应用name，须与子应用中package.json中的name属性相同
-      useDevMode: false
+      useDevMode: false,
     }),
     scopedCssPrefixPlugin({
       prefixScoped: `div[data-qiankun='${systemCode}']`,
@@ -111,17 +111,16 @@ export default defineConfig(({ mode }) => {
     vueJsx(),
     env.VITE_DEVTOOLS && vueDevTools(),
     // 自动引入
-    mode === 'development' &&
-      AutoImport({
-        imports: ['vue'],
-        resolvers: [ElementPlusResolver()],
-        dts: path.resolve(__dirname, './src/typings/auto-imports.d.ts'),
-      }),
-    mode === 'development' &&
-      Components({
-        resolvers: [ElementPlusResolver()],
-        dts: path.resolve(__dirname, './src/typings/components.d.ts'),
-      }),
+    AutoImport({
+      imports: ['vue'],
+      resolvers: [ElementPlusResolver()],
+      dts: path.resolve(__dirname, './src/typings/auto-imports.d.ts'),
+    }),
+    // 与自定义element组件冲突
+    //   Components({
+    //     resolvers: [ElementPlusResolver()],
+    //     dts: path.resolve(__dirname, './src/typings/components.d.ts'),
+    //   }),
   ]
   // CDN加速
   const importToCDNPlugins = viteEnv.VITE_USE_CDN
@@ -227,7 +226,7 @@ export default defineConfig(({ mode }) => {
       },
     },
     define: {
-      __SYSTEM_CODE__: JSON.stringify(systemCode)
+      __SYSTEM_CODE__: JSON.stringify(systemCode),
     },
     css: {
       postcss: {
@@ -240,13 +239,13 @@ export default defineConfig(({ mode }) => {
       preprocessorOptions: {
         scss: {
           api: 'modern-compiler',
-          additionalData(content: string,filename: string) {
+          additionalData(content: string, filename: string) {
             if (filename.includes('element')) {
-              const addStr=`$namespace: ${systemCode};`
+              const addStr = `$namespace: ${systemCode};`
               return `${addStr}\n${content}`
             }
             return content
-          }
+          },
         },
       },
     },

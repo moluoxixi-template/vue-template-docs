@@ -1,4 +1,4 @@
-// import ElementPlus from 'element-plus'
+import ElementPlus, { ElDrawer, ElDialog, ElPopover, ElTooltip } from 'element-plus'
 import '@/assets/main.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
@@ -6,6 +6,8 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import directives from '@/directives'
 import moment from 'moment'
 import 'moment/dist/locale/zh-cn'
+
+import { modifyComponents } from '@/utils/modifyComponent.tsx'
 
 moment.locale('zh-cn') //中文化
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
@@ -17,7 +19,7 @@ import getRouter from './router'
 
 import { useSystemStore } from './stores/system'
 
-let app:any;
+let app: any
 
 /**
  * @param container 主应用下发的props中的container,也就是子应用的根节点
@@ -33,7 +35,7 @@ const proxy = (container: HTMLElement) => {
       } else {
         target.call(thisArg, node)
       }
-    }
+    },
   })
   if (revocable.proxy) {
     document.body.appendChild = revocable.proxy
@@ -50,7 +52,7 @@ function themeManager(props: QiankunProps) {
         systemStore.setTheme(themeColor)
       }
     }
-    props.onGlobalStateChange((state:any) => {
+    props.onGlobalStateChange((state: any) => {
       //更换主题
       if (state.action == 'changeTheme') {
         systemStore.setTheme(state.color)
@@ -68,7 +70,14 @@ async function render(props: QiankunProps) {
   // 注册指令
   directives(app)
 
-  // app.use(ElementPlus)
+  app.use(ElementPlus)
+  // 修改Element的appendToBody默认行为
+  modifyComponents(
+    app,
+    [ElDrawer, ElDialog, ElPopover, ElTooltip],
+    'appendTo',
+    () => container?.id || '#app',
+  )
   // 注册组件
   for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
@@ -82,7 +91,7 @@ async function render(props: QiankunProps) {
   // systemStore.setTheme('red');
   const router = getRouter(props)
   app.use(router)
-  app.config.warnHandler = () => null;
+  app.config.warnHandler = () => null
 
   if (container) {
     const root = container.querySelector('#app')
@@ -108,8 +117,6 @@ if (!qiankunWindow.__POWERED_BY_QIANKUN__) {
       app?.unmount()
       app = null
     },
-    update(props: QiankunProps) {
-
-    }
+    update(props: QiankunProps) {},
   })
 }
