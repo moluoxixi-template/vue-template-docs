@@ -15,7 +15,7 @@ const appCode = envObj['VITE_GLOB_APP_CODE'].replace(/["']/g, '');
 
 const ciPath = path.resolve(__dirname, '../.gitlab-ci.yml');
 const ciText = fs.readFileSync(ciPath, 'utf-8');
-const newCiText = ciText.replace(/appCode/g, appCode);
+const newCiText = ciText.replace(/variables:\s+systemCode: '.*'/, `variables:\r  systemCode: '${appCode}'`);
 
 fs.writeFileSync(ciPath, newCiText);
 
