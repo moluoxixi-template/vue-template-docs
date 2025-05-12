@@ -1,4 +1,5 @@
-variables:  systemCode: 'test'
+variables:
+  systemCode: 'aaa'
 
 cache:
   paths:
