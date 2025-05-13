@@ -3,17 +3,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent} from 'vue'
-export default defineComponent({
-  name: '示例二级菜单的二级菜单',
-  data() {
-    return {}
-  },
-  methods: {},
-  computed: {},
-  mounted() {
-  }
-})
+
 </script>
 
 <style scoped lang="scss">

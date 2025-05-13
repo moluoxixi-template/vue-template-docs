@@ -1,4 +1,4 @@
-interface modulesTypes {
+export interface modulesTypes {
   path: string
   name: string
   meta?: any
