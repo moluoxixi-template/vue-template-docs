@@ -20,7 +20,7 @@
           </div>
         </el-header>
         <el-main>
-          <el-container>
+          <el-container class="h-full w-full bg-white">
             <el-main>
               <transition name="fade">
                 <router-view v-slot="{ Component, route }">
