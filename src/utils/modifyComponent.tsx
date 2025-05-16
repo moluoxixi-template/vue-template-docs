@@ -1,15 +1,15 @@
-import { defineComponent } from 'vue'
-import { ElDrawer } from 'element-plus'
+import {defineComponent, computed} from 'vue'
 
 export function withModifiedProps(OriginalComponent, propName, modifier = (v) => v) {
   return defineComponent({
     name: OriginalComponent.name,
-    setup(props, { attrs, slots }) {
+    setup(_:any, {attrs, slots}) {
+      const appendToBody = (attrs['append-to-body'] ?? false) !== false;
       const modifiedProps = computed(() => ({
         ...attrs,
-        [propName]: modifier(attrs[propName])
+        [propName]: appendToBody ? modifier(attrs[propName]) : 'body'
       }))
-      return () => <OriginalComponent {...modifiedProps.value} v-slots={slots} />
+      return () => <OriginalComponent {...modifiedProps.value} v-slots={slots}/>
     }
   })
 }
