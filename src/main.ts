@@ -1,5 +1,6 @@
 import ElementPlus, { ElDrawer, ElDialog, ElPopover, ElTooltip } from 'element-plus'
 import '@/assets/main.css'
+import '@/assets/element/index.scss';
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
