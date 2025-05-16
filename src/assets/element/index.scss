@@ -22,5 +22,8 @@ $--colors: (
   // do not use same name, it will override.
   $colors: $--colors
 );
-//无法使用,会污染其他样式
+
 @use 'element-plus/theme-chalk/src/index.scss' as *;
+
+@use 'custom';
+@use 'fixQiankun.scss';
