@@ -9,16 +9,16 @@ const __filename = fileURLToPath(import.meta.url)
 // 获取当前目录名
 const __dirname = path.dirname(__filename)
 
-const viteConfigDefault = await resolveConfig({},'build','production')
+const viteConfigDefault = await resolveConfig({}, 'build', 'production')
 const buildoutputDir = viteConfigDefault.build.outDir
 
 const renameDir = buildoutputDir
 
 uploadWeb().then((r) => console.log(r))
 
-async function uploadWeb() {
-  const renamePath = path.join(__dirname, `/${renameDir}.zip`)
-  const form = path.join(__dirname, `/${buildoutputDir}`)
+async function uploadWeb () {
+  const renamePath = path.join(__dirname, `../${renameDir}.zip`)
+  const form = path.join(__dirname, `../${buildoutputDir}`)
   try {
     // let ip = '192.168.208.18';
     //服务器前端静态资源存储路径
