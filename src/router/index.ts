@@ -5,6 +5,7 @@ import { cloneDeep } from 'lodash'
 import pages from '@/views'
 import { getRoutes, findDefaultRoute } from '@/utils'
 import type { modulesTypes } from '@/utils'
+
 const pagesRoutes = getRoutes(pages)
 console.log('pagesRoutes', pagesRoutes)
 const customRoutes: modulesTypes[] = [
@@ -16,7 +17,7 @@ const Routes = [
   {
     path: '/',
     name: 'layout',
-    component: () => import('./layout.vue'),
+    component: () => import('./layout.vue' as string),
     redirect: findDefaultRoute(routesChildrens),
     children: routesChildrens,
   },

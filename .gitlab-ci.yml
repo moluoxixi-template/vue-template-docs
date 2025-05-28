@@ -1,4 +1,5 @@
-variables:  systemCode: 'test'
+variables:
+  systemCode: 'test'
 
 cache:
   paths:
@@ -10,7 +11,7 @@ npm-build:
   stage: build
   artifacts:
     paths:
-      - residentNurse/ #生成dist文件
+      - ${systemCode}/ #生成dist文件
   only:
     - develop #develop分支触发
   tags:
