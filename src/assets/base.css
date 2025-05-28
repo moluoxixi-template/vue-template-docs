@@ -33,14 +33,6 @@
   --bg-color-6: #ebf2ff;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  font-weight: normal;
-}
-
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -59,7 +51,6 @@ body {
   font-size: 14px;
   font-family: PingFangSC-Regular, serif;
 }
-
 #app {
   margin: 0;
   padding: 0;

@@ -16,7 +16,7 @@ const Routes = [
   {
     path: '/',
     name: 'layout',
-    component: () => import('./index.vue'),
+    component: () => import('./layout.vue'),
     redirect: findDefaultRoute(routesChildrens),
     children: routesChildrens,
   },
