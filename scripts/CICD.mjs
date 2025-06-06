@@ -14,6 +14,7 @@ const envObj = Object.fromEntries(
 const appCode = envObj['VITE_GLOB_APP_CODE'].replace(/["']/g, '');
 
 const ciPath = path.resolve(__dirname, '../.gitlab-ci.yml');
+if (fs.existsSync(ciPath)) {
 const ciText = fs.readFileSync(ciPath, 'utf-8');
 const oldCiText = ciText.match(/variables:\s+systemCode: '(.*)'/);
 const oldAppCode = oldCiText && oldCiText[1];
@@ -26,32 +27,22 @@ if (oldAppCode === appCode) {
   fs.writeFileSync(ciPath, newCiText);
 
   execSync('git add .gitlab-ci.yml');
-  execSync('git commit -m "chore: update appCode in .gitlab-ci.yml"');
+  execSync('git commit -m "chore: update appCode in .gitlab-ci.yml"  --no-verify');
+}
 }
 
 // 处理.gitignore文件
 const gitignorePath = path.resolve(__dirname, '../.gitignore');
 if (fs.existsSync(gitignorePath)) {
   const gitignoreText = fs.readFileSync(gitignorePath, 'utf-8');
-  const systemCodeRegex = /systemCode:\s*['"]?(.*?)['"]?(\s|$)/;
-  const matchResult = gitignoreText.match(systemCodeRegex);
+  if (gitignoreText.includes(appCode)) {
+    console.log('appCode in .gitignore is the same as the environment variable, no need to update');
+  }else{
+    const newGitignoreText = gitignoreText.replaceAll("systemCode", `${appCode}`);
+    fs.writeFileSync(gitignorePath, newGitignoreText);
 
-  if (matchResult) {
-    const oldSystemCode = matchResult[1];
-
-    if (oldSystemCode === appCode) {
-      console.log('systemCode in .gitignore is the same as the environment variable, no need to update');
-    } else {
-      const newGitignoreText = gitignoreText.replace(systemCodeRegex, `systemCode: '${appCode}'$2`);
-
-      fs.writeFileSync(gitignorePath, newGitignoreText);
-
-      execSync('git add .gitignore');
-      execSync('git commit -m "chore: update systemCode in .gitignore"');
-      console.log('Updated systemCode in .gitignore');
-    }
-  } else {
-    console.log('No systemCode found in .gitignore');
+    execSync('git add .gitignore');
+    execSync('git commit --no-verify -m "chore: update appCode in .gitignore" --no-verify');
   }
 } else {
   console.log('.gitignore file not found');
