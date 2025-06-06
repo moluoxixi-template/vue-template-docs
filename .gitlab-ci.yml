@@ -1,6 +1,7 @@
 variables:
   systemCode: 'test'
-
+#  GIT_SUBMODULE_STRATEGY: recursive  # 递归克隆所有子模块
+#  GIT_SUBMODULE_FORCE: "true" # 可选：强制更新子模块
 cache:
   paths:
     - node_modules/ #node_modules目录缓存起来
