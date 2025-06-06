@@ -17,7 +17,7 @@ const ciPath = path.resolve(__dirname, '../.gitlab-ci.yml');
 const ciText = fs.readFileSync(ciPath, 'utf-8');
 const oldCiText = ciText.match(/variables:\s+systemCode: '(.*)'/);
 const oldAppCode = oldCiText && oldCiText[1];
-
+// 处理.gitlab-ci.yml文件
 if (oldAppCode === appCode) {
   console.log('appCode in .gitlab-ci.yml is the same as the environment variable, no need to update');
 } else {
@@ -27,4 +27,32 @@ if (oldAppCode === appCode) {
 
   execSync('git add .gitlab-ci.yml');
   execSync('git commit -m "chore: update appCode in .gitlab-ci.yml"');
+}
+
+// 处理.gitignore文件
+const gitignorePath = path.resolve(__dirname, '../.gitignore');
+if (fs.existsSync(gitignorePath)) {
+  const gitignoreText = fs.readFileSync(gitignorePath, 'utf-8');
+  const systemCodeRegex = /systemCode:\s*['"]?(.*?)['"]?(\s|$)/;
+  const matchResult = gitignoreText.match(systemCodeRegex);
+
+  if (matchResult) {
+    const oldSystemCode = matchResult[1];
+
+    if (oldSystemCode === appCode) {
+      console.log('systemCode in .gitignore is the same as the environment variable, no need to update');
+    } else {
+      const newGitignoreText = gitignoreText.replace(systemCodeRegex, `systemCode: '${appCode}'$2`);
+
+      fs.writeFileSync(gitignorePath, newGitignoreText);
+
+      execSync('git add .gitignore');
+      execSync('git commit -m "chore: update systemCode in .gitignore"');
+      console.log('Updated systemCode in .gitignore');
+    }
+  } else {
+    console.log('No systemCode found in .gitignore');
+  }
+} else {
+  console.log('.gitignore file not found');
 }
