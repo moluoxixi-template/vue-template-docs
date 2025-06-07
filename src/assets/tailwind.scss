@@ -13,3 +13,9 @@
   //  --spacing: 1px;
   //}
 }
+
+@layer utilities {
+  .bg-primary {
+    background-color: var(--el-color-primary);
+  }
+}

@@ -41,6 +41,8 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
+    "@sentry/vite-plugin": "^3.5.0",
+    "@sentry/vue": "^9.27.0",
     "axios": "^1.9.0",
     "crypto-js": "^4.2.0",
     "element-plus": "^2.9.9",

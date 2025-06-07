@@ -10,10 +10,14 @@
 -->
 <template>
   <el-config-provider :locale="zhCn" :namespace="systemCode" :empty-values="[undefined]">
-    <div class="h-full" :class="{ 'h-screen': !qiankunWindow.__POWERED_BY_QIANKUN__ }" :style="`--el-color-primary: ${themeColor || '#3A77FF'};`">
+    <div
+      class="h-full"
+      :class="{ 'h-screen': !qiankunWindow.__POWERED_BY_QIANKUN__ }"
+      :style="`--el-color-primary: ${themeColor || '#3A77FF'};`"
+    >
       <el-container class="w-full h-full">
         <el-header v-if="!qiankunWindow.__POWERED_BY_QIANKUN__" height="30">
-          <div class="w-full h-full bg-[#327bff] flex justify-center">
+          <div class="w-full h-full bg-primary flex justify-center">
             <el-menu :default-active="defaultTab" :ellipsis="false" mode="horizontal" router>
               <subMenu :routes="routes" />
             </el-menu>

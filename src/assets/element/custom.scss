@@ -1,11 +1,55 @@
-:root{
+:root {
   --el-border-radius-base: 8px;
   --el-table-border-color: #dcdfe6;
+  --el-text-color-primary: #fff;
+
+  --el-menu-bg-color: var(--el-color-primary);
+  --el-menu-hover-bg-color: var(--el-text-color-primary);
+
+  --el-menu-popup-bg-color: var(--el-text-color-primary);
+  --el-menu-popup-hover-bg-color: var(--el-color-primary);
+  --el-menu-active-color: var(--el-color-primary);
 }
 
-.el-main{
+.el-main {
   --el-main-padding: 12px;
 }
-.el-header{
+
+.el-header {
   --el-header-padding: 0;
+}
+//用于头部菜单
+.el-menu {
+  &.el-menu--popup {
+    background-color: var(--el-menu-popup-bg-color);
+    .el-menu-item {
+      background-color: var(--el-menu-popup-bg-color);
+      &.is-active {
+        color: var(--el-text-color-primary);
+        background-color: var(--el-menu-popup-hover-bg-color);
+      }
+
+      &:hover {
+        color: var(--el-text-color-primary);
+        background-color: var(--el-menu-popup-hover-bg-color);
+      }
+    }
+  }
+
+  .el-menu-item {
+    &.is-active {
+      background-color: var(--el-menu-hover-bg-color);
+    }
+  }
+
+  .el-sub-menu {
+    &.is-active {
+      background-color: var(--el-menu-hover-bg-color);
+    }
+    .el-sub-menu__title {
+      &:hover {
+        background-color: var(--el-menu-hover-bg-color);
+      }
+    }
+  }
 }

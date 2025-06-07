@@ -23,6 +23,7 @@ import qiankun from 'vite-plugin-qiankun'
 
 import type { Plugin } from 'postcss'
 import scopedCssPrefixPlugin from './plugins/addScopedAndReplacePrefix'
+import { sentryVitePlugin } from '@sentry/vite-plugin'
 
 const external = ['vue', 'vue-router', 'element-plus', 'axios', 'moment', 'radash']
 const cdnModules = [
@@ -133,6 +134,11 @@ export default defineConfig(({ mode }) => {
     base: `/${systemCode}`,
     plugins: [
       ...vuePlugins,
+      sentryVitePlugin({
+        authToken: process.env.SENTRY_AUTH_TOKEN,
+        org: 'f1f562b9b82f',
+        project: 'javascript-vue',
+      }),
       createHtmlPlugin({
         inject: {
           data: {
@@ -193,11 +199,11 @@ export default defineConfig(({ mode }) => {
         }),
     ],
     build: {
+      // 代码映射
+      sourcemap: true,
       outDir: `${systemCode}`,
       // 启用 CSS 代码拆分,使加载模块时,仅加载对应css,而不是打包为一个样式文件
       cssCodeSplit: true,
-      // 关闭 sourcemap
-      sourcemap: false,
       // 大资源拆分
       chunkSizeWarningLimit: 1500,
       rollupOptions: {

@@ -1,17 +1,10 @@
 <template>
-<div>hello 狗子</div>
+  <div @click="throwError">测试sentry报错，点我</div>
 </template>
-<script lang="ts">
-export default defineComponent({
-  name:'示例',
-  data(){
-    return {}
-  },
-  methods:{},
-  computed:{},
-  mounted(){}
-})
+<script setup lang="ts">
+defineOptions({ name: '示例sentry报错收集' })
+function throwError() {
+  throw new Error('测试sentry报错，点我')
+}
 </script>
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

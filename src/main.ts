@@ -6,6 +6,12 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import directives from '@/directives'
 import moment from 'moment'
 import 'moment/dist/locale/zh-cn'
+import {
+  init,
+  vueIntegration,
+  browserTracingIntegration,
+  createSentryPiniaPlugin,
+} from '@sentry/vue'
 
 import { modifyComponents } from '@/utils/modifyComponent.tsx'
 
@@ -77,13 +83,38 @@ async function render(props: QiankunProps) {
     app.component(key, component)
   }
   const pinia = createPinia()
+  const router = getRouter(props)
+
+  //#region 初始化sentry
+  init({
+    app,
+    dsn: 'https://e9b3c65caeec301093d764fdf7bff8e5@o4509455371337728.ingest.us.sentry.io/4509455378022400',
+    normalizeDepth: 10,
+    sendDefaultPii: true,
+    integrations: [
+      // 跟踪vue
+      vueIntegration({
+        tracingOptions: {
+          // 跟踪vue组件
+          trackComponents: true,
+          // 需要跟踪的hooks,destroy用于vue2
+          hooks: ['activate', 'create', 'unmount', 'destroy', 'mount', 'update'],
+        },
+      }),
+      // 跟踪路由
+      browserTracingIntegration({ router }),
+    ],
+  })
+  // 跟踪pinia
+  pinia.use(createSentryPiniaPlugin())
+  //#endregion
+
   pinia.use(piniaPluginPersistedstate)
-  app.use(pinia)
 
   // 测试主题变更
   // const systemStore = useSystemStore()
   // systemStore.setTheme('red');
-  const router = getRouter(props)
+  app.use(pinia)
   app.use(router)
   app.config.warnHandler = () => null
 
