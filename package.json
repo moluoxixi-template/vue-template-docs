@@ -67,7 +67,6 @@
     "autoprefixer": "^10.4.21",
     "commitizen": "^4.3.1",
     "compressing": "^1.10.1",
-    "cz-conventional-changelog": "^3.3.0",
     "cz-customizable": "^7.4.0",
     "dotenv": "^16.5.0",
     "eslint": "^9.22.0",
@@ -120,12 +119,10 @@
   },
   "config": {
     "commitizen": {
-      "path": "cz-conventional-changelog",
-      "config": {
-        "cz-customizable": {
-          "config": ".cz-config.js"
-        }
-      }
+      "path": "cz-customizable"
+    },
+    "cz-customizable": {
+      "config": ".cz-config.cjs"
     }
   }
 }
