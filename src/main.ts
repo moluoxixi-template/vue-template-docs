@@ -71,12 +71,7 @@ async function render(props: QiankunProps) {
 
   app.use(ElementPlus)
   // 修改Element的appendToBody默认行为
-  modifyComponents(
-    app,
-    [ElDrawer, ElDialog, ElPopover, ElTooltip],
-    'appendTo',
-    () => container || '#app',
-  )
+  modifyComponents(app, [ElDrawer, ElTooltip], 'appendTo', () => container || '#app')
   // 注册组件
   for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
