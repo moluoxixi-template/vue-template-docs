@@ -1,15 +1,6 @@
-import { BaseApi } from '@/common/api/utils/index'
+import { BaseApi } from '@/api/utils'
 
-export interface User {
-  id: number
-  name: string
-  email: string
-}
-
-export interface CreateUserDto {
-  name: string
-  email: string
-}
+import type { User, CreateUserDto } from '@/api/models/user'
 
 export class UserApi extends BaseApi {
   constructor() {
