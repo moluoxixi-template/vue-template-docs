@@ -1,4 +1,4 @@
-import { userRequest } from '@/common/api/utils/index'
+import { userRequest } from '@/api/utils'
 
 export function getUserList(data: any) {
   return userRequest({
