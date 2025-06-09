@@ -3,6 +3,7 @@
 @layer base {
   html {
     font-size: 4px;
+    @apply whitespace-nowrap;
   }
 
   body {
