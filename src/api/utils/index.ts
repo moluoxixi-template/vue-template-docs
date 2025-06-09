@@ -9,12 +9,12 @@
  * Copyright (c) 2025 by ${git_name_email}, All Rights Reserved.
  */
 import axios from 'axios'
-import { addSign } from '@/utils/his6.0'
+import { addSign } from '@/common/utils/his6.0'
 import type { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios'
 
 export class BaseApi {
   protected baseURL: string
-  protected instance: ReturnType<typeof axios.create>
+  instance: ReturnType<typeof axios.create>
 
   constructor(baseURL: string) {
     this.baseURL = baseURL
@@ -77,3 +77,12 @@ export class BaseApi {
     return this.request<R>({ ...config, url, method: 'put', data })
   }
 }
+
+export class UserApi extends BaseApi {
+  constructor() {
+    super('/api/users')
+  }
+}
+
+const userService = new UserApi()
+export const userRequest = userService.instance

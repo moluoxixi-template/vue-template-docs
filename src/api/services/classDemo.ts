@@ -1,4 +1,4 @@
-import { BaseApi } from '../utils'
+import { BaseApi } from '@/common/api/utils/index'
 
 export interface User {
   id: number
