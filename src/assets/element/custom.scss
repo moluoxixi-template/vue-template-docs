@@ -21,6 +21,7 @@
 //用于头部菜单
 .el-menu {
   &.el-menu--popup {
+    color: var(--el-color-primary);
     background-color: var(--el-menu-popup-bg-color);
     .el-menu-item {
       background-color: var(--el-menu-popup-bg-color);

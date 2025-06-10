@@ -98,6 +98,13 @@ export default defineConfig(({ mode }) => {
   const systemCode = viteEnv.VITE_GLOB_APP_CODE
   const appTitle = viteEnv.VITE_GLOB_APP_TITLE
   console.log('appTitle', appTitle)
+
+  // 判断是否为开发环境
+  const isDev = mode === 'development'
+
+  // 是否使用CDN - 仅在开发环境下可用
+  const useCDN = isDev && viteEnv.VITE_USE_CDN
+
   const vuePlugins = [
     pluginVue(),
     qiankun(systemCode, {
@@ -110,7 +117,7 @@ export default defineConfig(({ mode }) => {
       newPrefix: systemCode,
     }), // 传入你想要添加的前缀
     vueJsx(),
-    env.VITE_DEVTOOLS && vueDevTools(),
+    isDev && vueDevTools(),
     // 自动引入
     AutoImport({
       imports: ['vue'],
@@ -123,17 +130,20 @@ export default defineConfig(({ mode }) => {
     //     dts: path.resolve(__dirname, './src/typings/components.d.ts'),
     //   }),
   ]
-  // CDN加速
-  const importToCDNPlugins = viteEnv.VITE_USE_CDN
-    ? importToCDN({
-        modules,
-      })
+
+  // CDN加速 - 仅在开发环境使用
+  const importToCDNPlugins = useCDN
+    ? [
+        importToCDN({
+          modules,
+        }),
+      ]
     : []
 
   return {
     base: `/${systemCode}`,
     plugins: [
-      ...vuePlugins,
+      ...vuePlugins.filter((i) => !!i),
       sentryVitePlugin({
         authToken: process.env.SENTRY_AUTH_TOKEN,
         org: 'f1f562b9b82f',
@@ -146,7 +156,7 @@ export default defineConfig(({ mode }) => {
           },
         },
       }),
-      // CDN加速
+      // CDN加速 - 仅在开发环境使用
       ...importToCDNPlugins,
       // 是否生成包预览
       viteEnv.VITE_REPORT && visualizer(),
@@ -198,39 +208,75 @@ export default defineConfig(({ mode }) => {
           },
         }),
     ],
+    //#region 构建相关
+    //优化依赖预构建
+    optimizeDeps: {
+      // 强制预构建这些依赖，但在使用CDN时排除CDN加载的依赖
+      include: useCDN
+        ? ['@element-plus/icons-vue'] // 仅包含CDN中不存在的依赖
+        : ['vue', 'vue-router', 'element-plus', '@element-plus/icons-vue'],
+      // 排除不需要预构建的依赖 - 仅在开发环境使用CDN时排除
+      exclude: useCDN ? ['vue', 'vue-router', 'element-plus', 'axios', 'moment', 'radash'] : [],
+    },
+    // 启用esbuild，提高构建速度
+    esbuild: {
+      pure: !isDev ? ['console.log', 'console.info', 'console.debug', 'debugger'] : [],
+    },
+    // 打包相关
     build: {
-      // 代码映射
-      sourcemap: true,
+      // 生产环境不需要 sourcemap
+      sourcemap: isDev,
       outDir: `${systemCode}`,
       // 启用 CSS 代码拆分,使加载模块时,仅加载对应css,而不是打包为一个样式文件
       cssCodeSplit: true,
       // 大资源拆分
       chunkSizeWarningLimit: 1500,
+      // 最小化打包体积
+      minify: 'esbuild',
+      // esbuild打包配置
+      target: ['es2020', 'chrome80', 'edge80', 'firefox80', 'safari13'],
+      // 确保即使在开发环境使用CDN，生产环境也能正确打包所有依赖
       rollupOptions: {
-        // 移除cdn引入的包
-        external: viteEnv.VITE_USE_CDN ? external : [],
+        // 确保不会错误地将必要的依赖标记为external
+        external: [],
         output: {
           // 静态资源打包做处理
           chunkFileNames: 'static/js/[name]-[hash].js',
           entryFileNames: 'static/js/[name]-[hash].js',
           assetFileNames: 'static/[ext]/[name]-[hash].[ext]',
-          // 依赖拆分
-          manualChunks(id) {
+          // 依赖拆分 - 优化拆分策略
+          manualChunks: (id) => {
+            // 创建vendor块，包含node_modules的代码
             if (id.includes('node_modules')) {
-              return id.toString().split('node_modules/')[1].split('/')[0].toString()
+              // 将第三方库拆分成单独的chunks，避免单个chunk过大
+              const moduleName = id.toString().split('node_modules/')[1].split('/')[0].toString()
+              // 将某些常用库合并为同一个chunk，减少请求数量
+              if (
+                ['vue', 'vue-router', 'vue-demi', '@vue'].some((item) => moduleName.includes(item))
+              ) {
+                return 'vue-vendor'
+              }
+              if (['element-plus', '@element-plus'].some((item) => moduleName.includes(item))) {
+                return 'element-vendor'
+              }
+              // 其他第三方库
+              return 'vendor-' + moduleName
+            }
+
+            // 把共享组件拆分出来
+            if (id.includes('src/components/')) {
+              return 'components'
+            }
+
+            // 公共工具函数
+            if (id.includes('src/utils/')) {
+              return 'utils'
             }
           },
         },
       },
-      terserOptions: {
-        compress: viteEnv.VITE_DROP_CONSOLE
-          ? {
-              drop_console: true,
-              drop_debugger: true,
-            }
-          : {},
-      },
     },
+    //#endregion
     define: {
       __SYSTEM_CODE__: JSON.stringify(systemCode),
     },
@@ -242,6 +288,8 @@ export default defineConfig(({ mode }) => {
           autoprefixer() as Plugin,
         ],
       },
+      // 启用 CSS 压缩
+      devSourcemap: isDev,
       preprocessorOptions: {
         scss: {
           api: 'modern-compiler',
