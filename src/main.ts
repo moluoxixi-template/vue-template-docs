@@ -23,7 +23,7 @@ import App from './App.vue'
 
 import getRouter from './router'
 
-import { useSystemStore } from './stores/system'
+import { useSystemStore } from './stores/modules/system.ts'
 
 let app: any
 /**

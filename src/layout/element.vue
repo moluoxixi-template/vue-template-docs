@@ -47,7 +47,7 @@ import subMenu from '@/components/subMenu.vue'
 import { qiankunWindow } from 'vite-plugin-qiankun/dist/helper'
 import { computed, reactive } from 'vue'
 import { RouterView, useRouter } from 'vue-router'
-import { useSystemStore } from '@/stores/system'
+import { useSystemStore } from '@/stores/modules/system.js'
 
 const router = useRouter()
 const routes = reactive(router.options.routes[0].children)
