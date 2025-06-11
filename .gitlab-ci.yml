@@ -7,8 +7,18 @@ cache:
   paths:
     - node_modules/ #node_modules目录缓存起来
 stages: #流水过程，先从build->deploy
+  - check
   - build
   - deploy
+# merge校验
+merge-check:
+  stage: check
+  tags:
+    - 'npm-deploy'
+  rules:
+    - if: $CI_MERGE_REQUEST_IID
+  script:
+    - echo 'merge check'
 npm-build:
   stage: build
   artifacts:

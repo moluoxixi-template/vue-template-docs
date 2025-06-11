@@ -25,38 +25,6 @@ import type { Plugin } from 'postcss'
 import scopedCssPrefixPlugin from './plugins/addScopedAndReplacePrefix'
 import { sentryVitePlugin } from '@sentry/vite-plugin'
 
-const external = ['vue', 'vue-router', 'element-plus', 'axios', 'moment', 'radash']
-const cdnModules = [
-  {
-    name: 'vue',
-    var: 'Vue',
-    path: 'https://unpkg.com/vue@3/dist/vue.esm-browser.js',
-  },
-  {
-    name: 'vue-router',
-    var: 'VueRouter',
-    path: 'https://unpkg.com/vue-router@4/dist/vue-router.global.js',
-  },
-  {
-    name: 'element-plus',
-    var: 'ElementPlus',
-    path: 'https://unpkg.com/element-plus@2.3.8/dist/index.full.min.js',
-    css: 'https://unpkg.com/element-plus@2.3.8/dist/index.css',
-  },
-  {
-    name: 'moment',
-    var: 'moment',
-    path: 'https://unpkg.com/moment@2.29.4/min/moment.min.js',
-  },
-  {
-    name: 'radash',
-    var: 'radash',
-    path: 'https://unpkg.com/radash@11.0.0/dist/index.umd.js',
-  },
-]
-
-const modules = cdnModules.filter((item) => external.includes(item.name))
-
 /**
  * 将环境变量中的字符串值转换为对应的 JavaScript 数据类型
  * @param env
@@ -97,13 +65,55 @@ export default defineConfig(({ mode }) => {
   const viteEnv = wrapperEnv(env)
   const systemCode = viteEnv.VITE_GLOB_APP_CODE
   const appTitle = viteEnv.VITE_GLOB_APP_TITLE
-  console.log('appTitle', appTitle)
 
   // 判断是否为开发环境
   const isDev = mode === 'development'
 
-  // 是否使用CDN - 仅在开发环境下可用
-  const useCDN = isDev && viteEnv.VITE_USE_CDN
+  // 是否使用CDN
+  const useCDN = viteEnv.VITE_USE_CDN && viteEnv.VITE_PRIVATE_SERVER
+
+  const cdnModules = [
+    {
+      name: 'vue',
+      var: 'Vue',
+      path: 'https://unpkg.com/vue@3/dist/vue.esm-browser.js',
+      isUse: useCDN && !isDev,
+    },
+    {
+      name: 'vue-router',
+      var: 'VueRouter',
+      path: 'https://unpkg.com/vue-router@4/dist/vue-router.global.js',
+      isUse: useCDN,
+    },
+    {
+      name: 'element-plus',
+      var: 'ElementPlus',
+      path: 'https://unpkg.com/element-plus@2.3.8/dist/index.full.min.js',
+      css: 'https://unpkg.com/element-plus@2.3.8/dist/index.css',
+      isUse: useCDN,
+    },
+    {
+      name: 'moment',
+      var: 'moment',
+      path: 'https://unpkg.com/moment@2.29.4/min/moment.min.js',
+      isUse: useCDN,
+    },
+    {
+      name: 'radash',
+      var: 'radash',
+      path: 'https://unpkg.com/radash@11.0.0/dist/index.umd.js',
+      isUse: useCDN,
+    },
+    {
+      name: '@element-plus/icons-vue',
+      var: 'ElementPlusIconsVue',
+      path: 'https://unpkg.com/@element-plus/icons-vue@2.3.1/dist/index.iife.min.js',
+      isUse: useCDN,
+    },
+  ]
+  const modules = cdnModules.filter((m) => m.isUse).map(({ isUse, ...m }) => m)
+  //['vue', 'vue-router', 'element-plus', 'axios', 'moment', 'radash','@element-plus/icons-vue']
+  const external = useCDN ? modules.map((m) => m.name) : []
 
   const vuePlugins = [
     pluginVue(),
@@ -129,94 +139,93 @@ export default defineConfig(({ mode }) => {
     //     resolvers: [ElementPlusResolver()],
     //     dts: path.resolve(__dirname, './src/typings/components.d.ts'),
     //   }),
+  ].filter((i) => !!i)
+
+  const performancePlugins = [
+    // CDN加速 - 根据环境和网络状态决定是否使用
+    useCDN &&
+      importToCDN({
+        modules,
+      }),
+    createHtmlPlugin({
+      inject: {
+        data: {
+          title: appTitle,
+        },
+      },
+    }),
+
+    // 代码压缩
+    viteEnv.VITE_COMPRESS &&
+      viteCompression({
+        // gzip压缩需要服务器nginx配置以下内容:
+        // http {
+        //   gzip_static on;
+        //   gzip_proxied any;
+        // }
+        // 可选 'brotliCompress' 或 'gzip'
+        algorithm: viteEnv.VITE_BUILD_GZIP ? 'gzip' : 'brotliCompress',
+        verbose: true, //输出日志信息
+        disable: false, //是否禁用
+        ext: '.gz', // 压缩文件后缀
+        threshold: 10240, // 仅压缩大于 10KB 的文件
+        deleteOriginFile: false, // 是否删除原始文件
+      }),
+    // 图片压缩
+    viteEnv.VITE_IMAGEMIN &&
+      viteImagemin({
+        // gif压缩
+        gifsicle: {
+          optimizationLevel: 7,
+          interlaced: false,
+        },
+        optipng: {
+          optimizationLevel: 7,
+        },
+        mozjpeg: {
+          quality: 20,
+        },
+        pngquant: {
+          quality: [0.8, 0.9],
+          speed: 4,
+        },
+        // svg压缩
+        svgo: {
+          plugins: [
+            {
+              name: 'removeViewBox',
+            },
+            {
+              name: 'removeEmptyAttrs',
+              active: false,
+            },
+          ],
+        },
+      }),
   ]
 
-  // CDN加速 - 仅在开发环境使用
-  const importToCDNPlugins = useCDN
-    ? [
-        importToCDN({
-          modules,
-        }),
-      ]
-    : []
-
-  return {
-    base: `/${systemCode}`,
-    plugins: [
-      ...vuePlugins.filter((i) => !!i),
+  const monitorPlugins = [
+    viteEnv.VITE_SENTRY &&
       sentryVitePlugin({
         authToken: process.env.SENTRY_AUTH_TOKEN,
         org: 'f1f562b9b82f',
         project: 'javascript-vue',
       }),
-      createHtmlPlugin({
-        inject: {
-          data: {
-            title: appTitle,
-          },
-        },
+    // 是否生成包预览
+    viteEnv.VITE_REPORT &&
+      visualizer({
+        open: true,
       }),
-      // CDN加速 - 仅在开发环境使用
-      ...importToCDNPlugins,
-      // 是否生成包预览
-      viteEnv.VITE_REPORT && visualizer(),
-      // 代码压缩
-      viteEnv.VITE_COMPRESS &&
-        viteCompression({
-          // gzip压缩需要服务器nginx配置以下内容:
-          // http {
-          //   gzip_static on;
-          //   gzip_proxied any;
-          // }
-          // 可选 'brotliCompress' 或 'gzip'
-          algorithm: viteEnv.VITE_BUILD_GZIP ? 'gzip' : 'brotliCompress',
-          verbose: true, //输出日志信息
-          disable: false, //是否禁用
-          ext: '.gz', // 压缩文件后缀
-          threshold: 10240, // 仅压缩大于 10KB 的文件
-          deleteOriginFile: false, // 是否删除原始文件
-        }),
-      // 图片压缩
-      viteEnv.VITE_IMAGEMIN &&
-        viteImagemin({
-          // gif压缩
-          gifsicle: {
-            optimizationLevel: 7,
-            interlaced: false,
-          },
-          optipng: {
-            optimizationLevel: 7,
-          },
-          mozjpeg: {
-            quality: 20,
-          },
-          pngquant: {
-            quality: [0.8, 0.9],
-            speed: 4,
-          },
-          // svg压缩
-          svgo: {
-            plugins: [
-              {
-                name: 'removeViewBox',
-              },
-              {
-                name: 'removeEmptyAttrs',
-                active: false,
-              },
-            ],
-          },
-        }),
-    ],
+  ].filter((i) => !!i)
+
+  return {
+    base: `/${systemCode}`,
+    plugins: [...vuePlugins, ...performancePlugins, ...monitorPlugins],
     //#region 构建相关
     //优化依赖预构建
     optimizeDeps: {
-      // 强制预构建这些依赖，但在使用CDN时排除CDN加载的依赖
-      include: useCDN
-        ? ['@element-plus/icons-vue'] // 仅包含CDN中不存在的依赖
-        : ['vue', 'vue-router', 'element-plus', '@element-plus/icons-vue'],
-      // 排除不需要预构建的依赖 - 仅在开发环境使用CDN时排除
-      exclude: useCDN ? ['vue', 'vue-router', 'element-plus', 'axios', 'moment', 'radash'] : [],
+      include: [],
+      exclude: external,
     },
     // 启用esbuild，提高构建速度
     esbuild: {
@@ -237,8 +246,8 @@ export default defineConfig(({ mode }) => {
       target: ['es2020', 'chrome80', 'edge80', 'firefox80', 'safari13'],
       // 确保即使在开发环境使用CDN，生产环境也能正确打包所有依赖
       rollupOptions: {
-        // 确保不会错误地将必要的依赖标记为external
-        external: [],
+        // 使用CDN时，只排除允许的依赖
+        external,
         output: {
           // 静态资源打包做处理
           chunkFileNames: 'static/js/[name]-[hash].js',
