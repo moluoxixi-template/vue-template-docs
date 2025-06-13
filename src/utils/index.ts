@@ -19,37 +19,45 @@ function findParentRoute(modules: modulesTypes[], parentPath: string): modulesTy
   return undefined
 }
 
-export function getRoutes(files: any) {
-  console.log('files', files)
+function getType(obj: any, type: string) {
+  if (type) {
+    return Object.prototype.toString.call(obj).slice(8, -1).toLowerCase() === type.toLowerCase()
+  } else {
+    return Object.prototype.toString.call(obj).slice(8, -1).toLowerCase()
+  }
+}
+
+export function getRoutes(files: any, prefix = '') {
   const modules: modulesTypes[] = []
   return Object.keys(files)
     .sort((a, b) => {
-      const componentA = files[a]
-      const aLength = componentA.__file.split('/').length
-      const componentB = files[b]
-      const bLength = componentB.__file.split('/').length
+      if (!getType(a, 'string') || !getType(b, 'string')) return 0
+      const aLength = a.split('/').length
+      const bLength = b.split('/').length
       return bLength > aLength ? -1 : 1
     })
     .reduce((modules = [], modulePath) => {
       const component = files[modulePath]
-      const filePath = component.__file
-      if (filePath.includes('components')) return modules
-      const filePathArr = filePath.split('/')
+      const filePathArr = modulePath.split('/')
       const startStrs = ['views', 'components', 'layout']
       const endStrs = ['index', 'index.vue']
       if (!component || modulePath == 'install') return modules
-
-      const pathArr = filePathArr
+      const filterFilePathArr = filePathArr.filter(() => {
+        return !filePathArr.some((item: string) => startStrs.includes(item))
+      })
+      if (!filterFilePathArr.length) return modules
+      const pathArr = filterFilePathArr
         .reduce((path: string[], item: string) => {
-          if ((startStrs.includes(item) || path.length) && !endStrs.includes(item)) {
+          if (!endStrs.includes(item)) {
             path.push(item)
           }
           return path
         }, [])
         .slice(1)
+      console.log('pathArr', pathArr)
       const name = pathArr.at(-1)
-      const path = `/${pathArr.join('/')}`
-      const parentPath = `/${pathArr.slice(0, -1).join('/')}`
+      const path = `/${prefix}/${pathArr.join('/')}`
+      const parentPath = `/${prefix}/${pathArr.slice(0, -1).join('/')}`
 
       const parentRoute = findParentRoute(modules, parentPath)
       if (parentRoute) {
