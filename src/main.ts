@@ -2,7 +2,15 @@ import ElementPlus, { ElDrawer, ElDialog, ElPopover, ElTooltip } from 'element-p
 import '@/assets/main.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+// 在生产环境下，图标库会从CDN加载，不需要导入
+// 创建一个类型声明，以便TypeScript可以识别通过CDN注入的全局变量
+declare global {
+  interface Window {
+    ElementPlusIconsVue?: Record<string, any>
+    __POWERED_BY_QIANKUN__?: boolean
+  }
+}
+
 import directives from '@/directives'
 import moment from 'moment'
 import 'moment/dist/locale/zh-cn'
@@ -78,10 +86,21 @@ async function render(props: QiankunProps) {
   app.use(ElementPlus)
   // 修改Element的appendToBody默认行为
   modifyComponents(app, [ElDrawer, ElTooltip], 'appendTo', () => container || '#app')
-  // 注册组件
-  for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
-    app.component(key, component)
+
+  // 注册图标组件 - 兼容开发环境和生产环境（CDN）
+  if (import.meta.env.DEV) {
+    // 开发环境: 动态导入图标
+    const ElementPlusIconsVue = await import('@element-plus/icons-vue')
+    for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+      app.component(key, component)
+    }
+  } else if (window.ElementPlusIconsVue) {
+    // 生产环境: 使用CDN加载的全局变量
+    for (const [key, component] of Object.entries(window.ElementPlusIconsVue)) {
+      app.component(key, component)
+    }
   }
+
   const pinia = createPinia()
   const router = getRouter(props)
 

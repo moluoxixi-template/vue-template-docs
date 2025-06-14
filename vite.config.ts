@@ -131,33 +131,18 @@ export default defineConfig(({ mode }) => {
       chunkSizeWarningLimit: 1500,
       minify: 'esbuild',
       rollupOptions: {
+        // 使用CDN时排除相应的依赖
         external: [],
         output: {
-          // paths: outputPaths,
+          // CDN外部化配置
+          globals: {},
           chunkFileNames: 'static/js/[name]-[hash].js',
           entryFileNames: 'static/js/[name]-[hash].js',
           assetFileNames: 'static/[ext]/[name]-[hash].[ext]',
-          manualChunks: (id) => {
+          manualChunks: (id: string) => {
             // 优化拆分策略
             if (id.includes('node_modules')) {
-              const moduleName = id.toString().split('node_modules/')[1].split('/')[0].toString()
-              if (
-                ['vue', 'vue-router', 'vue-demi', '@vue'].some((item) => moduleName.includes(item))
-              ) {
-                return 'vue-vendor'
-              }
-              if (['element-plus', '@element-plus'].some((item) => moduleName.includes(item))) {
-                return 'element-vendor'
-              }
-              return 'vendor-' + moduleName
-            }
-
-            if (id.includes('src/components/')) {
-              return 'components'
-            }
-
-            if (id.includes('src/utils/')) {
-              return 'utils'
+              return id.toString().split('node_modules/')[1].split('/')[0].toString()
             }
           },
         },
@@ -185,7 +170,7 @@ export default defineConfig(({ mode }) => {
       },
     },
     resolve: {
-      extensions: ['.js', 'jsx', '.ts', '.tsx', '.vue'],
+      extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue'],
       alias: {
         '@': path.resolve(__dirname, './src'),
       },
