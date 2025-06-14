@@ -26,6 +26,10 @@ const Routes = [
     redirect: findDefaultRoute(routesChildrens),
     children: routesChildrens,
   },
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/',
+  },
 ]
 
 function getRouter(props: any) {

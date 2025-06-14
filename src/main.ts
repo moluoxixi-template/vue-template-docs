@@ -1,16 +1,8 @@
-import ElementPlus, { ElDrawer, ElDialog, ElPopover, ElTooltip } from 'element-plus'
+import ElementPlus, { ElDrawer, ElTooltip } from 'element-plus'
 import '@/assets/main.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-// 在生产环境下，图标库会从CDN加载，不需要导入
-// 创建一个类型声明，以便TypeScript可以识别通过CDN注入的全局变量
-declare global {
-  interface Window {
-    ElementPlusIconsVue?: Record<string, any>
-    __POWERED_BY_QIANKUN__?: boolean
-  }
-}
-
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import directives from '@/directives'
 import moment from 'moment'
 import 'moment/dist/locale/zh-cn'
@@ -21,7 +13,7 @@ import {
   createSentryPiniaPlugin,
 } from '@sentry/vue'
 
-import { modifyComponents } from '@/utils/modifyComponent.tsx'
+import { modifyComponents } from '@/utils'
 
 moment.locale('zh-cn') //中文化
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
@@ -40,7 +32,7 @@ let app: any
 
  */
 const proxy = (container: HTMLElement) => {
-  if (document.body.appendChild.__isProxy__) return
+  if ((document.body.appendChild as any).__isProxy__) return
   const revocable = Proxy.revocable(document.body.appendChild, {
     apply(target, thisArg, [node]) {
       if (container) {
@@ -53,7 +45,7 @@ const proxy = (container: HTMLElement) => {
   if (revocable.proxy) {
     document.body.appendChild = revocable.proxy
   }
-  document.body.appendChild.__isProxy__ = true
+  ;(document.body.appendChild as any).__isProxy__ = true
 }
 
 function themeManager(props: QiankunProps) {
@@ -77,7 +69,7 @@ function themeManager(props: QiankunProps) {
 }
 
 async function render(props: QiankunProps) {
-  const { container, data } = props
+  const { container } = props
   proxy(container as HTMLElement)
   app = createApp(App)
   // 注册指令
@@ -87,18 +79,9 @@ async function render(props: QiankunProps) {
   // 修改Element的appendToBody默认行为
   modifyComponents(app, [ElDrawer, ElTooltip], 'appendTo', () => container || '#app')
 
-  // 注册图标组件 - 兼容开发环境和生产环境（CDN）
-  if (import.meta.env.DEV) {
-    // 开发环境: 动态导入图标
-    const ElementPlusIconsVue = await import('@element-plus/icons-vue')
-    for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
-      app.component(key, component)
-    }
-  } else if (window.ElementPlusIconsVue) {
-    // 生产环境: 使用CDN加载的全局变量
-    for (const [key, component] of Object.entries(window.ElementPlusIconsVue)) {
-      app.component(key, component)
-    }
+  // 注册图标组件
+  for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+    app.component(key, component)
   }
 
   const pinia = createPinia()
@@ -147,20 +130,20 @@ async function render(props: QiankunProps) {
 
 // 独立运行时
 if (!qiankunWindow.__POWERED_BY_QIANKUN__) {
-  render({})
+  render({}).then(() => console.log('%c ', 'color: green;', 'app mount'))
 } else {
   renderWithQiankun({
-    mount(props: QiankunProps) {
-      render(props)
+    async mount(props: QiankunProps) {
+      await render(props)
       themeManager(props)
     },
     bootstrap() {
       console.log('%c ', 'color: green;', 'app bootstraped')
     },
-    unmount(props: QiankunProps) {
+    unmount() {
       app?.unmount()
       app = null
     },
-    update(props: QiankunProps) {},
+    update() {},
   })
 }

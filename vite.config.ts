@@ -13,6 +13,50 @@ import scopedCssPrefixPlugin from './plugins/addScopedAndReplacePrefix'
 import { sentryVitePlugin } from '@sentry/vite-plugin'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import vueDevTools from 'vite-plugin-vue-devtools'
+import cdn from 'vite-plugin-cdn-import'
+
+function getCamelCase(str: string): string {
+  return str
+    .replace(/[-_]+/g, ' ') // 将连字符或下划线替换为空格
+    .replace(/(?:^|\s)\w/g, (match) => match.toUpperCase()) // 每个单词首字母大写
+    .replace(/\s+/g, '') // 移除所有空格
+}
+
+interface CdnModule {
+  name: string
+  var?: string
+  css?: string
+  path?: string
+  alias?: string
+}
+
+function getCdnModules(modules: Array<string | CdnModule>): any {
+  function getPath(str: string | undefined) {
+    if (!str) return ''
+    return str.startsWith('/') ? str : `/${str}`
+  }
+
+  return modules
+    .map((item) => {
+      if (typeof item === 'string') {
+        return {
+          name: item,
+          var: getCamelCase(item),
+          path: '',
+        }
+      } else {
+        return item
+      }
+    })
+    .map((item) => {
+      return {
+        name: item.name,
+        var: item.var || getCamelCase(item.name),
+        path: getPath(item.path),
+        css: getPath(item.css),
+      }
+    })
+}
 
 /**
  * 将环境变量中的字符串值转换为对应的 JavaScript 数据类型
@@ -64,7 +108,22 @@ export default defineConfig(({ mode }) => {
     vueJsx(),
     isDev && vueDevTools(),
   ].filter((i) => !!i)
-
+  const modules = getCdnModules([
+    'vue',
+    'vue-router',
+    {
+      name: 'lodash',
+      var: '_',
+    },
+    {
+      name: 'element-plus',
+      css: 'dist/index.css',
+    },
+    {
+      name: '@element-plus/icons-vue',
+      var: 'ElementPlusIconsVue',
+    },
+  ])
   const performancePlugins = [
     createHtmlPlugin({
       inject: {
@@ -94,6 +153,11 @@ export default defineConfig(({ mode }) => {
           plugins: [{ name: 'removeViewBox' }, { name: 'removeEmptyAttrs', active: false }],
         },
       }),
+    viteEnv.VITE_USE_CDN &&
+      cdn({
+        prodUrl: `${viteEnv.VITE_CDN_BASE_URL}/{name}@{version}{path}`,
+        modules,
+      }),
   ].filter((i) => !!i)
 
   const monitorPlugins = [
@@ -106,7 +170,7 @@ export default defineConfig(({ mode }) => {
     // 是否生成包预览
     viteEnv.VITE_REPORT &&
       visualizer({
-        open: false,
+        open: true,
       }),
   ].filter((i) => !!i)
 
