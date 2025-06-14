@@ -4,11 +4,14 @@
   --el-text-color-primary: #fff;
 
   --el-menu-bg-color: var(--el-color-primary);
-  --el-menu-hover-bg-color: var(--el-text-color-primary);
+  --el-menu-bg-hover-color: var(--el-text-color-primary);
 
-  --el-menu-popup-bg-color: var(--el-text-color-primary);
-  --el-menu-popup-hover-bg-color: var(--el-color-primary);
-  --el-menu-active-color: var(--el-color-primary);
+  --el-menu-text-color: var(--el-text-color-primary);
+  --el-menu-text-hover-color: var(--el-menu-bg-color);
+  --el-menu-popup-bg-color: var(--el-menu-bg-hover-color);
+  --el-menu-popup-text-color: var(--el-menu-bg-color);
+  --el-menu-popup-bg-hover-color: var(--el-menu-bg-color);
+  --el-menu-popup-text-hover-color: var(--el-menu-bg-hover-color);
 }
 
 .el-main {
@@ -19,41 +22,59 @@
   --el-header-padding: 0;
 }
 
-//用于头部菜单
+////用于头部菜单
+//.el-menu--popup-container {
+//  background-color: var(--el-menu-popup-bg-color);
+//}
+
 .el-menu {
-  &.el-menu--popup {
-    color: var(--el-color-primary);
-    background-color: var(--el-menu-popup-bg-color);
+  background-color: var(--el-menu-bg-color);
 
-    .el-menu-item {
-      background-color: var(--el-menu-popup-bg-color);
-
-      &.is-active {
-        color: var(--el-text-color-primary);
-        background-color: var(--el-menu-popup-hover-bg-color);
-      }
-
-      &:hover {
-        color: var(--el-text-color-primary);
-        background-color: var(--el-menu-popup-hover-bg-color);
-      }
-    }
-  }
-
-  .el-menu-item {
-    &.is-active {
-      background-color: var(--el-menu-hover-bg-color);
-    }
-  }
-
+  .el-menu-item,
   .el-sub-menu {
-    &.is-active {
-      background-color: var(--el-menu-hover-bg-color);
-    }
+    background-color: var(--el-menu-bg-color);
+    color: var(--el-menu-text-color) !important;
 
     .el-sub-menu__title {
+      background-color: var(--el-menu-bg-color);
+      color: var(--el-menu-text-color) !important;
+    }
+
+    &.is-active,
+    &:hover {
+      background-color: var(--el-menu-bg-hover-color);
+      color: var(--el-menu-text-hover-color) !important;
+      .el-sub-menu__title,
+      .el-sub-menu__title:hover {
+        background-color: var(--el-menu-bg-hover-color);
+        color: var(--el-menu-text-hover-color) !important;
+      }
+    }
+  }
+
+  &.el-menu--popup {
+    background-color: var(--el-menu-popup-bg-color);
+
+    .el-sub-menu,
+    .el-menu-item {
+      background-color: var(--el-menu-popup-bg-color);
+      color: var(--el-menu-bg-color) !important;
+
+      .el-sub-menu__title {
+        background-color: var(--el-menu-popup-bg-color);
+        color: var(--el-menu-bg-color) !important;
+      }
+
+      &.is-active,
       &:hover {
-        background-color: var(--el-menu-hover-bg-color);
+        background-color: var(--el-menu-popup-bg-hover-color) !important;
+        color: var(--el-menu-bg-hover-color) !important;
+
+        .el-sub-menu__title,
+        .el-sub-menu__title:hover {
+          background-color: var(--el-menu-popup-bg-hover-color) !important;
+          color: var(--el-menu-bg-hover-color) !important;
+        }
       }
     }
   }
