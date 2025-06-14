@@ -2,17 +2,17 @@ import ElementPlus, { ElDrawer, ElTooltip } from 'element-plus'
 import '@/assets/main.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import directives from '@/directives'
-import moment from 'moment'
-import 'moment/dist/locale/zh-cn'
+
 import {
   init,
   vueIntegration,
   browserTracingIntegration,
   createSentryPiniaPlugin,
 } from '@sentry/vue'
-
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import moment from 'moment'
+import 'moment/dist/locale/zh-cn'
 import { modifyComponents } from '@/utils'
 
 moment.locale('zh-cn') //中文化
