@@ -88,14 +88,13 @@ export function findDefaultRoute(routes: any[]): string {
   for (const route of routes) {
     if (route.meta?.default) {
       return route.path
+    } else {
+      if (route.children?.length) {
+        return findDefaultRoute(route.children)
+      }
     }
   }
-  const route = routes[0]
-  if (route.children?.length) {
-    return findDefaultRoute(route.children)
-  } else {
-    return route.path
-  }
+  return routes[0].path
 }
 
 /**
