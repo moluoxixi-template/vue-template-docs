@@ -155,6 +155,7 @@ export default defineConfig(({ mode }) => {
       }),
     viteEnv.VITE_USE_CDN &&
       cdn({
+        enableInDevMode: viteEnv.VITE_USE_CDN_IS_DEV,
         prodUrl: `${viteEnv.VITE_CDN_BASE_URL}/{name}@{version}{path}`,
         modules,
       }),
