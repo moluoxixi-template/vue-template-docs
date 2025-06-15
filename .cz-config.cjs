@@ -34,6 +34,7 @@ module.exports = {
     footer: '列出此更改关闭的issues(可选按回车跳过):',
     confirmCommit: '确认提交上述内容?',
   },
+
   // 限制主题长度
   subjectLimit: 100,
   // // 跳过你想要的问题
