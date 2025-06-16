@@ -109,12 +109,12 @@ export default defineConfig(({ mode }) => {
       visualizer({
         open: true,
       }),
-    qiankun(envSystemCode, { useDevMode: false }),
+    qiankun(envSystemCode, { useDevMode }),
     scopedCssPrefixPlugin({
       prefixScoped: `div[data-qiankun='${envSystemCode}']`,
       oldPrefix: 'el',
       newPrefix: systemCode,
-      useDevMode: false,
+      useDevMode,
     }),
   ].filter((i) => !!i)
 
