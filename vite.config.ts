@@ -15,48 +15,7 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import cdn from 'vite-plugin-cdn-import'
 
-function getCamelCase(str: string): string {
-  return str
-    .replace(/[-_]+/g, ' ') // 将连字符或下划线替换为空格
-    .replace(/(?:^|\s)\w/g, (match) => match.toUpperCase()) // 每个单词首字母大写
-    .replace(/\s+/g, '') // 移除所有空格
-}
-
-interface CdnModule {
-  name: string
-  var?: string
-  css?: string
-  path?: string
-  alias?: string
-}
-
-function getCdnModules(modules: Array<string | CdnModule>): any {
-  function getPath(str: string | undefined) {
-    if (!str) return ''
-    return str.startsWith('/') ? str : `/${str}`
-  }
-
-  return modules
-    .map((item) => {
-      if (typeof item === 'string') {
-        return {
-          name: item,
-          var: getCamelCase(item),
-          path: '',
-        }
-      } else {
-        return item
-      }
-    })
-    .map((item) => {
-      return {
-        name: item.name,
-        var: item.var || getCamelCase(item.name),
-        path: getPath(item.path),
-        css: getPath(item.css),
-      }
-    })
-}
+import { modules } from './src/constants'
 
 /**
  * 将环境变量中的字符串值转换为对应的 JavaScript 数据类型
@@ -93,37 +52,12 @@ function wrapperEnv(env: Record<string, string>) {
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd())
   const viteEnv = wrapperEnv(env)
-  const systemCode = viteEnv.VITE_GLOB_APP_CODE
   const appTitle = viteEnv.VITE_GLOB_APP_TITLE
   const isDev = mode === 'development'
+  const systemCode = isDev ? 'el' : viteEnv.VITE_GLOB_APP_CODE
 
-  const vuePlugins = [
-    vue(),
-    qiankun(systemCode, { useDevMode: false }),
-    scopedCssPrefixPlugin({
-      prefixScoped: `div[data-qiankun='${systemCode}']`,
-      oldPrefix: 'el',
-      newPrefix: systemCode,
-    }),
-    vueJsx(),
-    isDev && vueDevTools(),
-  ].filter((i) => !!i)
-  const modules = getCdnModules([
-    'vue',
-    'vue-router',
-    {
-      name: 'lodash',
-      var: '_',
-    },
-    {
-      name: 'element-plus',
-      css: 'dist/index.css',
-    },
-    {
-      name: '@element-plus/icons-vue',
-      var: 'ElementPlusIconsVue',
-    },
-  ])
+  const vuePlugins = [vue(), vueJsx(), isDev && vueDevTools()].filter((i) => !!i)
+
   const performancePlugins = [
     createHtmlPlugin({
       inject: {
@@ -172,6 +106,13 @@ export default defineConfig(({ mode }) => {
     viteEnv.VITE_REPORT &&
       visualizer({
         open: true,
+      }),
+    !isDev && qiankun(systemCode, { useDevMode: false }),
+    !isDev &&
+      scopedCssPrefixPlugin({
+        prefixScoped: `div[data-qiankun='${systemCode}']`,
+        oldPrefix: 'el',
+        newPrefix: systemCode,
       }),
   ].filter((i) => !!i)
 
