@@ -54,7 +54,8 @@ export default defineConfig(({ mode }) => {
   const viteEnv = wrapperEnv(env)
   const appTitle = viteEnv.VITE_GLOB_APP_TITLE
   const isDev = mode === 'development'
-  const systemCode = isDev ? 'el' : viteEnv.VITE_GLOB_APP_CODE
+  const systemCode = viteEnv.VITE_GLOB_APP_CODE
+  const envSystemCode = isDev ? 'el' : viteEnv.VITE_GLOB_APP_CODE
 
   const vuePlugins = [vue(), vueJsx(), isDev && vueDevTools()].filter((i) => !!i)
 
@@ -107,10 +108,10 @@ export default defineConfig(({ mode }) => {
       visualizer({
         open: true,
       }),
-    !isDev && qiankun(systemCode, { useDevMode: false }),
+    !isDev && qiankun(envSystemCode, { useDevMode: false }),
     !isDev &&
       scopedCssPrefixPlugin({
-        prefixScoped: `div[data-qiankun='${systemCode}']`,
+        prefixScoped: `div[data-qiankun='${envSystemCode}']`,
         oldPrefix: 'el',
         newPrefix: systemCode,
       }),
@@ -153,7 +154,7 @@ export default defineConfig(({ mode }) => {
       },
     },
     define: {
-      __SYSTEM_CODE__: JSON.stringify(systemCode),
+      __SYSTEM_CODE__: JSON.stringify(envSystemCode),
     },
     css: {
       postcss: {
@@ -165,7 +166,7 @@ export default defineConfig(({ mode }) => {
           api: 'modern-compiler',
           additionalData(content: string, filename: string) {
             if (filename.includes('element\\index.scss')) {
-              const addStr = `$namespace: ${systemCode};`
+              const addStr = `$namespace: ${envSystemCode};`
               return `${addStr}\n${content}`
             }
             return content
