@@ -19,13 +19,18 @@ export default function addScopedAndReplacePrefixPlugin({
   prefixScoped = '',
   oldPrefix = '',
   newPrefix = '',
+  useDevMode = false,
 }) {
+  let isProduction: boolean
   return {
     name: 'addScopedAndReplacePrefix',
-    apply: 'build',
+    configResolved(config: any) {
+      isProduction = config.command === 'build' || config.isProduction
+    },
     transform(code = '', id = '') {
-      if (!oldPrefix || !newPrefix) return
-      if (id.includes('node_modules')) return
+      if (!isProduction && !useDevMode) return code
+      if (!oldPrefix || !newPrefix) return code
+      if (id.includes('node_modules')) return code
 
       const cssLangs = ['css', 'scss', 'less', 'stylus', 'styl']
       let newCode = code

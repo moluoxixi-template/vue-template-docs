@@ -113,6 +113,7 @@ export default defineConfig(({ mode }) => {
       prefixScoped: `div[data-qiankun='${envSystemCode}']`,
       oldPrefix: 'el',
       newPrefix: systemCode,
+      useDevMode: true,
     }),
   ].filter((i) => !!i)
 
