@@ -15,6 +15,10 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import cdn from 'vite-plugin-cdn-import'
 
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+
 import { modules } from './src/constants'
 
 /**
@@ -58,7 +62,27 @@ export default defineConfig(({ mode }) => {
   const useDevMode = false
   const envSystemCode = isDev && !useDevMode ? 'el' : viteEnv.VITE_GLOB_APP_CODE
 
-  const vuePlugins = [vue(), vueJsx(), isDev && vueDevTools()].filter((i) => !!i)
+  const vuePlugins = [
+    vue(),
+    vueJsx(),
+    isDev && vueDevTools(), // // 自动引入
+    // 自动引入
+    AutoImport({
+      imports: ['vue'],
+      resolvers: [ElementPlusResolver()],
+      dts: path.resolve(__dirname, './src/typings/auto-imports.d.ts'),
+    }),
+    // 与自定义element组件冲突
+    Components({
+      resolvers: [
+        ElementPlusResolver({
+          exclude: new RegExp(['ElDrawer', 'ElDialog'].map((item) => `^${item}$`).join('|')),
+        }),
+      ],
+      globs: ['src/components/**/index.vue'],
+      dts: path.resolve(__dirname, './src/typings/components.d.ts'),
+    }),
+  ].filter((i) => !!i)
 
   const performancePlugins = [
     createHtmlPlugin({
