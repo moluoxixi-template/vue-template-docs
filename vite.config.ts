@@ -55,7 +55,8 @@ export default defineConfig(({ mode }) => {
   const appTitle = viteEnv.VITE_GLOB_APP_TITLE
   const isDev = mode === 'development'
   const systemCode = viteEnv.VITE_GLOB_APP_CODE
-  const envSystemCode = isDev ? 'el' : viteEnv.VITE_GLOB_APP_CODE
+  const useDevMode = false
+  const envSystemCode = isDev && !useDevMode ? 'el' : viteEnv.VITE_GLOB_APP_CODE
 
   const vuePlugins = [vue(), vueJsx(), isDev && vueDevTools()].filter((i) => !!i)
 
