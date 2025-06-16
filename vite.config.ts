@@ -241,7 +241,7 @@ export default defineConfig(({ mode }) => {
         scss: {
           api: 'modern-compiler',
           additionalData(content: string, filename: string) {
-            if (filename.includes('element')) {
+            if (filename.includes('element\\index.scss')) {
               const addStr = `$namespace: ${systemCode};`
               return `${addStr}\n${content}`
             }
