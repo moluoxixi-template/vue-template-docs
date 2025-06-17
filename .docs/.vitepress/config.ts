@@ -1,5 +1,10 @@
 import { getComponents } from './utils/serverUtils'
-import { buildBlogRSS } from './theme/rss'
+import { buildBlogRSS } from './utils/rss'
+
+// https://github.com/mingyuLi97/blog
+// https://vitepress.dev/reference/site-config
+import { getSidebar } from './utils'
+
 import { transformerTwoslash } from '@shikijs/vitepress-twoslash'
 import mathjax3 from 'markdown-it-mathjax3'
 
@@ -12,9 +17,6 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 import autoprefixer from 'autoprefixer'
 import tailwindcss from '@tailwindcss/postcss'
 
-// https://github.com/mingyuLi97/blog
-// https://vitepress.dev/reference/site-config
-import { getSidebar } from './utils'
 import path from 'path'
 
 async function config(): Promise<Awaited<UserConfig>> {

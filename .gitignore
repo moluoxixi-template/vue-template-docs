@@ -6,6 +6,7 @@ src/typings
 docs
 .docs/.vitepress/cache
 .docs/.vitepress/dist
+.docs/.vitepress/typings
 stats.html
 
 # Logs
