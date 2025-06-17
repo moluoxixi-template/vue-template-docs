@@ -11,13 +11,16 @@ import mathjax3 from 'markdown-it-mathjax3'
 import type { UserConfig } from 'vitepress'
 import { demoblockPlugin, demoblockVitePlugin } from 'vitepress-theme-demoblock'
 // vite vue插件
+import importToCDN from 'vite-plugin-cdn-import'
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import { visualizer } from 'rollup-plugin-visualizer'
 
 // 其余vite插件
 import autoprefixer from 'autoprefixer'
 import tailwindcss from '@tailwindcss/postcss'
 
 import path from 'path'
+import { modules } from '../../src/constants'
 
 async function config(): Promise<Awaited<UserConfig>> {
   const componentPath = '/components'
@@ -39,7 +42,17 @@ async function config(): Promise<Awaited<UserConfig>> {
           '@': path.resolve(__dirname, '../../src'),
         },
       },
-      plugins: [demoblockVitePlugin() as any, vueJsx()],
+      plugins: [
+        demoblockVitePlugin() as any,
+        vueJsx(),
+        importToCDN({
+          prodUrl: `https://unpkg.com/{name}@{version}{path}`,
+          modules,
+        }),
+        visualizer({
+          open: true,
+        }),
+      ],
       // 添加 SSR 配置，解决 CSS 文件扩展名问题
       ssr: {
         noExternal: ['element-plus'],
