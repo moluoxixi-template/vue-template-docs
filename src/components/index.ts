@@ -1,6 +1,34 @@
-import type { Component } from 'vue'
+import type { Component, Plugin } from 'vue'
 
 const componentFiles = import.meta.glob('./*/index.vue', { eager: true, import: 'default' })
+const componentExampleFiles = import.meta.glob('./*/Example.vue', {
+  eager: true,
+  import: 'default',
+})
+console.log('componentExampleFiles', componentExampleFiles)
+export const componentExampleRoutes = Object.keys(componentExampleFiles).reduce(
+  (modules = {}, modulePath) => {
+    const name: string | undefined = modulePath.split('/').at(-2)
+    const component: Component = componentExampleFiles[modulePath] as Component
+    if (!component) return modules
+    if (name) {
+      modules.children?.push({
+        path: `/${name}`,
+        name,
+        meta: {
+          title: component.name || name,
+        },
+        component,
+      })
+    }
+    return modules
+  },
+  {
+    path: '/components',
+    name: '组件示例',
+    children: [],
+  } as any,
+)
 const components = Object.keys(componentFiles).reduce((modules = {}, modulePath) => {
   const nameArr: string[] = modulePath.split('/')
   const name: string | undefined =

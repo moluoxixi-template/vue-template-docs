@@ -4,19 +4,19 @@ import { isEmpty, assign } from 'radash'
 import { cloneDeep } from 'lodash'
 import pages from '@/views'
 import examples from '@/examples'
+import { componentExampleRoutes } from '@/components'
 import { getRoutes, findDefaultRoute } from '@/utils'
 import type { modulesTypes } from '@/utils'
 
 const pagesRoutes = getRoutes(pages, 'views')
 const examplesRoutes = getRoutes(examples, 'examples')
-console.log('pages', pages, 'examples', examples)
-console.log('pagesRoutes', pagesRoutes, examplesRoutes)
+console.log('pages', pages, 'examples', examples, 'componentExamples', componentExampleRoutes)
 const customRoutes: modulesTypes[] = [
   //   一些路由
 ]
 const routesChildrens = customRoutes.length
   ? [...customRoutes]
-  : [...pagesRoutes, ...examplesRoutes]
+  : [...pagesRoutes, ...examplesRoutes, componentExampleRoutes]
 
 const Routes = [
   {
