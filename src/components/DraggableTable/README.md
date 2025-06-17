@@ -42,8 +42,8 @@ app.mount('#app')
   <DraggableTable
     :tableData="tableData"
     :columns="columns"
-    :rowDraggable="true"
-    :columnDraggable="true"
+    :rowdragable="true"
+    :columndragable="true"
     @update:tableData="handleDataUpdate"
     @update:columns="handleColumnsUpdate"
     @row-dragend="handleRowDrop"
@@ -133,18 +133,18 @@ const handleDelete = (row) => {
 
 ## 组件属性（Props）
 
-| 属性名          | 类型             | 默认值 | 说明             |
-| --------------- | ---------------- | ------ | ---------------- |
-| tableData       | Array            | []     | 表格数据         |
-| columns         | Array            | []     | 表格列配置       |
-| height          | [String, Number] | null   | 表格高度         |
-| border          | Boolean          | true   | 是否显示边框     |
-| stripe          | Boolean          | true   | 是否显示斑马纹   |
-| loading         | Boolean          | false  | 是否显示加载状态 |
-| showHeader      | Boolean          | true   | 是否显示表头     |
-| tableProps      | Object           | {}     | VXE表格配置项    |
-| rowDraggable    | Boolean          | false  | 是否启用行拖拽   |
-| columnDraggable | Boolean          | false  | 是否启用列拖拽   |
+| 属性名         | 类型             | 默认值 | 说明             |
+| -------------- | ---------------- | ------ | ---------------- |
+| tableData      | Array            | []     | 表格数据         |
+| columns        | Array            | []     | 表格列配置       |
+| height         | [String, Number] | null   | 表格高度         |
+| border         | Boolean          | true   | 是否显示边框     |
+| stripe         | Boolean          | true   | 是否显示斑马纹   |
+| loading        | Boolean          | false  | 是否显示加载状态 |
+| showHeader     | Boolean          | true   | 是否显示表头     |
+| tableProps     | Object           | {}     | VXE表格配置项    |
+| rowdragable    | Boolean          | false  | 是否启用行拖拽   |
+| columndragable | Boolean          | false  | 是否启用列拖拽   |
 
 ## 列配置参数
 
