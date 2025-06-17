@@ -31,7 +31,7 @@ async function config(): Promise<Awaited<UserConfig>> {
   return {
     title: 'vueComponent',
     description: '一个vue组件库',
-    base: '/vue-template/vitepress/',
+    base: '/vue-template-docs/vitepress/',
     lang: 'zh-CN',
     outDir: '../docs/vitepress',
     vite: {
@@ -70,7 +70,7 @@ async function config(): Promise<Awaited<UserConfig>> {
         {
           rel: 'icon',
           type: 'image/svg',
-          href: '/vue-template/vitepress/horse.svg',
+          href: '/vue-template-docs/vitepress/horse.svg',
         },
       ],
       [
@@ -111,7 +111,7 @@ async function config(): Promise<Awaited<UserConfig>> {
     },
     themeConfig: {
       // https://vitepress.dev/reference/default-theme-config
-      avator: '/vue-template/avator.png',
+      avator: '/vue-template-docs/vitepress/avator.png',
       // 标题
       siteTitle: 'vueComponent',
       // logo
