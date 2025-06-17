@@ -11,7 +11,6 @@ import mathjax3 from 'markdown-it-mathjax3'
 import type { UserConfig } from 'vitepress'
 import { demoblockPlugin, demoblockVitePlugin } from 'vitepress-theme-demoblock'
 // vite vue插件
-import importToCDN from 'vite-plugin-cdn-import'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import { visualizer } from 'rollup-plugin-visualizer'
 
@@ -20,7 +19,6 @@ import autoprefixer from 'autoprefixer'
 import tailwindcss from '@tailwindcss/postcss'
 
 import path from 'path'
-import { modules } from '../../src/constants'
 
 async function config(): Promise<Awaited<UserConfig>> {
   const componentPath = '/components'
@@ -45,10 +43,6 @@ async function config(): Promise<Awaited<UserConfig>> {
       plugins: [
         demoblockVitePlugin() as any,
         vueJsx(),
-        importToCDN({
-          prodUrl: `https://unpkg.com/{name}@{version}{path}`,
-          modules,
-        }),
         visualizer({
           open: true,
         }),
