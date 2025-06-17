@@ -30,7 +30,7 @@ async function config(): Promise<Awaited<UserConfig>> {
   return {
     title: 'vueComponent',
     description: '一个vue组件库',
-    base: '/vue-template/',
+    base: '/vue-template/vitepress/',
     lang: 'zh-CN',
     outDir: '../docs/vitepress',
     vite: {
@@ -63,7 +63,7 @@ async function config(): Promise<Awaited<UserConfig>> {
         {
           rel: 'icon',
           type: 'image/svg',
-          href: '/vue-template/horse.svg',
+          href: '/vue-template/vitepress/horse.svg',
         },
       ],
       [

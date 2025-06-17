@@ -1,6 +1,6 @@
 {
   "index_name": "vue-template",
-  "start_urls": ["https://componentproject.github.io/vue-component/vitepress/"],
+  "start_urls": ["https://moluoxixi-template.github.io/vue-template-docs/vitepress/"],
   "rateLimit": 8,
   "maxDepth": 10,
   "selectors": {
