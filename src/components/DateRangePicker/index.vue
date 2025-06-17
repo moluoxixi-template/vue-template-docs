@@ -19,12 +19,17 @@
 
 <script lang="ts" setup>
 import { computed, ref, useTemplateRef, watch } from 'vue'
-import moment, { unitOfTime, Moment } from 'moment'
+import type { PropType } from 'vue'
+import moment from 'moment'
+import type { unitOfTime, Moment } from 'moment'
 import { ElDatePicker } from 'element-plus'
 import type { DatePickerProps } from 'element-plus'
 import { dateIsBefore, formatDateRange, validateDate, getTypeDefault } from '@/components/_utils'
 import { isEmpty } from 'radash'
 
+defineOptions({
+  name: 'DateRangePicker',
+})
 // 组件属性
 const props = defineProps({
   //#region 透传给el-date-picker
@@ -88,7 +93,7 @@ const props = defineProps({
    * 数组[n,m]表示从前n天到后m天（dateRangeType）
    */
   dateRange: {
-    type: [Number, Array],
+    type: [Array, Number] as PropType<number[] | number>,
     default: null,
   },
   /**
@@ -136,7 +141,7 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue', 'change'])
 
 // 本地日期值，用于与el-date-picker交互
-const localDateValue = ref(null)
+const localDateValue = ref([])
 
 /**
  * 日期选择器引用
@@ -250,18 +255,20 @@ let init = false
 // 监听modelValue变化
 watch(
   () => props.modelValue,
-  (newVal) => {
+  (newVal: any) => {
     // 如果是空值，且是刚初始化
+    // 1.设置了dateRange，则使用dateRange配置生成初始值
+    // 2.设置了defaultToday，则使用当前日期生成初始值
+    // 3.其他则保留空值
     if (isEmpty(newVal) && !init) {
       init = true
       // 如果没有传入modelValue:
       // 1.设置了dateRange，则使用dateRange配置生成初始值
-      // 2.设置了defaultToday，则使用当前日期生成初始值
       const initialRange = generateDateRangeByConfig()
       if (initialRange && initialRange.length) {
         localDateValue.value = getLocalDateValue(initialRange)
       }
-      // 如果defaultToday为true，则使用今天的日期
+      // 2.设置了defaultToday，则使用当前日期生成初始值
       else if (props.defaultToday) {
         const today = formatDateRange(
           [moment(), moment()],
@@ -271,9 +278,13 @@ watch(
         )
         emit('update:modelValue', today)
       } else {
-        localDateValue.value = null
+        localDateValue.value = []
       }
-    } else {
+    }
+    // 如果不为空值
+    // 1.如果满足日期格式，则更新localDateValue
+    // 2.如果不满足日期格式，则格式化日期
+    else {
       // 如果满足日期格式，则更新localDateValue
       if (validateDate(newVal, props.valueFormat, 'string')) {
         localDateValue.value = getLocalDateValue(newVal)

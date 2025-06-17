@@ -35,6 +35,7 @@ import {
   watch,
 } from 'vue'
 import Sortable from 'sortablejs'
+import { VxeGrid } from 'vxe-table'
 import { cloneDeep } from 'lodash'
 import { ElMessage } from 'element-plus'
 import { diff, isEmpty } from 'radash'
@@ -42,6 +43,9 @@ import { getType, getStringObj, getClass, dispatchEvents } from '@/components/_u
 import type { VxeTablePropTypes, VxeTableDefines, VxeTableConstructor } from 'vxe-table'
 
 type ColumnType = VxeTableDefines.ColumnOptions
+defineOptions({
+  name: 'DraggableTable',
+})
 // 定义组件属性
 const props = defineProps({
   //#region 其他原始配置加默认值
@@ -198,10 +202,12 @@ const props = defineProps({
 const computedColumns = computed<ColumnType[]>(() => {
   const columns = cloneDeep(props.columns)
   if (!getType(columns, 'array')) return []
-  const columnsSlotsNames = []
+  const columnsSlotsNames: string[] = []
   columns.forEach((item) => {
     if (item?.slots) {
-      columnsSlotsNames.push(...Object.values(item.slots).filter((i) => getType(i, 'string')))
+      columnsSlotsNames.push(
+        ...(Object.values(item.slots).filter((i) => getType(i, 'string')) as string[]),
+      )
     }
   })
   const slotsDiff = [...diff(slotNames.value, columnsSlotsNames)]
@@ -248,8 +254,8 @@ function checkboxChange(params: VxeTableDefines.CheckboxChangeParams) {
 const xTable = useTemplateRef('xTable')
 
 // 保存拖拽实例的引用
-const rowSortableInstance = ref(null)
-const columnSortableInstance = ref(null)
+const rowSortableInstance = ref<Sortable>()
+const columnSortableInstance = ref<Sortable>()
 
 // 获取插槽
 const slots = useSlots()
@@ -318,12 +324,12 @@ function saveColumnsToStorage() {
 
 // 没有本地存储的列配置，使用props.columns
 function savePropsColumns() {
-  const types = new Set([])
+  const types = new Set<string>([])
   localColumns.value = cloneDeep(computedColumns.value).filter((i) => {
     if (i.type && types.has(i.type)) {
       return false
     }
-    types.add(i.type)
+    types.add(i.type as string)
     return true
   })
   // 等表格实例加载后再保存配置
@@ -667,7 +673,7 @@ const initColumnDraggable = () => {
 }
 // 初始化表格和拖拽功能
 onMounted(() => {
-  if (props.dragType !== 'default') return
+  if (props.dragType !== 'draggable') return
   if (props.rowDraggable) {
     // 行拖拽需要等待表格渲染完成
     setTimeout(() => {
@@ -693,7 +699,7 @@ onBeforeUnmount(() => {
 watch(
   () => props.rowDraggable,
   (newVal) => {
-    if (props.dragType !== 'default') return
+    if (props.dragType !== 'draggable') return
     if (newVal) {
       setTimeout(() => {
         initRowDraggable()
@@ -707,7 +713,7 @@ watch(
 watch(
   () => props.columnDraggable,
   (newVal) => {
-    if (props.dragType !== 'default') return
+    if (props.dragType !== 'draggable') return
     if (newVal) {
       setTimeout(() => {
         initColumnDraggable()

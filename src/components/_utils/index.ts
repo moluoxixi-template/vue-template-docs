@@ -22,7 +22,7 @@ export function filterEmpty(children = []) {
  * @param obj
  * @param type
  */
-export function getType(obj: any, type: string) {
+export function getType(obj: any, type?: string) {
   if (type) {
     return Object.prototype.toString.call(obj).slice(8, -1).toLowerCase() === type.toLowerCase()
   } else {
@@ -85,18 +85,20 @@ export function getClass(className: string, hasPrefix?: boolean) {
   }
 }
 
+type EventType = string | Event
+
 /**
  * 派发事件
  * @param target 触发事件的目标dom
  * @param events 事件数组
  */
-export function dispatchEvents(target: HTMLElement, events: string | string[]) {
+export function dispatchEvents(target: Document, events: EventType | EventType[]) {
   if (Array.isArray(events)) {
-    events.forEach((event) => {
-      target.dispatchEvent(new Event(event))
+    events.forEach((event: EventType) => {
+      target.dispatchEvent(typeof event === 'string' ? new Event(event) : event)
     })
   } else {
-    target.dispatchEvent(new Event(events))
+    target.dispatchEvent(typeof events === 'string' ? new Event(events) : events)
   }
 }
 
@@ -170,7 +172,7 @@ export function getFormatDate(
  * @param onlyFormat 是否只返回格式化后的日期
  */
 export function formatDateRange(
-  date: DateType,
+  date: DateType | DateType[],
   format: string,
   dateType = 'day',
   onlyFormat: boolean,
