@@ -1,26 +1,36 @@
-function changeHtmlClassPrefix(htmlString, oldPrefix, newPrefix) {
+function changeHtmlClassPrefix(htmlString = '', oldPrefix = '', newPrefix = '') {
   const regex = new RegExp(
     `(class|style)\\s*:\\s*((["']((${oldPrefix}\\b)-).*["'])|((_normalizeClass|_normalizeStyle)\\(.*(${oldPrefix}\\b)-.*\\)))`,
-    'g'
+    'g',
   )
-  return htmlString.replace(regex, (match, p1, offset, string) => {
+  return htmlString.replace(regex, (match = '') => {
     return match.replace(oldPrefix, newPrefix)
   })
 }
 
-function changeSelectorPrefix(cssString, oldPrefix, newPrefix) {
+function changeSelectorPrefix(cssString = '', oldPrefix = '', newPrefix = '') {
   const regex = new RegExp(`(\\.${oldPrefix}\\b|\#${oldPrefix}\\b|\--${oldPrefix}\\b)`, 'g')
-  return cssString.replace(regex, (match, p1, offset, string) => {
+  return cssString.replace(regex, (match = '') => {
     return match.replace(oldPrefix, newPrefix)
   })
 }
 
-export default function addScopedAndReplacePrefixPlugin({ prefixScoped, oldPrefix, newPrefix }) {
+export default function addScopedAndReplacePrefixPlugin({
+  prefixScoped = '',
+  oldPrefix = '',
+  newPrefix = '',
+  useDevMode = false,
+}) {
+  let isProduction: boolean
   return {
     name: 'addScopedAndReplacePrefix',
-    transform(code, id) {
-      if (!oldPrefix || !newPrefix) return
-      if (id.includes('node_modules')) return
+    configResolved(config: any) {
+      isProduction = config.command === 'build' || config.isProduction
+    },
+    transform(code = '', id = '') {
+      if (!isProduction && !useDevMode) return code
+      if (!oldPrefix || !newPrefix) return code
+      if (id.includes('node_modules')) return code
 
       const cssLangs = ['css', 'scss', 'less', 'stylus', 'styl']
       let newCode = code
@@ -38,6 +48,6 @@ export default function addScopedAndReplacePrefixPlugin({ prefixScoped, oldPrefi
         return newCode
       }
       return newCode
-    }
+    },
   }
 }

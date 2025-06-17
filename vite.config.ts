@@ -15,48 +15,11 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import cdn from 'vite-plugin-cdn-import'
 
-function getCamelCase(str: string): string {
-  return str
-    .replace(/[-_]+/g, ' ') // 将连字符或下划线替换为空格
-    .replace(/(?:^|\s)\w/g, (match) => match.toUpperCase()) // 每个单词首字母大写
-    .replace(/\s+/g, '') // 移除所有空格
-}
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
-interface CdnModule {
-  name: string
-  var?: string
-  css?: string
-  path?: string
-  alias?: string
-}
-
-function getCdnModules(modules: Array<string | CdnModule>): any {
-  function getPath(str: string | undefined) {
-    if (!str) return ''
-    return str.startsWith('/') ? str : `/${str}`
-  }
-
-  return modules
-    .map((item) => {
-      if (typeof item === 'string') {
-        return {
-          name: item,
-          var: getCamelCase(item),
-          path: '',
-        }
-      } else {
-        return item
-      }
-    })
-    .map((item) => {
-      return {
-        name: item.name,
-        var: item.var || getCamelCase(item.name),
-        path: getPath(item.path),
-        css: getPath(item.css),
-      }
-    })
-}
+import { modules } from './src/constants'
 
 /**
  * 将环境变量中的字符串值转换为对应的 JavaScript 数据类型
@@ -93,37 +56,34 @@ function wrapperEnv(env: Record<string, string>) {
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd())
   const viteEnv = wrapperEnv(env)
-  const systemCode = viteEnv.VITE_GLOB_APP_CODE
   const appTitle = viteEnv.VITE_GLOB_APP_TITLE
   const isDev = mode === 'development'
+  const systemCode = viteEnv.VITE_GLOB_APP_CODE
+  const useDevMode = false
+  const envSystemCode = isDev && !useDevMode ? 'el' : viteEnv.VITE_GLOB_APP_CODE
 
   const vuePlugins = [
     vue(),
-    qiankun(systemCode, { useDevMode: false }),
-    scopedCssPrefixPlugin({
-      prefixScoped: `div[data-qiankun='${systemCode}']`,
-      oldPrefix: 'el',
-      newPrefix: systemCode,
-    }),
     vueJsx(),
-    isDev && vueDevTools(),
+    isDev && vueDevTools(), // // 自动引入
+    // 自动引入
+    AutoImport({
+      imports: ['vue'],
+      resolvers: [ElementPlusResolver()],
+      dts: path.resolve(__dirname, './src/typings/auto-imports.d.ts'),
+    }),
+    // 与自定义element组件冲突
+    Components({
+      resolvers: [
+        ElementPlusResolver({
+          exclude: new RegExp(['ElDrawer', 'ElDialog'].map((item) => `^${item}$`).join('|')),
+        }),
+      ],
+      globs: ['src/components/**/index.vue'],
+      dts: path.resolve(__dirname, './src/typings/components.d.ts'),
+    }),
   ].filter((i) => !!i)
-  const modules = getCdnModules([
-    'vue',
-    'vue-router',
-    {
-      name: 'lodash',
-      var: '_',
-    },
-    {
-      name: 'element-plus',
-      css: 'dist/index.css',
-    },
-    {
-      name: '@element-plus/icons-vue',
-      var: 'ElementPlusIconsVue',
-    },
-  ])
+
   const performancePlugins = [
     createHtmlPlugin({
       inject: {
@@ -173,6 +133,13 @@ export default defineConfig(({ mode }) => {
       visualizer({
         open: true,
       }),
+    qiankun(envSystemCode, { useDevMode }),
+    scopedCssPrefixPlugin({
+      prefixScoped: `div[data-qiankun='${envSystemCode}']`,
+      oldPrefix: 'el',
+      newPrefix: systemCode,
+      useDevMode,
+    }),
   ].filter((i) => !!i)
 
   return {
@@ -205,32 +172,14 @@ export default defineConfig(({ mode }) => {
           manualChunks: (id: string) => {
             // 优化拆分策略
             if (id.includes('node_modules')) {
-              const moduleName = id.toString().split('node_modules/')[1].split('/')[0].toString()
-
-              if (
-                ['vue', 'vue-router', 'vue-demi', '@vue'].some((item) => moduleName.includes(item))
-              ) {
-                return 'vue-vendor'
-              }
-              if (['element-plus', '@element-plus'].some((item) => moduleName.includes(item))) {
-                return 'element-vendor'
-              }
-              return 'vendor-' + moduleName
-            }
-
-            if (id.includes('src/components/')) {
-              return 'components'
-            }
-
-            if (id.includes('src/utils/')) {
-              return 'utils'
+              return id.toString().split('node_modules/')[1].split('/')[0].toString()
             }
           },
         },
       },
     },
     define: {
-      __SYSTEM_CODE__: JSON.stringify(systemCode),
+      __SYSTEM_CODE__: JSON.stringify(envSystemCode),
     },
     css: {
       postcss: {
@@ -241,8 +190,8 @@ export default defineConfig(({ mode }) => {
         scss: {
           api: 'modern-compiler',
           additionalData(content: string, filename: string) {
-            if (filename.includes('element')) {
-              const addStr = `$namespace: ${systemCode};`
+            if (filename.includes('element\\index.scss')) {
+              const addStr = `$namespace: ${envSystemCode};`
               return `${addStr}\n${content}`
             }
             return content
