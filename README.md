@@ -1,6 +1,8 @@
 # vue-template
 
-Vue 3 + TypeScript + Vite + TailwindCSS + qiankun搭建的vue模板
+Vue 3 + TypeScript + Vite + TailwindCSS + qiankun + storybook + vitepress搭建的vue模板
+
+vitepress | storybook 提供优雅的组件库文档
 
 基于文件系统的布局,根据layout目录结构自动生成布局,默认使用element布局
 
