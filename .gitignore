@@ -9,9 +9,6 @@ docs
 .docs/.vitepress/typings
 stats.html
 
-
-pnpm-lock.yaml
-
 pnpm-lock.yaml
 # Logs
 logs
