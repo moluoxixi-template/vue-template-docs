@@ -1,14 +1,3 @@
-import path from 'path'
-import { defineConfig, loadEnv } from 'vite'
-import type { Plugin } from 'postcss'
-
-// 性能优化模块
-import { visualizer } from 'rollup-plugin-visualizer'
-import viteCompression from 'vite-plugin-compression'
-import viteImagemin from 'vite-plugin-imagemin'
-import importToCDN from 'vite-plugin-cdn-import'
-import { modules } from './src/constants'
-
 // vite vue插件
 import pluginVue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
@@ -17,47 +6,30 @@ import AutoImport from 'unplugin-auto-import/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
 
+// 性能优化模块
+import { visualizer } from 'rollup-plugin-visualizer'
+import viteCompression from 'vite-plugin-compression'
+import viteImagemin from 'vite-plugin-imagemin'
+import importToCDN from 'vite-plugin-cdn-import'
+import { modules } from './src/constants'
+
 // qiankun
 import qiankun from 'vite-plugin-qiankun'
 import scopedCssPrefixPlugin from './plugins/addScopedAndReplacePrefix'
 
-// 其余vite插件
-import { createHtmlPlugin } from 'vite-plugin-html'
+// tailwind
 import autoprefixer from 'autoprefixer'
 import tailwindcss from '@tailwindcss/postcss'
+
+// sentry
 import { sentryVitePlugin } from '@sentry/vite-plugin'
 
-/**
- * 将环境变量中的字符串值转换为对应的 JavaScript 数据类型
- */
-function wrapperEnv(env: Record<string, string>) {
-  const result: Record<string, any> = {}
-
-  for (const key in env) {
-    if (Object.prototype.hasOwnProperty.call(env, key)) {
-      const value = env[key].trim()
-
-      // 处理布尔值
-      if (value === 'true' || value === 'false') {
-        result[key] = value === 'true'
-      }
-      // 处理数值
-      else if (!isNaN(Number(value))) {
-        result[key] = Number(value)
-      }
-      // 处理空字符串
-      else if (value === '') {
-        result[key] = null
-      }
-      // 其他情况保留原始字符串
-      else {
-        result[key] = value
-      }
-    }
-  }
-
-  return result
-}
+// 其余vite插件与配置
+import path from 'path'
+import { defineConfig, loadEnv } from 'vite'
+import type { Plugin } from 'postcss'
+import { createHtmlPlugin } from 'vite-plugin-html'
+import { wrapperEnv } from './src/utils'
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd())
@@ -142,13 +114,6 @@ export default defineConfig(({ mode }) => {
       visualizer({
         open: true,
       }),
-    qiankun(envSystemCode, { useDevMode }),
-    scopedCssPrefixPlugin({
-      prefixScoped: `div[data-qiankun='${envSystemCode}']`,
-      oldPrefix: 'el',
-      newPrefix: systemCode,
-      useDevMode,
-    }),
   ].filter((i) => !!i)
 
   const qianKunPlugins =
@@ -212,10 +177,8 @@ export default defineConfig(({ mode }) => {
         scss: {
           api: 'modern-compiler',
           additionalData(content: string, filename: string) {
-            console.log(filename)
             if (filename.includes('element')) {
               const addStr = `$namespace: ${envSystemCode};`
-              console.log('addStr', addStr)
               return `${addStr}\n${content}`
             }
             return content
