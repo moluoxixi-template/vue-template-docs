@@ -12,6 +12,7 @@ stats.html
 
 pnpm-lock.yaml
 
+pnpm-lock.yaml
 # Logs
 logs
 *.log
