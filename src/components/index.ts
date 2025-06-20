@@ -1,6 +1,26 @@
-import type { Component, Plugin } from 'vue'
+import type { Component } from 'vue'
 
 const componentFiles = import.meta.glob('./*/index.vue', { eager: true, import: 'default' })
+
+const components = Object.keys(componentFiles).reduce((modules = {}, modulePath) => {
+  const nameArr: string[] = modulePath.split('/')
+  const name: string | undefined =
+    nameArr.at(-1) === 'index.vue' ? nameArr.at(-2) : nameArr.at(-1)?.slice(0, -4)
+  const component: Component = componentFiles[modulePath] as Component
+  if (!component) return modules
+  if (name) {
+    modules[name as string] = component
+  }
+  return modules
+}, {} as any)
+components.install = function (app: any) {
+  const componentNames = Object.keys(components)
+  componentNames.forEach((name) => {
+    app.component(name, components[name])
+  })
+}
+export default components
+
 const componentExampleFiles = import.meta.glob('./*/Example.vue', {
   eager: true,
   import: 'default',
@@ -29,21 +49,3 @@ export const componentExampleRoutes = Object.keys(componentExampleFiles).reduce(
     children: [],
   } as any,
 )
-const components = Object.keys(componentFiles).reduce((modules = {}, modulePath) => {
-  const nameArr: string[] = modulePath.split('/')
-  const name: string | undefined =
-    nameArr.at(-1) === 'index.vue' ? nameArr.at(-2) : nameArr.at(-1)?.slice(0, -4)
-  const component: Component = componentFiles[modulePath] as Component
-  if (!component) return modules
-  if (name) {
-    modules[name as string] = component
-  }
-  return modules
-}, {} as any)
-components.install = function (app: any) {
-  const componentNames = Object.keys(components)
-  componentNames.forEach((name) => {
-    app.component(name, components[name])
-  })
-}
-export default components
