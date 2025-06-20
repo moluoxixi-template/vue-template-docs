@@ -1,0 +1,5 @@
+@import 'styles/tailwind.scss';
+@import 'element/index.scss';
+@import 'styles/base.css';
+
+@import '../../../node_modules/vxe-table/lib/style.css';

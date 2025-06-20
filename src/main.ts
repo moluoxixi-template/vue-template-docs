@@ -1,6 +1,6 @@
 import { ElDrawer, ElTooltip } from 'element-plus'
 import 'vxe-table/lib/style.css'
-import '@/assets/main.css'
+import '@/assets/styles/main.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import directives from '@/directives'

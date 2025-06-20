@@ -1,0 +1,30 @@
+$--colors: (
+  'primary': (
+    'base': #3a77ff,
+  ),
+  'success': (
+    'base': #0eb67f,
+  ),
+  'warning': (
+    'base': #f5ab01,
+  ),
+  'danger': (
+    'base': #ef6b53,
+  ),
+  'error': (
+    'base': #db2828,
+  ),
+);
+@forward '../../../../node_modules/.pnpm/element-plus@2.10.1_vue@3.5.13_typescript@5.8.3_/node_modules/element-plus/theme-chalk/src/mixins/config'
+  with (
+  $namespace: $namespace
+);
+@forward 'var' with (
+  // do not use same name, it will override.
+  $colors: $--colors
+);
+
+@use 'index' as *;
+
+@use 'custom';
+@use 'fixQiankun';
