@@ -148,9 +148,21 @@ export default defineConfig(({ mode }) => {
     }),
   ].filter((i) => !!i)
 
+  const qianKunPlugins = viteEnv.VITE_USE_QIANKUN
+    ? [
+        qiankun(envSystemCode, { useDevMode }),
+        scopedCssPrefixPlugin({
+          prefixScoped: `div[data-qiankun='${envSystemCode}']`,
+          oldPrefix: 'el',
+          newPrefix: systemCode,
+          useDevMode,
+        }),
+      ]
+    : []
+
   return {
     base: `/${systemCode}`,
-    plugins: [...vuePlugins, ...performancePlugins, ...monitorPlugins],
+    plugins: [...vuePlugins, ...performancePlugins, ...monitorPlugins, ...qianKunPlugins],
     esbuild: {
       pure:
         !isDev && viteEnv.VITE_PURE_CONSOLE_AND_DEBUGGER
