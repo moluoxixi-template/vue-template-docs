@@ -60,6 +60,9 @@ jobs:
       - name: 打包vitepress
         # npm run docs:build / pnpm docs:build / yarn docs:build / bun run docs:build
         run: pnpm vitepress:build
+      - name: 打包pages
+        # npm run docs:build / pnpm docs:build / yarn docs:build / bun run docs:build
+        run: pnpm build
       - name: 上传打包文件
         uses: actions/upload-pages-artifact@v3
         with:
@@ -72,6 +75,7 @@ jobs:
       url: |
         ${{ steps.deployment.outputs.page_url }}vitepress
         ${{ steps.deployment.outputs.page_url }}storybook
+        ${{ steps.deployment.outputs.page_url }}pages
     needs: build
     runs-on: ubuntu-latest
     name: 发布
