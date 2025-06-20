@@ -15,16 +15,15 @@ $--colors: (
     'base': #db2828,
   ),
 );
-@forward '../../../../node_modules/.pnpm/element-plus@2.10.1_vue@3.5.13_typescript@5.8.3_/node_modules/element-plus/theme-chalk/src/mixins/config'
-  with (
+@forward 'element-plus/theme-chalk/src/mixins/config.scss' with (
   $namespace: $namespace
 );
-@forward 'var' with (
+@forward 'element-plus/theme-chalk/src/common/var.scss' with (
   // do not use same name, it will override.
   $colors: $--colors
 );
 
-@use 'index' as *;
+@use 'element-plus/theme-chalk/src/index.scss' as *;
 
 @use 'custom';
-@use 'fixQiankun';
+@use 'fixQiankun.scss';
