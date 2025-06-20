@@ -1,4 +1,4 @@
-import type { Component, Plugin } from 'vue'
+import type { Component } from 'vue'
 
 const componentFiles = import.meta.glob('./*/index.vue', { eager: true, import: 'default' })
 
