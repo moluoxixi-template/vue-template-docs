@@ -68,10 +68,12 @@ export default defineConfig(({ mode }) => {
   const useDevMode = false
   const envSystemCode = isDev && !useDevMode ? 'el' : viteEnv.VITE_GLOB_APP_CODE
 
+  const useDoc = viteEnv.VITE_USE_DOCUMENT
+
   const vuePlugins = [
     pluginVue(),
     vueJsx(),
-    isDev && vueDevTools(), // // 自动引入
+    isDev && viteEnv.VITE_DEVTOOLS && vueDevTools(), // // 自动引入
     // 自动引入
     AutoImport({
       imports: ['vue'],
@@ -120,6 +122,7 @@ export default defineConfig(({ mode }) => {
         },
       }),
     viteEnv.VITE_USE_CDN &&
+      !useDoc &&
       importToCDN({
         enableInDevMode: viteEnv.VITE_USE_CDN_IS_DEV,
         prodUrl: `${viteEnv.VITE_CDN_BASE_URL}/{name}@{version}{path}`,
@@ -148,17 +151,18 @@ export default defineConfig(({ mode }) => {
     }),
   ].filter((i) => !!i)
 
-  const qianKunPlugins = viteEnv.VITE_USE_QIANKUN
-    ? [
-        qiankun(envSystemCode, { useDevMode }),
-        scopedCssPrefixPlugin({
-          prefixScoped: `div[data-qiankun='${envSystemCode}']`,
-          oldPrefix: 'el',
-          newPrefix: systemCode,
-          useDevMode,
-        }),
-      ]
-    : []
+  const qianKunPlugins =
+    viteEnv.VITE_USE_QIANKUN && !useDoc
+      ? [
+          qiankun(envSystemCode, { useDevMode }),
+          scopedCssPrefixPlugin({
+            prefixScoped: `div[data-qiankun='${envSystemCode}']`,
+            oldPrefix: 'el',
+            newPrefix: systemCode,
+            useDevMode,
+          }),
+        ]
+      : []
 
   return {
     base: `/${systemCode}`,
