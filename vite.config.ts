@@ -1,25 +1,31 @@
 import path from 'path'
 import { defineConfig, loadEnv } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import type { Plugin } from 'postcss'
+
+// 性能优化模块
 import { visualizer } from 'rollup-plugin-visualizer'
 import viteCompression from 'vite-plugin-compression'
 import viteImagemin from 'vite-plugin-imagemin'
+import importToCDN from 'vite-plugin-cdn-import'
+import { modules } from './src/constants'
+
+// vite vue插件
+import pluginVue from '@vitejs/plugin-vue'
+import vueJsx from '@vitejs/plugin-vue-jsx'
+import vueDevTools from 'vite-plugin-vue-devtools'
+import AutoImport from 'unplugin-auto-import/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import Components from 'unplugin-vue-components/vite'
+
+// qiankun
+import qiankun from 'vite-plugin-qiankun'
+import scopedCssPrefixPlugin from './plugins/addScopedAndReplacePrefix'
+
+// 其余vite插件
 import { createHtmlPlugin } from 'vite-plugin-html'
 import autoprefixer from 'autoprefixer'
 import tailwindcss from '@tailwindcss/postcss'
-import qiankun from 'vite-plugin-qiankun'
-import type { Plugin } from 'postcss'
-import scopedCssPrefixPlugin from './plugins/addScopedAndReplacePrefix'
 import { sentryVitePlugin } from '@sentry/vite-plugin'
-import vueJsx from '@vitejs/plugin-vue-jsx'
-import vueDevTools from 'vite-plugin-vue-devtools'
-import cdn from 'vite-plugin-cdn-import'
-
-import AutoImport from 'unplugin-auto-import/vite'
-import Components from 'unplugin-vue-components/vite'
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
-
-import { modules } from './src/constants'
 
 /**
  * 将环境变量中的字符串值转换为对应的 JavaScript 数据类型
@@ -63,7 +69,7 @@ export default defineConfig(({ mode }) => {
   const envSystemCode = isDev && !useDevMode ? 'el' : viteEnv.VITE_GLOB_APP_CODE
 
   const vuePlugins = [
-    vue(),
+    pluginVue(),
     vueJsx(),
     isDev && vueDevTools(), // // 自动引入
     // 自动引入
@@ -114,7 +120,7 @@ export default defineConfig(({ mode }) => {
         },
       }),
     viteEnv.VITE_USE_CDN &&
-      cdn({
+      importToCDN({
         enableInDevMode: viteEnv.VITE_USE_CDN_IS_DEV,
         prodUrl: `${viteEnv.VITE_CDN_BASE_URL}/{name}@{version}{path}`,
         modules,
@@ -142,9 +148,21 @@ export default defineConfig(({ mode }) => {
     }),
   ].filter((i) => !!i)
 
+  const qianKunPlugins = viteEnv.VITE_USE_QIANKUN
+    ? [
+        qiankun(envSystemCode, { useDevMode }),
+        scopedCssPrefixPlugin({
+          prefixScoped: `div[data-qiankun='${envSystemCode}']`,
+          oldPrefix: 'el',
+          newPrefix: systemCode,
+          useDevMode,
+        }),
+      ]
+    : []
+
   return {
     base: `/${systemCode}`,
-    plugins: [...vuePlugins, ...performancePlugins, ...monitorPlugins],
+    plugins: [...vuePlugins, ...performancePlugins, ...monitorPlugins, ...qianKunPlugins],
     esbuild: {
       pure:
         !isDev && viteEnv.VITE_PURE_CONSOLE_AND_DEBUGGER
@@ -190,8 +208,10 @@ export default defineConfig(({ mode }) => {
         scss: {
           api: 'modern-compiler',
           additionalData(content: string, filename: string) {
-            if (filename.includes('element\\index.scss')) {
+            console.log(filename)
+            if (filename.includes('element')) {
               const addStr = `$namespace: ${envSystemCode};`
+              console.log('addStr', addStr)
               return `${addStr}\n${content}`
             }
             return content
