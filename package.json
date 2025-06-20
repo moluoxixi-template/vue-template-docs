@@ -9,7 +9,7 @@
     "CICD": "node ./scripts/CICD.mjs",
     "build:old": "run-p type-check \"build-only {@}\" -- & node scripts/build.mjs",
     "build": "vite build --mode production & node ./scripts/build.mjs",
-    "build:cdn": "vite build --mode production & node ./scripts/build.mjs",
+    "pages:build": "set VITE_USE_GITPAGE=true && vite build --mode production",
     "preview": "vite preview",
     "build-only": "vite build --mode production",
     "type-check": "vue-tsc --build",

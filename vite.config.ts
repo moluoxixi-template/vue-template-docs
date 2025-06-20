@@ -37,7 +37,6 @@ export default defineConfig(({ mode }) => {
   const useDevMode = false
   const envSystemCode = isDev && !useDevMode ? 'el' : viteEnv.VITE_GLOB_APP_CODE
 
-  console.log('VITE_USE_GITPAGE', viteEnv.VITE_USE_GITPAGE, viteEnv.GITHUB_PAGES)
   const useDoc = viteEnv.VITE_USE_DOCUMENT
 
   const vuePlugins = [
