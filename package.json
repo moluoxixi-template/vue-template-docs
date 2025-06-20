@@ -4,6 +4,23 @@
   "engines": {
     "node": ">=20.0.0"
   },
+  "scripts": {
+    "dev": "vite",
+    "CICD": "node ./scripts/CICD.mjs",
+    "build:old": "run-p type-check \"build-only {@}\" -- & node scripts/build.mjs",
+    "build": "vite build --mode production & node ./scripts/build.mjs",
+    "build:cdn": "vite build --mode production & node ./scripts/build.mjs",
+    "preview": "vite preview",
+    "build-only": "vite build --mode production",
+    "type-check": "vue-tsc --build",
+    "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore",
+    "lint:eslint": "eslint . --fix",
+    "lint": "run-s lint:*",
+    "format": "prettier --write src/",
+    "prepare": "husky",
+    "lint-staged": "lint-staged",
+    "commit": "git-cz"
+  },
   "license": "MIT",
   "author": "1983531544@qq.com",
   "repository": {
@@ -33,23 +50,6 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "CICD": "node ./scripts/CICD.mjs",
-    "build:old": "run-p type-check \"build-only {@}\" -- & node scripts/build.mjs",
-    "build": "vite build --mode production & node ./scripts/build.mjs",
-    "build:cdn": "vite build --mode production & node ./scripts/build.mjs",
-    "preview": "vite preview",
-    "build-only": "vite build --mode production",
-    "type-check": "vue-tsc --build",
-    "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore",
-    "lint:eslint": "eslint . --fix",
-    "lint": "run-s lint:*",
-    "format": "prettier --write src/",
-    "prepare": "husky",
-    "lint-staged": "lint-staged",
-    "commit": "git-cz"
-  },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
     "@sentry/vite-plugin": "^3.5.0",
