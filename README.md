@@ -16,18 +16,46 @@ vitepress | storybook 提供优雅的组件库文档
 pnpm install
 ```
 
-### 项目启动
+### 项目
+
+#### 启动
 
 ```sh
 pnpm dev
 ```
 
-### 项目打包
+#### 打包
 
 ```sh
 pnpm build
-pnpm vitepress:build
+```
+
+### storybook
+
+#### 启动
+
+```sh
+pnpm storybook:dev
+```
+
+#### 打包
+
+```sh
 pnpm storybook:build
+```
+
+### vitepress
+
+#### 启动
+
+```sh
+pnpm vitepress:dev
+```
+
+#### 打包
+
+```sh
+pnpm vitepress:build
 ```
 
 ### 文档预览
