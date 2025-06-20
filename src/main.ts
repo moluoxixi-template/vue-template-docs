@@ -1,5 +1,4 @@
 import { ElDrawer, ElTooltip } from 'element-plus'
-import 'vxe-table/lib/style.css'
 import '@/assets/styles/main.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
