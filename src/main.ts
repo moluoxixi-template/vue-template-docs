@@ -1,4 +1,4 @@
-import { ElDrawer, ElTooltip } from 'element-plus'
+import { ElDrawer, ElDialog } from 'element-plus'
 import '@/assets/styles/main.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
@@ -76,7 +76,7 @@ async function render(props: QiankunProps) {
   directives(app)
 
   // 修改Element的appendToBody默认行为
-  modifyComponents(app, [ElDrawer, ElTooltip], 'appendTo', () => container || '#app')
+  modifyComponents(app, [ElDrawer, ElDialog], 'appendTo', () => container || '#app')
 
   // 注册图标组件
   for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
