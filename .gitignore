@@ -8,7 +8,6 @@ docs
 .docs/.vitepress/dist
 .docs/.vitepress/typings
 stats.html
-docs
 
 
 pnpm-lock.yaml
