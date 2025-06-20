@@ -1,22 +1,16 @@
 import { ElDrawer, ElDialog } from 'element-plus'
 import '@/assets/styles/main.css'
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'
 import directives from '@/directives'
 
-import {
-  init,
-  vueIntegration,
-  browserTracingIntegration,
-  createSentryPiniaPlugin,
-} from '@sentry/vue'
+import { init, vueIntegration, browserTracingIntegration } from '@sentry/vue'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import moment from 'moment'
 import 'moment/dist/locale/zh-cn'
 import { modifyComponents } from '@/utils'
 
 moment.locale('zh-cn') //中文化
-import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import { store } from '@/stores'
 import { renderWithQiankun, qiankunWindow } from 'vite-plugin-qiankun/dist/helper'
 import type { QiankunProps } from 'vite-plugin-qiankun/dist/helper'
 import App from './App.vue'
@@ -83,7 +77,6 @@ async function render(props: QiankunProps) {
     app.component(key, component)
   }
 
-  const pinia = createPinia()
   const router = getRouter(props)
 
   //#region 初始化sentry
@@ -106,16 +99,13 @@ async function render(props: QiankunProps) {
       browserTracingIntegration({ router }),
     ],
   })
-  // 跟踪pinia
-  pinia.use(createSentryPiniaPlugin())
   //#endregion
 
-  pinia.use(piniaPluginPersistedstate)
+  app.use(store)
 
   // 测试主题变更
   // const systemStore = useSystemStore()
   // systemStore.setTheme('red');
-  app.use(pinia)
   app.use(router)
   app.config.warnHandler = () => null
 
