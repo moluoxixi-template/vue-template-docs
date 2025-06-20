@@ -1,7 +1,7 @@
 export * from './modules/route.ts'
 export * from './modules/modifyComponent.tsx'
 
-export function getType(obj: any, type: string) {
+export function getType(obj: any, type?: string) {
   if (type) {
     return Object.prototype.toString.call(obj).slice(8, -1).toLowerCase() === type.toLowerCase()
   } else {
