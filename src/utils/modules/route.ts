@@ -34,7 +34,7 @@ export function getRoutes(files: any, prefix = '') {
       const component = files[modulePath]
       const filePathArr = modulePath.split('/')
       const startStrs = ['views', 'components', 'layout']
-      const endStrs = ['index', 'index.vue', 'Example', 'Example.vue']
+      const endStrs = ['index', 'index.vue']
       if (!component || modulePath == 'install') return modules
       const filterFilePathArr = filePathArr.filter(() => {
         return !filePathArr.some((item: string) => startStrs.includes(item))
