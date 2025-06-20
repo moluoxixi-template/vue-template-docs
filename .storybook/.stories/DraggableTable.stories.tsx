@@ -7,7 +7,7 @@ import { ElMessage, ElMessageBox, ElButton } from 'element-plus'
  * 可拖拽表格组件
  */
 const meta = {
-  title: 'Components/DraggableTable',
+  title: 'DraggableTable',
   component: DraggableTable,
   tags: ['autodocs'],
   argTypes: {
