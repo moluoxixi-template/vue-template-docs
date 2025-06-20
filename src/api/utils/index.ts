@@ -9,7 +9,7 @@
  * Copyright (c) 2025 by ${git_name_email}, All Rights Reserved.
  */
 import axios from 'axios'
-import { addSign } from '@/common/utils/his6.0'
+import { addSign } from '@/utils/modules/his6.0'
 import type { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios'
 
 export class BaseApi {
