@@ -11,6 +11,7 @@
     "preview": "vite preview",
     "storybook:dev": "set VITE_USE_DOCUMENT=true && storybook dev -p 6006",
     "storybook:build": "set VITE_USE_DOCUMENT=true && storybook build -o docs/storybook",
+    "pages:build": "vite build --mode github",
     "vitepress:dev": "vitepress dev .docs",
     "vitepress:build": "vitepress build .docs",
     "vitepress:preview": "vitepress preview .docs",
