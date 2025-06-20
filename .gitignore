@@ -5,6 +5,7 @@ src/typings
 stats.html
 docs
 
+pnpm-lock.yaml
 # Logs
 logs
 *.log
