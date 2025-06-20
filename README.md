@@ -26,6 +26,8 @@ pnpm dev
 
 ```sh
 pnpm build
+pnpm vitepress:build
+pnpm storybook:build
 ```
 
 ### 文档预览
