@@ -2,10 +2,8 @@
   --el-border-radius-base: 8px;
   --el-table-border-color: #dcdfe6;
   --el-text-color-primary: #fff;
-
   --el-menu-bg-color: var(--el-color-primary);
   --el-menu-bg-hover-color: var(--el-text-color-primary);
-
   --el-menu-text-color: var(--el-text-color-primary);
   --el-menu-text-hover-color: var(--el-menu-bg-color);
   --el-menu-popup-bg-color: var(--el-menu-bg-hover-color);
@@ -44,6 +42,7 @@
     &:hover {
       background-color: var(--el-menu-bg-hover-color);
       color: var(--el-menu-text-hover-color) !important;
+
       .el-sub-menu__title,
       .el-sub-menu__title:hover {
         background-color: var(--el-menu-bg-hover-color);
@@ -94,6 +93,7 @@
   padding-left: 16px;
   font-size: 16px;
   font-family: PingFangSC-Semibold, serif;
+
   /* font-weight: 600; */
 }
 
@@ -152,6 +152,17 @@
   .el-table__body-wrapper {
     user-select: none;
 
+    tr {
+      /* 高亮选中行 */
+
+      &:hover,
+      &.selected {
+        td {
+          background-color: #ccdeff !important;
+        }
+      }
+    }
+
     .el-table__cell {
       padding: 4px 2px !important;
       cursor: pointer;
@@ -168,6 +179,7 @@
     thead {
       color: #29354f !important;
       font-size: 12px !important;
+
       /* font-weight: 600; */
       font-family: PingFangSC-Semibold, serif;
 
@@ -178,6 +190,7 @@
 
       th.el-table__cell > .cell {
         /* top:-4px */
+
         /* font-weight: 600; */
       }
     }
@@ -198,6 +211,17 @@
   }
 
   .el-table__fixed-body-wrapper {
+    tr {
+      /* 高亮选中行 */
+
+      &:hover,
+      &.selected {
+        td {
+          background-color: #ccdeff !important;
+        }
+      }
+    }
+
     .el-table__cell {
       padding: 4px 2px !important;
       border-color: var(--border-color-1) !important;
@@ -224,33 +248,8 @@
 
     th.el-table__cell > .cell {
       /* top:-4px */
+
       /* font-weight: 600; */
-    }
-  }
-
-  .el-table__body-wrapper {
-    tr {
-      /* 高亮选中行 */
-
-      &:hover,
-      &.selected {
-        td {
-          background-color: #ccdeff !important;
-        }
-      }
-    }
-  }
-
-  .el-table__fixed-body-wrapper {
-    tr {
-      /* 高亮选中行 */
-
-      &:hover,
-      &.selected {
-        td {
-          background-color: #ccdeff !important;
-        }
-      }
     }
   }
 }
