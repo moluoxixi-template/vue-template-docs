@@ -1,6 +1,6 @@
 import type { Component } from 'vue'
 
-const componentFiles = import.meta.glob(['./*/index.vue', '!./**/components/*'], {
+const componentFiles = import.meta.glob(['./**/index.vue', '!./**/components/*'], {
   eager: true,
   import: 'default',
 })
