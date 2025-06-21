@@ -34,7 +34,7 @@ export default defineConfig(({ mode }) => {
   const appTitle = viteEnv.VITE_GLOB_APP_TITLE
   const isDev = mode === 'development'
   const systemCode = viteEnv.VITE_GLOB_APP_CODE
-  const useDevMode = false
+  const useDevMode = viteEnv.VITE_QIANKUN_DEV
   const envSystemCode = isDev && !useDevMode ? 'el' : viteEnv.VITE_GLOB_APP_CODE
 
   const useDoc = mode === 'github'
