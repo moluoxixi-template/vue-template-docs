@@ -49,10 +49,6 @@ declare interface ViteEnv {
    */
   VITE_IMAGEMIN: boolean
   /**
-   * 是否开启文档模式,与CDN，qiankun互斥
-   */
-  VITE_USE_DOCUMENT: boolean
-  /**
    * 是否启用CDN加速 不知道为什么会导致storybook打包会丢失cdn里的包
    */
   VITE_USE_CDN: boolean

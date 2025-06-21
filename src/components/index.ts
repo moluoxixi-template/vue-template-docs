@@ -1,6 +1,9 @@
 import type { Component } from 'vue'
 
-const componentFiles = import.meta.glob('./*/index.vue', { eager: true, import: 'default' })
+const componentFiles = import.meta.glob(['./*/index.vue', '!./**/components/*'], {
+  eager: true,
+  import: 'default',
+})
 
 const components = Object.keys(componentFiles).reduce((modules = {}, modulePath) => {
   const nameArr: string[] = modulePath.split('/')
