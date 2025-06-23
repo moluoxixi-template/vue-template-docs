@@ -2,7 +2,8 @@
 
 ## 组件简介
 
-`PopoverTableSelect` 是一个基于 Element Plus 的 `el-popover` 和 `vxe-grid` 封装的弹出表格选择组件，支持虚拟触发（virtual-ref）、自定义表格列（columns）、数据源（data）等参数，支持键盘上下键快速切换行、回车选中、点击选中等交互。
+`PopoverTableSelect` 是一个基于 Element Plus 的 `el-popover` 和 `vxe-grid`
+封装的弹出表格选择组件，支持虚拟触发（virtual-ref）、自定义表格列（columns）、数据源（data）等参数，支持键盘上下键快速切换行、回车选中、点击选中等交互。
 
 ## 主要功能
 
