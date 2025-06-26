@@ -29,8 +29,8 @@ async function config(): Promise<Awaited<UserConfig>> {
   const components = await getSidebar('components')
   const navs = await getSidebar('navs')
 
-  const repo = import.meta.env.VITE_GITHUB_REPO
-  const owner = import.meta.env.VITE_GITHUB_OWNER
+  const repo = process.env.VITE_GITHUB_REPO
+  const owner = process.env.VITE_GITHUB_OWNER
   return {
     title: 'vueComponent',
     description: '一个vue组件库',
