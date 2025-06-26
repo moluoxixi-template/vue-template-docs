@@ -1,15 +1,15 @@
 {
   "extends": "@tsconfig/node22/tsconfig.json",
   "include": [
+    "src/constants/*",
     "vite.config.*",
     "vitest.config.*",
     "cypress.config.*",
     "nightwatch.conf.*",
     "playwright.config.*",
     "plugins/**/*",
-    "env.d.ts",
-    "src/constants/**/*",
-    "src/utils/**/*"
+    "src/utils/**/*",
+    "env.d.ts"
   ],
   "exclude": [],
   "compilerOptions": {
@@ -18,6 +18,8 @@
     "composite": true,
     "noEmit": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "types": ["node"]
   }
 }
