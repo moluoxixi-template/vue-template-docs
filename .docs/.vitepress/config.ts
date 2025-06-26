@@ -134,6 +134,10 @@ async function config(): Promise<Awaited<UserConfig>> {
           text: '🏡Blogs',
           link: '/',
         },
+        {
+          text: 'storybook组件库',
+          link: 'https://componentproject.github.io/vue-component/storybook/',
+        },
         ...navs,
       ],
 
@@ -141,7 +145,12 @@ async function config(): Promise<Awaited<UserConfig>> {
       sidebar: {
         '/components/': components,
       },
-      socialLinks: [{ icon: 'github', link: 'https://github.com/moluoxixi-template/vue-template' }],
+      socialLinks: [
+        {
+          icon: 'github',
+          link: 'https://moluoxixi-template.github.io/vue-template-docs/storybook',
+        },
+      ],
       // 搜索配置
       search: {
         // local or algolia
@@ -153,7 +162,7 @@ async function config(): Promise<Awaited<UserConfig>> {
         options: {
           appId: 'DDD3D6CGWQ',
           apiKey: '3b7df1c9bcf3d1c31fa74e9707936af5',
-          indexName: 'vueTemplate',
+          indexName: 'vueTemplateDoc',
         },
         //#endregion
       },

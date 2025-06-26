@@ -16,12 +16,14 @@
   padding: 0 15px;
   text-align: center;
 }
+
 .title {
   display: flex;
   align-items: center;
   font-size: 2.2em;
   font-weight: bold;
 }
+
 .description {
   margin: 1em 0;
 }

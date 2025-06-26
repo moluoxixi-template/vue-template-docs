@@ -12,14 +12,16 @@ const date = new Date().getFullYear()
 footer {
   text-align: center;
   width: 100%;
-  padding: 20px 20px;
+  padding: 20px;
   background: var(--vp-c-bg);
   color: var(--vp-c-text);
 }
+
 a {
   color: var(--vp-c-brand);
   font-weight: bold;
 }
+
 a:hover {
   text-decoration: none;
   color: var(--vp-c-hover);
