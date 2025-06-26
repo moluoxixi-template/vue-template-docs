@@ -1,9 +1,9 @@
-import { getComponents } from './utils/serverUtils'
-import { buildBlogRSS } from './utils/rss'
+import { getComponents } from './utils/serverUtils.ts'
+import { buildBlogRSS } from './utils/rss.ts'
 
 // https://github.com/mingyuLi97/blog
 // https://vitepress.dev/reference/site-config
-import { getSidebar } from './utils'
+import { getSidebar } from './utils/index.js'
 
 import { transformerTwoslash } from '@shikijs/vitepress-twoslash'
 import mathjax3 from 'markdown-it-mathjax3'
@@ -20,6 +20,8 @@ import tailwindcss from '@tailwindcss/postcss'
 
 import path from 'path'
 
+import { githubConfig } from './constants/index.js'
+
 async function config(): Promise<Awaited<UserConfig>> {
   const componentPath = '/components'
   const posts = await getComponents(componentPath)
@@ -29,8 +31,7 @@ async function config(): Promise<Awaited<UserConfig>> {
   const components = await getSidebar('components')
   const navs = await getSidebar('navs')
 
-  const repo = process.env.VITE_GITHUB_REPO
-  const owner = process.env.VITE_GITHUB_OWNER
+  const { repo, owner } = githubConfig
   console.log('repo', repo, owner)
   return {
     title: 'vueComponent',

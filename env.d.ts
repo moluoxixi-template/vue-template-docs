@@ -68,18 +68,6 @@ declare interface ViteEnv {
    * 是否删除生产环境 console
    */
   VITE_DROP_CONSOLE: boolean
-  /**
-   * github仓库名
-   */
-  VITE_GITHUB_REPO: string
-  /**
-   * github归属组织/用户
-   */
-  VITE_GITHUB_OWNER: string
-  /**
-   * 管理员账号
-   */
-  VITE_GITHUB_ADMIN: string
 }
 
 declare const __SYSTEM_CODE__ = string
