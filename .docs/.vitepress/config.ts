@@ -31,6 +31,7 @@ async function config(): Promise<Awaited<UserConfig>> {
 
   const repo = process.env.VITE_GITHUB_REPO
   const owner = process.env.VITE_GITHUB_OWNER
+  console.log('repo', repo, owner)
   return {
     title: 'vueComponent',
     description: '一个vue组件库',
