@@ -17,7 +17,7 @@
     "lint:eslint": "eslint . --fix",
     "lint": "run-s lint:*",
     "format": "prettier --write src/",
-    "prepare": "husky",
+    "prepare": "node .husky/install.mjs",
     "lint-staged": "lint-staged",
     "commit": "git-cz"
   },
