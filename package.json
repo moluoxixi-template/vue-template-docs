@@ -78,7 +78,6 @@
     "@types/crypto-js": "^4.2.2",
     "@types/lodash": "^4.17.17",
     "@types/node": "^22.14.0",
-    "@types/rollup": "^0.54.0",
     "@types/sortablejs": "^1.15.8",
     "@types/uuid": "^10.0.0",
     "@vitejs/plugin-vue": "^5.2.3",
