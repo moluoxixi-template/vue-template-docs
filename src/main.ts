@@ -80,25 +80,26 @@ async function render(props: QiankunProps) {
   const router = getRouter(props)
 
   //#region 初始化sentry
-  init({
-    app,
-    dsn: 'https://e9b3c65caeec301093d764fdf7bff8e5@o4509455371337728.ingest.us.sentry.io/4509455378022400',
-    normalizeDepth: 10,
-    sendDefaultPii: true,
-    integrations: [
-      // 跟踪vue
-      vueIntegration({
-        tracingOptions: {
-          // 跟踪vue组件
-          trackComponents: true,
-          // 需要跟踪的hooks,destroy用于vue2
-          hooks: ['activate', 'create', 'unmount', 'destroy', 'mount', 'update'],
-        },
-      }),
-      // 跟踪路由
-      browserTracingIntegration({ router }),
-    ],
-  })
+  import.meta.env.VITE_SENTRY &&
+    init({
+      app,
+      dsn: 'https://e9b3c65caeec301093d764fdf7bff8e5@o4509455371337728.ingest.us.sentry.io/4509455378022400',
+      normalizeDepth: 10,
+      sendDefaultPii: true,
+      integrations: [
+        // 跟踪vue
+        vueIntegration({
+          tracingOptions: {
+            // 跟踪vue组件
+            trackComponents: true,
+            // 需要跟踪的hooks,destroy用于vue2
+            hooks: ['activate', 'create', 'unmount', 'destroy', 'mount', 'update'],
+          },
+        }),
+        // 跟踪路由
+        browserTracingIntegration({ router }),
+      ],
+    })
   //#endregion
 
   app.use(store)
