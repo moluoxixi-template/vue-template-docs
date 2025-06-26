@@ -85,5 +85,7 @@ declare module 'virtual:auto-routes' {
   }
 
   const routes: RouteModule[]
+  const findDefaultRoute: (routes: any[]) => string
+  export { routes, findDefaultRoute }
   export default routes
 }

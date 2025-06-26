@@ -1,4 +1,5 @@
 // autoRoutes/index.ts
+import { findParentRoute, generateRoutes, findDefaultRoute } from './routeGenerator'
 import type { Plugin } from 'vite'
 
 interface RouteModule {
@@ -55,74 +56,11 @@ function createAutoRoutesPlugin({ routeConfig, virtualModuleId }: config): Plugi
         // 生成路由JS代码
         const code = `
           ${imports.join('\n')}
-
-          function findParentRoute(modules, parentPath) {
-            for (const route of modules) {
-              if (route.path === parentPath) {
-                return route;
-              }
-              if (route.children) {
-                const found = findParentRoute(route.children, parentPath);
-                if (found) return found;
-              }
-            }
-            return undefined;
-          }
-
-          function generateRoutes(files, prefix = '' ,baseRoute) {
-            if(baseRoute){
-              baseRoute.children = baseRoute.children || [];
-              baseRoute.name = baseRoute.name || prefix;
-            }
-            const modules = baseRoute ? [baseRoute] : [];
-            return Object.keys(files)
-              .sort((a, b) => {
-                const aLength = a.split('/').length;
-                const bLength = b.split('/').length;
-                return bLength > aLength ? -1 : 1;
-              })
-              .reduce((modules = [], modulePath) => {
-                const component = files[modulePath];
-                if (!component || modulePath === 'install') return modules;
-
-                const filePathArr = modulePath.split('/');
-                const srcIndex = filePathArr.findIndex(part => part === 'src');
-                if (srcIndex === -1) return modules;
-
-                // 从src后面一位到倒数第二位作为path
-                const pathArr = filePathArr.slice(srcIndex + 1, -1);
-                console.log('pathArr', pathArr);
-                const name = component.name || pathArr.at(-1);
-                const path = \`/\${pathArr.join('/')}\`;
-                const parentPath = \`/\${pathArr.slice(0, -1).join('/')}\`;
-
-                const parentRoute = findParentRoute(modules, parentPath);
-                console.log('parentPath', parentPath,path, parentRoute);
-                if (parentRoute) {
-                  if (!parentRoute.children) parentRoute.children = [];
-                  parentRoute.children.push({
-                    path,
-                    name: path,
-                    meta: {
-                      title: component.name || name,
-                    },
-                    component,
-                  });
-                } else {
-                  modules.push({
-                    path,
-                    name: path,
-                    meta: {
-                      title: component.name || name,
-                    },
-                    component,
-                  });
-                }
-                return modules;
-              }, modules);
-          }
-
+          ${findParentRoute}
+          ${generateRoutes}
           const routes = [${routes.join(',\n')}];
+          ${findDefaultRoute}
+          export { routes, findDefaultRoute };
           export default routes;
         `
 

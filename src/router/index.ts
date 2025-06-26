@@ -2,8 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { qiankunWindow } from 'vite-plugin-qiankun/dist/helper'
 import { isEmpty, assign } from 'radash'
 import { cloneDeep } from 'lodash'
-import { findDefaultRoute } from '@/utils'
-import autoRoutes from 'virtual:auto-routes'
+import { findDefaultRoute, routes as autoRoutes } from 'virtual:auto-routes'
 
 // 自动生成的路由
 const routesChildrens = autoRoutes
