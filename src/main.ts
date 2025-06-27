@@ -27,12 +27,14 @@ let app: any
  * 将子应用appendBody的元素,挂载到子应用根元素身上
  */
 function proxy(container: HTMLElement) {
-  if ((document.body.appendChild as any).__isProxy__) return
+  if ((document.body.appendChild as any).__isProxy__)
+    return
   const revocable = Proxy.revocable(document.body.appendChild, {
     apply(target, thisArg, [node]) {
       if (container) {
         container.appendChild(node)
-      } else {
+      }
+      else {
         target.call(thisArg, node)
       }
     },
@@ -58,7 +60,8 @@ function themeManager(props: QiankunProps) {
         systemStore.setTheme(state.color)
       }
     })
-  } catch {}
+  }
+  catch {}
 }
 
 async function render(props: QiankunProps) {
@@ -79,8 +82,8 @@ async function render(props: QiankunProps) {
   const router = getRouter(props)
 
   // #region 初始化sentry
-  import.meta.env.VITE_SENTRY &&
-    init({
+  import.meta.env.VITE_SENTRY
+    && init({
       app,
       dsn: 'https://e9b3c65caeec301093d764fdf7bff8e5@o4509455371337728.ingest.us.sentry.io/4509455378022400',
       normalizeDepth: 10,
@@ -112,7 +115,8 @@ async function render(props: QiankunProps) {
   if (container) {
     const root = container.querySelector('#app')
     app.mount(root)
-  } else {
+  }
+  else {
     app.mount('#app')
   }
 }
@@ -120,7 +124,8 @@ async function render(props: QiankunProps) {
 // 独立运行时
 if (!qiankunWindow.__POWERED_BY_QIANKUN__) {
   render({}).then()
-} else {
+}
+else {
   renderWithQiankun({
     async mount(props: QiankunProps) {
       await render(props)

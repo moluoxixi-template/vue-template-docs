@@ -14,16 +14,32 @@ export default defineComponent({
 
 <template>
   <div class="grid grid-cols-3">
-    <div class="box">1</div>
     <div class="box">
-      <div class="h-[300px]">1222</div>
+      1
     </div>
-    <div class="box">1</div>
-    <div class="box">1</div>
-    <div class="box h-[300px]">1</div>
-    <div class="box">1</div>
-    <div class="box">1</div>
-    <div class="box">1</div>
+    <div class="box">
+      <div class="h-[300px]">
+        1222
+      </div>
+    </div>
+    <div class="box">
+      1
+    </div>
+    <div class="box">
+      1
+    </div>
+    <div class="box h-[300px]">
+      1
+    </div>
+    <div class="box">
+      1
+    </div>
+    <div class="box">
+      1
+    </div>
+    <div class="box">
+      1
+    </div>
   </div>
 </template>
 

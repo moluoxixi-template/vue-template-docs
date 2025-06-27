@@ -190,8 +190,8 @@ onMounted(() => {
 
 // 添加新行
 function addRow() {
-  const newId =
-    tableData.value.length > 0 ? Math.max(...tableData.value.map((item) => item.id)) + 1 : 1
+  const newId
+    = tableData.value.length > 0 ? Math.max(...tableData.value.map(item => item.id)) + 1 : 1
 
   const newRow = {
     id: newId,
@@ -223,7 +223,7 @@ function handleDelete(row) {
     type: 'warning',
   })
     .then(() => {
-      tableData.value = tableData.value.filter((item) => item.id !== row.id)
+      tableData.value = tableData.value.filter(item => item.id !== row.id)
       ElMessage.success('删除成功')
     })
     .catch(() => {
@@ -236,7 +236,9 @@ function handleDelete(row) {
   <div class="draggable-table-demo">
     <h2>可拖拽表格演示</h2>
     <div class="demo-actions">
-      <el-button @click="addRow"> 添加行 </el-button>
+      <el-button @click="addRow">
+        添加行
+      </el-button>
       <el-button @click="rowdragable = !rowdragable">
         {{ rowdragable ? '禁用行拖拽' : '启用行拖拽' }}
       </el-button>
@@ -291,8 +293,12 @@ function handleDelete(row) {
     >
       <!-- 自定义操作列插槽 -->
       <template #aaa="{ row }">
-        <el-button type="primary" size="small" @click="handleEdit(row)"> 编辑 </el-button>
-        <el-button type="danger" size="small" @click="handleDelete(row)"> 删除 </el-button>
+        <el-button type="primary" size="small" @click="handleEdit(row)">
+          编辑
+        </el-button>
+        <el-button type="danger" size="small" @click="handleDelete(row)">
+          删除
+        </el-button>
       </template>
     </DraggableTable>
   </div>

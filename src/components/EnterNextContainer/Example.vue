@@ -65,7 +65,9 @@ function handleNoNextInput(element: HTMLElement) {
           </el-select>
         </div>
       </EnterNextContainer>
-      <div class="description">按Enter键在输入框之间跳转，最后一个元素会触发提示</div>
+      <div class="description">
+        按Enter键在输入框之间跳转，最后一个元素会触发提示
+      </div>
     </div>
   </div>
 </template>

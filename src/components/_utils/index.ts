@@ -8,9 +8,11 @@ export function filterEmpty(children = []) {
   children.forEach((child: any) => {
     if (Array.isArray(child)) {
       res.push(...child)
-    } else if (child?.type === Fragment) {
+    }
+    else if (child?.type === Fragment) {
       res.push(...filterEmpty(child.children))
-    } else {
+    }
+    else {
       res.push(child)
     }
   })
@@ -25,28 +27,29 @@ export function filterEmpty(children = []) {
 export function getType(obj: any, type?: string) {
   if (type) {
     return Object.prototype.toString.call(obj).slice(8, -1).toLowerCase() === type.toLowerCase()
-  } else {
+  }
+  else {
     return Object.prototype.toString.call(obj).slice(8, -1).toLowerCase()
   }
 }
 
-type types =
-  | 'string'
-  | 'number'
-  | 'boolean'
-  | 'undefined'
-  | 'null'
-  | 'date'
-  | 'regexp'
-  | 'symbol'
-  | 'object'
-  | 'array'
-  | 'function'
-  | 'set'
-  | 'map'
-  | 'weakmap'
-  | 'weakset'
-  | 'error'
+type types
+  = | 'string'
+    | 'number'
+    | 'boolean'
+    | 'undefined'
+    | 'null'
+    | 'date'
+    | 'regexp'
+    | 'symbol'
+    | 'object'
+    | 'array'
+    | 'function'
+    | 'set'
+    | 'map'
+    | 'weakmap'
+    | 'weakset'
+    | 'error'
 
 /**
  * 获取类型默认值，当不符合当前类型时，返回该类型的默认值
@@ -74,7 +77,8 @@ export function getTypeDefault(obj: any, type: types) {
       error: new Error('错误'),
     }
     return typeDefefaultValueMap[type]
-  } else {
+  }
+  else {
     return obj
   }
 }
@@ -85,7 +89,7 @@ export function getTypeDefault(obj: any, type: types) {
  */
 export function getStringObj(obj: any) {
   const allowTypes = ['object', 'array']
-  if (allowTypes.some((type) => getType(obj, type))) {
+  if (allowTypes.some(type => getType(obj, type))) {
     return JSON.stringify(obj)
   }
   return obj
@@ -99,7 +103,8 @@ export function getStringObj(obj: any) {
 export function getClass(className: string, hasPrefix?: boolean) {
   if (className.startsWith('.')) {
     return hasPrefix ? className : className.slice(1)
-  } else {
+  }
+  else {
     return hasPrefix ? `.${className}` : className
   }
 }
@@ -116,7 +121,8 @@ export function dispatchEvents(target: Document, events: EventType | EventType[]
     events.forEach((event: EventType) => {
       target.dispatchEvent(typeof event === 'string' ? new Event(event) : event)
     })
-  } else {
+  }
+  else {
     target.dispatchEvent(typeof events === 'string' ? new Event(events) : events)
   }
 }
@@ -144,7 +150,8 @@ export function detectDateFormatByReplace(str: string, defaultFormat = 'YYYY-MM-
     }
     // 若未匹配到任何数字，则返回defaultFormat
     return i === 0 ? defaultFormat : result
-  } else {
+  }
+  else {
     return defaultFormat
   }
 }
@@ -165,7 +172,8 @@ export function dateIsBefore(date1: DateType, date2: DateType) {
  * @param strictType 强制校验dateStr是否满足该类型
  */
 export function getMomentIsValid(dateStr: DateType, format?: string, strictType?: string) {
-  if (!dateStr || (strictType && !getType(dateStr, strictType))) return false
+  if (!dateStr || (strictType && !getType(dateStr, strictType)))
+    return false
   const momentDate = format ? moment(dateStr, format, true) : moment(dateStr)
   return momentDate.isValid() ? momentDate : false
 }
@@ -178,10 +186,12 @@ export function getMomentIsValid(dateStr: DateType, format?: string, strictType?
  */
 export function getMomentIsValidIsNoNum(dateStr: DateType, format?: string, strictType?: string) {
   const dateTypes = ['string', 'date']
-  if (dateTypes.some((type) => getType(dateStr, type))) {
-    if (!Number.isNaN(+dateStr)) return false
+  if (dateTypes.some(type => getType(dateStr, type))) {
+    if (!Number.isNaN(+dateStr))
+      return false
     return getMomentIsValid(dateStr, format, strictType)
-  } else {
+  }
+  else {
     return false
   }
 }
@@ -197,11 +207,13 @@ export function validateDate(
   format: string = 'YYYY-MM-DD HH:mm:ss',
   strictType: string,
 ) {
-  if (!dateStr) return false
+  if (!dateStr)
+    return false
 
   if (Array.isArray(dateStr)) {
-    return dateStr.every((date) => getMomentIsValid(date, format, strictType))
-  } else {
+    return dateStr.every(date => getMomentIsValid(date, format, strictType))
+  }
+  else {
     // 单个日期值 xxx
     return getMomentIsValid(dateStr, format, strictType)
   }
@@ -225,10 +237,12 @@ export function getFormatDate(
   onlyFormat = false,
 ) {
   const momentDate = getMomentIsValid(dateStr, format)
-  if (!momentDate) return false
+  if (!momentDate)
+    return false
 
   const formatDateStr = momentDate.format(format)
-  if (formatDateStr === dateStr || onlyFormat) return formatDateStr
+  if (formatDateStr === dateStr || onlyFormat)
+    return formatDateStr
   return momentDate[type](dateType).format(format)
 }
 
@@ -245,13 +259,15 @@ export function formatDateRange(
   dateType: moment.unitOfTime.StartOf = 'day',
   onlyFormat: boolean,
 ) {
-  if (!date) return []
+  if (!date)
+    return []
   const [start, end] = Array.isArray(date) ? date : [date, date]
   const startDate = getFormatDate(start, format, 'startOf', dateType, onlyFormat)
   const endDate = getFormatDate(end, format, 'endOf', dateType, onlyFormat)
   if (startDate && endDate) {
     return [startDate, endDate]
-  } else {
+  }
+  else {
     console.error('日期格式不正确')
     return []
   }

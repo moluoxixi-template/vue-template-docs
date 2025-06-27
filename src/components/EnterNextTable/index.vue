@@ -56,8 +56,9 @@ function collectTableRows() {
 
     // 获取所有tr元素(不包括表头tr)
     const rows = Array.from(table.querySelectorAll('.el-table__body tr'))
-    tableRows.value = rows.map((row) => row as HTMLElement)
-  } catch (error) {
+    tableRows.value = rows.map(row => row as HTMLElement)
+  }
+  catch (error) {
     console.error('EnterNextTable: 收集行元素时出错', error)
   }
 }

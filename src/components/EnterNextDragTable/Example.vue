@@ -63,7 +63,7 @@ const columns: ColumnType[] = [
 ]
 
 // 处理在最后一个输入框按下Enter的情况
-function handleNoNextInput({ row, rowIndex }: { row: TableRowData; rowIndex: number }) {
+function handleNoNextInput({ row, rowIndex }: { row: TableRowData, rowIndex: number }) {
   ElMessage.info(`在最后一个输入框按下了Enter，当前行：${rowIndex + 1}，姓名：${row.name}`)
   // 自动添加新行
   addRow()
@@ -71,8 +71,8 @@ function handleNoNextInput({ row, rowIndex }: { row: TableRowData; rowIndex: num
 
 // 添加新行
 function addRow() {
-  const newId =
-    tableData.value.length > 0 ? Math.max(...tableData.value.map((item) => item.id)) + 1 : 1
+  const newId
+    = tableData.value.length > 0 ? Math.max(...tableData.value.map(item => item.id)) + 1 : 1
 
   tableData.value.push({
     id: newId,
@@ -88,14 +88,15 @@ function removeLastRow() {
   if (tableData.value.length > 0) {
     tableData.value.pop()
     ElMessage.success('已删除最后一行')
-  } else {
+  }
+  else {
     ElMessage.warning('表格已无数据')
   }
 }
 
 // 处理删除指定行
 function handleDelete(row: TableRowData) {
-  const index = tableData.value.findIndex((item) => item.id === row.id)
+  const index = tableData.value.findIndex(item => item.id === row.id)
   if (index !== -1) {
     tableData.value.splice(index, 1)
     ElMessage.success(`已删除第${index + 1}行数据`)
@@ -132,13 +133,19 @@ const tableRef = ref(null)
           <el-input v-model="row[column.field]" />
         </template>
         <template #operation="{ row }">
-          <ElButton type="danger" size="small" @click="handleDelete(row)"> 删除 </ElButton>
+          <ElButton type="danger" size="small" @click="handleDelete(row)">
+            删除
+          </ElButton>
         </template>
       </EnterNextDragTable>
     </div>
     <div class="actions">
-      <ElButton type="primary" @click="addRow"> 添加行 </ElButton>
-      <ElButton type="danger" @click="removeLastRow"> 删除最后一行 </ElButton>
+      <ElButton type="primary" @click="addRow">
+        添加行
+      </ElButton>
+      <ElButton type="danger" @click="removeLastRow">
+        删除最后一行
+      </ElButton>
     </div>
   </div>
 </template>

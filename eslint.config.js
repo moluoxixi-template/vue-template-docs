@@ -4,6 +4,7 @@ import { globalIgnores } from 'eslint/config'
 export default antfu(
   {
     jsx: true,
+    formatters: true,
   },
   globalIgnores([
     '**/.husky/**',

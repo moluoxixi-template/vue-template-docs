@@ -60,14 +60,14 @@ export default defineConfig(({ mode }) => {
       resolvers: [
         ElementPlusResolver({
           exclude: new RegExp(
-            (useDoc ? [] : ['ElDrawer', 'ElDialog']).map((item) => `^${item}$`).join('|'),
+            (useDoc ? [] : ['ElDrawer', 'ElDialog']).map(item => `^${item}$`).join('|'),
           ),
         }),
       ],
       globs: ['src/components/**/index.vue'],
       dts: path.resolve(__dirname, './src/typings/components.d.ts'),
     }),
-  ].filter((i) => !!i)
+  ].filter(i => !!i)
 
   const performancePlugins = [
     createHtmlPlugin({
@@ -78,41 +78,41 @@ export default defineConfig(({ mode }) => {
       },
     }),
     // 代码压缩
-    viteEnv.VITE_COMPRESS &&
-      viteCompression({
-        algorithm: viteEnv.VITE_BUILD_GZIP ? 'gzip' : 'brotliCompress',
-        verbose: true,
-        disable: false,
-        ext: '.gz',
-        threshold: 10240,
-        deleteOriginFile: false,
-      }),
+    viteEnv.VITE_COMPRESS
+    && viteCompression({
+      algorithm: viteEnv.VITE_BUILD_GZIP ? 'gzip' : 'brotliCompress',
+      verbose: true,
+      disable: false,
+      ext: '.gz',
+      threshold: 10240,
+      deleteOriginFile: false,
+    }),
     // 图片压缩
-    viteEnv.VITE_IMAGEMIN &&
-      viteImagemin({
-        gifsicle: { optimizationLevel: 7, interlaced: false },
-        optipng: { optimizationLevel: 7 },
-        mozjpeg: { quality: 20 },
-        pngquant: { quality: [0.8, 0.9], speed: 4 },
-        svgo: {
-          plugins: [{ name: 'removeViewBox' }, { name: 'removeEmptyAttrs', active: false }],
-        },
-      }),
-    useCDN &&
-      importToCDN({
-        enableInDevMode: viteEnv.VITE_USE_CDN_IS_DEV,
-        prodUrl: `${viteEnv.VITE_CDN_BASE_URL}/{name}@{version}{path}`,
-        modules,
-      }),
-  ].filter((i) => !!i)
+    viteEnv.VITE_IMAGEMIN
+    && viteImagemin({
+      gifsicle: { optimizationLevel: 7, interlaced: false },
+      optipng: { optimizationLevel: 7 },
+      mozjpeg: { quality: 20 },
+      pngquant: { quality: [0.8, 0.9], speed: 4 },
+      svgo: {
+        plugins: [{ name: 'removeViewBox' }, { name: 'removeEmptyAttrs', active: false }],
+      },
+    }),
+    useCDN
+    && importToCDN({
+      enableInDevMode: viteEnv.VITE_USE_CDN_IS_DEV,
+      prodUrl: `${viteEnv.VITE_CDN_BASE_URL}/{name}@{version}{path}`,
+      modules,
+    }),
+  ].filter(i => !!i)
 
   const monitorPlugins = [
     // 是否生成包预览
-    viteEnv.VITE_REPORT &&
-      visualizer({
-        open: true,
-      }),
-  ].filter((i) => !!i)
+    viteEnv.VITE_REPORT
+    && visualizer({
+      open: true,
+    }),
+  ].filter(i => !!i)
 
   const qianKunPlugins = useQianKun
     ? [

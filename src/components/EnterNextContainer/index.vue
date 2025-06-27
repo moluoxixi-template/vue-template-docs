@@ -33,7 +33,8 @@ const elementToObserve = computed(() => {
 // 获取容器内所有input和select元素，并为它们添加事件监听器
 function collectInputElements() {
   const container = elementToObserve.value
-  if (!container) return
+  if (!container)
+    return
 
   // 先移除之前的事件监听器
   inputElements.value.forEach((el) => {
@@ -53,15 +54,18 @@ function collectInputElements() {
 // 检查属性是否存在且值为空
 function attributeExistsWithNoValue(element: HTMLElement, attributeName: string, value?: any) {
   const hasAttribute = element.hasAttribute(attributeName)
-  if (!hasAttribute) return true
-  if (value) return element.getAttribute(attributeName) === value
+  if (!hasAttribute)
+    return true
+  if (value)
+    return element.getAttribute(attributeName) === value
   return !!element.getAttribute(attributeName)
 }
 
 // 处理input元素的keyup事件
 function handleInputKeyUp(event: KeyboardEvent) {
   // 只处理Enter键
-  if (event.key !== 'Enter') return
+  if (event.key !== 'Enter')
+    return
 
   // 阻止默认行为，避免表单提交等操作
   event.preventDefault()
@@ -70,7 +74,8 @@ function handleInputKeyUp(event: KeyboardEvent) {
   const activeElement = event.target as HTMLElement
 
   // 如果当前没有元素被聚焦，或者焦点的元素不在我们的收集列表中，返回
-  if (!activeElement || !inputElements.value.includes(activeElement)) return
+  if (!activeElement || !inputElements.value.includes(activeElement))
+    return
 
   const hasAriaActive = attributeExistsWithNoValue(activeElement, 'aria-expanded', 'false')
 
@@ -89,10 +94,11 @@ function handleInputKeyUp(event: KeyboardEvent) {
   // // if (!canSelectNext) return
   // console.log('canSelectNext', canSelectNext)
   // //#endregion
-  if (!hasAriaActive) return
+  if (!hasAriaActive)
+    return
 
   // 获取当前焦点元素在列表中的索引
-  const currentIndex = inputElements.value.findIndex((el) => el === activeElement)
+  const currentIndex = inputElements.value.findIndex(el => el === activeElement)
 
   // 如果找到了当前元素，检查是否有下一个元素
   if (currentIndex >= 0) {
@@ -100,7 +106,8 @@ function handleInputKeyUp(event: KeyboardEvent) {
     if (currentIndex === inputElements.value.length - 1 || inputElements.value.length <= 1) {
       // 触发没有下一个元素的事件
       emit('noNextInput', activeElement)
-    } else {
+    }
+    else {
       // 还有下一个元素，正常跳转
       const nextIndex = currentIndex + 1
       const nextElement = inputElements.value[nextIndex]
@@ -111,7 +118,8 @@ function handleInputKeyUp(event: KeyboardEvent) {
 
 // 设置MutationObserver监听DOM变化
 function setupMutationObserver() {
-  if (!elementToObserve.value) return
+  if (!elementToObserve.value)
+    return
 
   const observer = new MutationObserver(() => {
     collectInputElements()

@@ -59,8 +59,9 @@ function collectTableRows() {
 
     // 获取所有表格行元素(不包括表头行)
     const rows = Array.from(table.querySelectorAll('.vxe-body--row'))
-    tableRows.value = rows.map((row) => row as HTMLElement)
-  } catch (error) {
+    tableRows.value = rows.map(row => row as HTMLElement)
+  }
+  catch (error) {
     console.error('EnterNextDragTable: 收集行元素时出错', error)
   }
 }

@@ -61,7 +61,8 @@ export function getEnvConfig(match = 'VITE_GLOB_', confFiles = ['.env', '.env.pr
     try {
       const env = dotenv.parse(fs.readFileSync(path.resolve(process.cwd(), item)))
       envConfig = { ...envConfig, ...env }
-    } catch (error) {
+    }
+    catch (error) {
       console.error(`Error in parsing ${item}`, error)
     }
   })

@@ -65,8 +65,8 @@ function convertColumnsConfig(computedElTableColumns) {
     const columnProps = col.props || col
 
     // 获取基本属性
-    const { property, label, width, minWidth, fixed, align, showOverflowTooltip, sortable, type } =
-      columnProps
+    const { property, label, width, minWidth, fixed, align, showOverflowTooltip, sortable, type }
+      = columnProps
     const typeMap = {
       default: null,
       selection: 'checkbox',
@@ -92,7 +92,8 @@ function convertColumnsConfig(computedElTableColumns) {
 watch(
   () => computedElTableColumns.value,
   (newVal) => {
-    if (!newVal) return
+    if (!newVal)
+      return
     convertColumnsConfig(newVal)
   },
   {

@@ -44,8 +44,8 @@ function createAutoRoutesPlugin({ routeConfig, virtualModuleId }: config): Plugi
 
         Object.entries(routeConfig).forEach(([prefix, globVal], index) => {
           const varName = `files${index}`
-          const glob: string | string[] =
-            (globVal as objRouteConfig).glob || (globVal as string | string[])
+          const glob: string | string[]
+            = (globVal as objRouteConfig).glob || (globVal as string | string[])
           imports.push(
             `const ${varName} = import.meta.glob(${JSON.stringify(glob)}, { eager: true, import: 'default' });`,
           )
