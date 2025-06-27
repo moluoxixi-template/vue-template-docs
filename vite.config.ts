@@ -60,7 +60,7 @@ export default defineConfig(({ mode }) => {
       resolvers: [
         ElementPlusResolver({
           exclude: new RegExp(
-            (useDoc ? [] : ['ElDrawer', 'ElDialog']).map(item => `^${item}$`).join('|'),
+            (useDoc ? [] : ['ElButton', 'ElDrawer', 'ElDialog']).map(item => `^${item}$`).join('|'),
           ),
         }),
       ],
