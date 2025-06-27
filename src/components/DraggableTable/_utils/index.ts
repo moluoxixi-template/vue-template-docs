@@ -26,7 +26,7 @@ export function getTypeName(type?: types) {
 }
 
 export function getCustomType(type?: types) {
-  return type ? Object.keys(customTypeMap).find((customType) => customType === type) || '' : ''
+  return type ? Object.keys(customTypeMap).find(customType => customType === type) || '' : ''
 }
 
 export function handleGetColumn(Column: ColumnType): ColumnType {
@@ -143,7 +143,7 @@ export function handleGetColumn(Column: ColumnType): ColumnType {
 
 export function handleGetRequiredFields() {
   const noRequiredFields = ['width', 'visible', 'options', 'cellProps', 'editProps', 'filterProps']
-  return Object.keys(handleGetColumn({})).filter((key) => !noRequiredFields.includes(key)) as Array<
+  return Object.keys(handleGetColumn({})).filter(key => !noRequiredFields.includes(key)) as Array<
     keyof ColumnType
   >
 }

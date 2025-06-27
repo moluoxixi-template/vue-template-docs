@@ -349,13 +349,14 @@ const tableData = defineModel({
  */
 const computedColumns = computed<ColumnType[]>(() => {
   const columns = cloneDeep(props.columns)
-  if (!getType(columns, 'array')) return []
+  if (!getType(columns, 'array'))
+    return []
   // #region 获取所有插槽的名称
   const columnsSlotsNames: string[] = []
   columns.forEach((item) => {
     if (item?.slots) {
       columnsSlotsNames.push(
-        ...(Object.values(item.slots).filter((i) => getType(i, 'string')) as string[]),
+        ...(Object.values(item.slots).filter(i => getType(i, 'string')) as string[]),
       )
     }
   })
@@ -370,13 +371,15 @@ const computedColumns = computed<ColumnType[]>(() => {
     col.visible = col.visible ?? true
     const { options, editProps, filterProps, cellProps, ...item } = col
     const customType = getCustomType(item.type)
-    if (customType) delete item.type
+    if (customType)
+      delete item.type
 
     /**
      * 提供默认排序
      */
     item.sortable = item.sortable ?? props.sortable
-    if (!item.field) return item
+    if (!item.field)
+      return item
     // #region 提供基于field的插槽
     /*
      * 提供基于field的插槽，规则如下：
@@ -411,27 +414,34 @@ const computedColumns = computed<ColumnType[]>(() => {
       if (slotsDiff.includes(slotName)) {
         if (key === 'title' && item.type === 'checkbox') {
           defaultSlots.title = slotName
-        } else if (key === 'checkbox' && item.type === 'checkbox') {
+        }
+        else if (key === 'checkbox' && item.type === 'checkbox') {
           defaultSlots.checkbox = slotName
-        } else if (key === 'radio' && item.type === 'radio') {
+        }
+        else if (key === 'radio' && item.type === 'radio') {
           defaultSlots.radio = slotName
-        } else if (key === 'content' && item.type === 'expand') {
+        }
+        else if (key === 'content' && item.type === 'expand') {
           defaultSlots.content = slotName
-        } else if (
-          key === 'filter' &&
-          getType(item.filterRender, 'object') &&
-          !getType(item.filters, 'array')
+        }
+        else if (
+          key === 'filter'
+          && getType(item.filterRender, 'object')
+          && !getType(item.filters, 'array')
         ) {
           defaultSlots.filter = slotName
-        } else if (key === 'edit' && getType(item.editRender, 'object')) {
+        }
+        else if (key === 'edit' && getType(item.editRender, 'object')) {
           defaultSlots.edit = slotName
-        } else if (
-          key === 'valid' &&
-          !isEmpty(props.editRules) &&
-          getType(item.editRender, 'object')
+        }
+        else if (
+          key === 'valid'
+          && !isEmpty(props.editRules)
+          && getType(item.editRender, 'object')
         ) {
           defaultSlots.valid = slotName
-        } else {
+        }
+        else {
           defaultSlots[key] = slotName
         }
       }
@@ -479,13 +489,13 @@ const computedColumns = computed<ColumnType[]>(() => {
     // #region 添加基于field的自定义默认渲染器，额外提供以下type功能：'input' | 'select' | 'date' | 'datetime' | 'switch' | 'progress' | 'tag'
 
     if (
-      isEmpty(item.cellRender) &&
-      isEmpty(item.contentRender) &&
+      isEmpty(item.cellRender)
+      && isEmpty(item.contentRender)
       // 与editRender互斥
-      isEmpty(item.editRender) &&
-      !item.slots?.default &&
-      !item.formatter &&
-      customType
+      && isEmpty(item.editRender)
+      && !item.slots?.default
+      && !item.formatter
+      && customType
     ) {
       item.cellRender = {
         name: 'cellRenderer',
@@ -508,7 +518,8 @@ const virtualRef = ref<HTMLElement>()
 // 表格引用
 const xTable = useTemplateRef<VxeGridInstance>('xTable')
 const fullColumns = computed<ColumnType[]>(() => {
-  if (!xTable.value) return []
+  if (!xTable.value)
+    return []
   const { fullColumn } = xTable.value.getTableColumn()
   return fullColumn as any[]
 })
@@ -566,8 +577,8 @@ const gridProps = computed<VxeGridProps>(() => {
       }) {
         const currentRowDom = xTable.value?.$el.querySelector(`tr[rowid="${params.rowid}"]`)
         return (
-          props.rowDragDisabledMethod?.(params) ||
-          [...(currentRowDom?.classList.values() || [])].includes(getClass(props.rowDisabledClass))
+          props.rowDragDisabledMethod?.(params)
+          || [...(currentRowDom?.classList.values() || [])].includes(getClass(props.rowDisabledClass))
         )
       },
       ...props.rowDragConfig,
@@ -655,9 +666,9 @@ function handleHeaderCellMenu(
 ) {
   emit('headerCellMenu', params)
   if (
-    isEmpty(props.menuConfig) ||
-    isEmpty(props.menuConfig.header) ||
-    props.menuConfig.header?.disabled
+    isEmpty(props.menuConfig)
+    || isEmpty(props.menuConfig.header)
+    || props.menuConfig.header?.disabled
   ) {
     virtualRef.value = params.cell
     contextMenuVisible.value = true
@@ -696,7 +707,8 @@ function handleGetStoredColumns(): ColumnType[] {
   try {
     const stored = localStorage.getItem(getStorageKey())
     return stored ? JSON.parse(stored) : []
-  } catch (error) {
+  }
+  catch (error) {
     console.error('获取本地存储的列配置失败:', error)
     return []
   }
@@ -707,16 +719,18 @@ function handleGetStoredColumns(): ColumnType[] {
  */
 function handleSaveColumnsToStorage() {
   try {
-    if (!xTable.value) return
+    if (!xTable.value)
+      return
 
     // 直接从表格实例获取完整列配置
     const { fullColumn } = xTable.value.getTableColumn()
     // 只保存必要的列属性
     const columns: ColumnType[] = (fullColumn as any[])
       .filter((item: ColumnType) => item.title || item.type)
-      .map((i) => handleGetColumn(i))
+      .map(i => handleGetColumn(i))
     localStorage.setItem(getStorageKey(), JSON.stringify(columns))
-  } catch {}
+  }
+  catch {}
 }
 
 /**
@@ -742,18 +756,19 @@ function handleCompareColumns(
   computedColumns: ColumnType[] = [],
   storedColumns: ColumnType[] = [],
 ) {
-  if (computedColumns.length !== storedColumns.length) return true
+  if (computedColumns.length !== storedColumns.length)
+    return true
   const requiredFields: Array<keyof ColumnType> = handleGetRequiredFields()
   return computedColumns.some((source) => {
     const target = storedColumns.find(
-      (item) =>
+      item =>
         item.field === source.field && item.type === source.type && item.title === source.title,
     )
     if (!target) {
       return true
     }
     return requiredFields.some(
-      (field) => getStringObj(target[field]) !== getStringObj(source[field]),
+      field => getStringObj(target[field]) !== getStringObj(source[field]),
     )
     // const requiredAndDefaultFields: Array<keyof ColumnType> = ['visible']
     // const defaultDiff = requiredAndDefaultFields.some((field) => {
@@ -791,7 +806,8 @@ watch(
       // 使用props.columns并保存到本地
       if (shouldUseStored) {
         handleSavePropsColumns()
-      } else {
+      }
+      else {
         localColumns.value = storedColumns
       }
     }
@@ -836,10 +852,12 @@ function initRowDraggable() {
   // 先销毁旧实例
   destroyRowSortable()
 
-  if (!xTable.value) return
+  if (!xTable.value)
+    return
 
   const tableBody = xTable.value.$el.querySelector('.vxe-table--body tbody')
-  if (!tableBody) return
+  if (!tableBody)
+    return
 
   // 创建Sortable实例
   rowSortableInstance.value = Sortable.create(tableBody, {
@@ -847,7 +865,8 @@ function initRowDraggable() {
     handle: 'tr',
     filter: getClass(props.rowDisabledClass, true),
     onEnd: ({ oldIndex = 0, newIndex = 0, item }) => {
-      if (oldIndex === newIndex || !xTable.value) return
+      if (oldIndex === newIndex || !xTable.value)
+        return
       // 获取源数据副本
       const tableDataCopy = [...tableData.value]
       // 移动行数据
@@ -874,7 +893,8 @@ function initRowDraggable() {
           const nodeList = Array.from(wrapperElem.childNodes)
           if (dragPos === 'top') {
             wrapperElem.insertBefore(nodeList[newIndex], nodeList[oldIndex + 1])
-          } else {
+          }
+          else {
             wrapperElem.insertBefore(nodeList[newIndex], nodeList[oldIndex])
           }
         }
@@ -902,24 +922,28 @@ function initColumnDraggable() {
   // 先销毁旧实例
   destroyColumnSortable()
 
-  if (!xTable.value) return
+  if (!xTable.value)
+    return
 
   const headerTr = xTable.value.$el.querySelector(
     '.vxe-table--header-wrapper .vxe-table--header tr',
     '.vxe-table--header tr',
   )
-  if (!headerTr) return
+  if (!headerTr)
+    return
 
   // 创建Sortable实例
   columnSortableInstance.value = Sortable.create(headerTr, {
     animation: 150,
     handle: 'th',
     onEnd: ({ oldIndex = 0, newIndex = 0, item }) => {
-      if (oldIndex === newIndex || !xTable.value) return
+      if (oldIndex === newIndex || !xTable.value)
+        return
 
       // 获取列配置副本
       const { fullColumn, tableColumn } = xTable.value.getTableColumn() || {}
-      if (!fullColumn || !tableColumn) return
+      if (!fullColumn || !tableColumn)
+        return
       const wrapperElem = item.parentNode
       const newColumn = fullColumn[newIndex]
       if (newColumn.fixed) {
@@ -928,7 +952,8 @@ function initColumnDraggable() {
         if (oldTrElement) {
           if (newIndex > oldIndex) {
             wrapperElem?.insertBefore(item, oldTrElement)
-          } else {
+          }
+          else {
             wrapperElem?.insertBefore(oldTrElement, item)
           }
         }
@@ -983,13 +1008,15 @@ onBeforeUnmount(() => {
 watch(
   () => props.dragable,
   (newVal) => {
-    if (props.dragType !== 'draggable') return
+    if (props.dragType !== 'draggable')
+      return
     if (newVal) {
       setTimeout(() => {
         initRowDraggable()
         initColumnDraggable()
       }, 100)
-    } else {
+    }
+    else {
       destroyRowSortable()
     }
   },
@@ -1001,12 +1028,14 @@ watch(
 watch(
   () => props.rowdragable,
   (newVal) => {
-    if (props.dragType !== 'draggable') return
+    if (props.dragType !== 'draggable')
+      return
     if (newVal) {
       setTimeout(() => {
         initRowDraggable()
       }, 100)
-    } else {
+    }
+    else {
       destroyRowSortable()
       destroyColumnSortable()
     }
@@ -1019,12 +1048,14 @@ watch(
 watch(
   () => props.columndragable,
   (newVal) => {
-    if (props.dragType !== 'draggable') return
+    if (props.dragType !== 'draggable')
+      return
     if (newVal) {
       setTimeout(() => {
         initColumnDraggable()
       }, 100)
-    } else {
+    }
+    else {
       destroyColumnSortable()
     }
   },

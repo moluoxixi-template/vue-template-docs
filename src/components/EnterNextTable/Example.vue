@@ -50,7 +50,8 @@ function removeLastRow() {
     setTimeout(() => {
       tableEnterNextRef.value?.refreshRows()
     }, 0)
-  } else {
+  }
+  else {
     ElMessage.warning('表格已无数据')
   }
 }
@@ -82,8 +83,12 @@ function handleNoNextInput({ rowIndex }: noNextInputParams) {
     <el-card class="example-card">
       <div class="header-actions">
         <div class="action-buttons">
-          <el-button type="primary" @click="addRow"> 添加行 </el-button>
-          <el-button type="danger" @click="removeLastRow"> 删除最后一行 </el-button>
+          <el-button type="primary" @click="addRow">
+            添加行
+          </el-button>
+          <el-button type="danger" @click="removeLastRow">
+            删除最后一行
+          </el-button>
         </div>
         <!--        <el-checkbox v-model="allowSelectNextInEmpty">允许在下拉框展开时也能跳转</el-checkbox> -->
       </div>

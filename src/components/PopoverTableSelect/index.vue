@@ -85,9 +85,11 @@ function handleInput(val: string) {
 const computedInput = computed(() => {
   if (props.debounce) {
     return _debounce(handleInput, props.debounce)
-  } else if (props.throttle) {
+  }
+  else if (props.throttle) {
     return _throttle(handleInput, props.throttle)
-  } else {
+  }
+  else {
     return handleInput
   }
 })

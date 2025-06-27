@@ -14,7 +14,8 @@ const newUser = ref<CreateUserDto>({
 async function fetchUsers() {
   try {
     users.value = await userApi.getUsers()
-  } catch (error) {
+  }
+  catch (error) {
     console.error('获取用户列表失败:', error)
   }
 }
@@ -25,7 +26,8 @@ async function handleCreate() {
     await userApi.createUser(newUser.value)
     newUser.value = { name: '', email: '' }
     await fetchUsers()
-  } catch (error) {
+  }
+  catch (error) {
     console.error('创建用户失败:', error)
   }
 }
@@ -35,7 +37,8 @@ async function handleDelete(id: number) {
   try {
     await userApi.deleteUser(id)
     await fetchUsers()
-  } catch (error) {
+  }
+  catch (error) {
     console.error('删除用户失败:', error)
   }
 }
@@ -52,9 +55,11 @@ onMounted(() => {
     <!-- 创建用户表单 -->
     <div class="create-form">
       <h3>创建用户</h3>
-      <input v-model="newUser.name" placeholder="用户名" />
-      <input v-model="newUser.email" placeholder="邮箱" />
-      <button @click="handleCreate">创建</button>
+      <input v-model="newUser.name" placeholder="用户名">
+      <input v-model="newUser.email" placeholder="邮箱">
+      <button @click="handleCreate">
+        创建
+      </button>
     </div>
 
     <!-- 用户列表 -->
@@ -63,7 +68,9 @@ onMounted(() => {
       <div v-for="user in users" :key="user.id" class="user-item">
         <span>{{ user.name }}</span>
         <span>{{ user.email }}</span>
-        <button @click="handleDelete(user.id)">删除</button>
+        <button @click="handleDelete(user.id)">
+          删除
+        </button>
       </div>
     </div>
   </div>

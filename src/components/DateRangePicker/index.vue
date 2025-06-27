@@ -159,7 +159,8 @@ const hours = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
 
 // 禁用日期函数
 function disabledHoursFn(type: DisabledTypes) {
-  if (!props.datetimeDisableTypes.includes('hours')) return []
+  if (!props.datetimeDisableTypes.includes('hours'))
+    return []
   // // 优先使用disabledDateRange
   const [min, max] = getTypeDefault(props.disabledDateRange, 'array')
   const minStr = min || props.minDate
@@ -173,33 +174,95 @@ function disabledHoursFn(type: DisabledTypes) {
   if (Array.isArray(localDateValue.value)) {
     minCurrentDay = moment(localDateValue.value[0]).get('day')
     maxCurrentDay = moment(localDateValue.value[1]).get('day')
-  } else {
+  }
+  else {
     minCurrentDay = moment(localDateValue.value).get('day')
     maxCurrentDay = moment(localDateValue.value).get('day')
   }
   if (minHour && maxHour) {
     if (type === 'start') {
-      return minCurrentDay === minDay ? hours.filter((h) => h < minHour) : []
-    } else if (type === 'end') {
-      return maxCurrentDay === maxDay ? hours.filter((h) => h > maxHour) : []
+      return minCurrentDay === minDay ? hours.filter(h => h < minHour) : []
     }
-  } else if (minHour) {
-    return minCurrentDay === minDay ? hours.filter((h) => h < minHour) : []
-  } else if (maxHour) {
-    return maxCurrentDay === maxDay ? hours.filter((h) => h > maxHour) : []
+    else if (type === 'end') {
+      return maxCurrentDay === maxDay ? hours.filter(h => h > maxHour) : []
+    }
+  }
+  else if (minHour) {
+    return minCurrentDay === minDay ? hours.filter(h => h < minHour) : []
+  }
+  else if (maxHour) {
+    return maxCurrentDay === maxDay ? hours.filter(h => h > maxHour) : []
   }
   return []
 }
 
 const minutesOrSeconds = [
-  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
-  27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50,
-  51, 52, 53, 54, 55, 56, 57, 58, 59,
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  22,
+  23,
+  24,
+  25,
+  26,
+  27,
+  28,
+  29,
+  30,
+  31,
+  32,
+  33,
+  34,
+  35,
+  36,
+  37,
+  38,
+  39,
+  40,
+  41,
+  42,
+  43,
+  44,
+  45,
+  46,
+  47,
+  48,
+  49,
+  50,
+  51,
+  52,
+  53,
+  54,
+  55,
+  56,
+  57,
+  58,
+  59,
 ]
 
 // 禁用日期函数
 function disabledMinutesFn(_: number, type: DisabledTypes) {
-  if (!props.datetimeDisableTypes.includes('minutes')) return []
+  if (!props.datetimeDisableTypes.includes('minutes'))
+    return []
   const [min, max] = getTypeDefault(props.disabledDateRange, 'array')
   const minStr = min || props.minDate
   const maxStr = max || props.maxDate
@@ -212,27 +275,32 @@ function disabledMinutesFn(_: number, type: DisabledTypes) {
   if (Array.isArray(localDateValue.value)) {
     minCurrentDay = moment(localDateValue.value[0]).get('day')
     maxCurrentDay = moment(localDateValue.value[1]).get('day')
-  } else {
+  }
+  else {
     minCurrentDay = moment(localDateValue.value).get('day')
     maxCurrentDay = moment(localDateValue.value).get('day')
   }
   if (minMinute && maxMinute) {
     if (type === 'start') {
-      return minCurrentDay === minDay ? minutesOrSeconds.filter((m) => m < minMinute) : []
-    } else if (type === 'end') {
-      return maxCurrentDay === maxDay ? minutesOrSeconds.filter((m) => m > maxMinute) : []
+      return minCurrentDay === minDay ? minutesOrSeconds.filter(m => m < minMinute) : []
     }
-  } else if (minMinute) {
-    return minCurrentDay === minDay ? minutesOrSeconds.filter((m) => m < minMinute) : []
-  } else if (maxMinute) {
-    return maxCurrentDay === maxDay ? minutesOrSeconds.filter((m) => m > maxMinute) : []
+    else if (type === 'end') {
+      return maxCurrentDay === maxDay ? minutesOrSeconds.filter(m => m > maxMinute) : []
+    }
+  }
+  else if (minMinute) {
+    return minCurrentDay === minDay ? minutesOrSeconds.filter(m => m < minMinute) : []
+  }
+  else if (maxMinute) {
+    return maxCurrentDay === maxDay ? minutesOrSeconds.filter(m => m > maxMinute) : []
   }
   return []
 }
 
 // 禁用日期函数
 function disabledSecondsFn(...rest: restParams) {
-  if (!props.datetimeDisableTypes.includes('seconds')) return []
+  if (!props.datetimeDisableTypes.includes('seconds'))
+    return []
   const type: DisabledTypes = rest.at(2)
   const [min, max] = getTypeDefault(props.disabledDateRange, 'array')
   const minStr = min || props.minDate
@@ -246,20 +314,24 @@ function disabledSecondsFn(...rest: restParams) {
   if (Array.isArray(localDateValue.value)) {
     minCurrentDay = moment(localDateValue.value[0]).get('day')
     maxCurrentDay = moment(localDateValue.value[1]).get('day')
-  } else {
+  }
+  else {
     minCurrentDay = moment(localDateValue.value).get('day')
     maxCurrentDay = moment(localDateValue.value).get('day')
   }
   if (minSecond && maxSecond) {
     if (type === 'start') {
-      return minCurrentDay === minDay ? minutesOrSeconds.filter((s) => s < minSecond) : []
-    } else if (type === 'end') {
-      return maxCurrentDay === maxDay ? minutesOrSeconds.filter((s) => s > maxSecond) : []
+      return minCurrentDay === minDay ? minutesOrSeconds.filter(s => s < minSecond) : []
     }
-  } else if (minSecond) {
-    return minCurrentDay === minDay ? minutesOrSeconds.filter((s) => s < minSecond) : []
-  } else if (maxSecond) {
-    return maxCurrentDay === maxDay ? minutesOrSeconds.filter((s) => s > maxSecond) : []
+    else if (type === 'end') {
+      return maxCurrentDay === maxDay ? minutesOrSeconds.filter(s => s > maxSecond) : []
+    }
+  }
+  else if (minSecond) {
+    return minCurrentDay === minDay ? minutesOrSeconds.filter(s => s < minSecond) : []
+  }
+  else if (maxSecond) {
+    return maxCurrentDay === maxDay ? minutesOrSeconds.filter(s => s > maxSecond) : []
   }
   return []
 }
@@ -274,13 +346,15 @@ function generateDateRangeByConfig() {
       const [startOffset, endOffset] = props.dateRange
       startDate = moment(baseDate).add(+startOffset, props.dateRangeType)
       endDate = moment(baseDate).add(+endOffset, props.dateRangeType)
-    } else {
+    }
+    else {
       // 数字形式
       if (+props.dateRange >= 0) {
         // 正数表示当前日期往后n天
         startDate = moment(baseDate)
         endDate = moment(baseDate).add(+props.dateRange, props.dateRangeType)
-      } else {
+      }
+      else {
         // 负数表示往前n天
         startDate = moment(baseDate).add(+props.dateRange, props.dateRangeType)
         endDate = moment(baseDate)
@@ -379,7 +453,8 @@ watch(
           !computedDefaultDatetimeRange.value,
         )
         emit('update:modelValue', today)
-      } else {
+      }
+      else {
         localDateValue.value = []
       }
     }

@@ -6,7 +6,9 @@ function throwError() {
 </script>
 
 <template>
-  <div @click="throwError">测试sentry报错，点我</div>
+  <div @click="throwError">
+    测试sentry报错，点我
+  </div>
 </template>
 
 <style scoped lang="scss"></style>

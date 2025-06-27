@@ -35,50 +35,72 @@ const dateRange11 = ref([])
     <div class="example-section">
       <h3>2. 日期范围选择器</h3>
       <div class="example-item">
-        <div class="label">基本用法：</div>
+        <div class="label">
+          基本用法：
+        </div>
         <div class="component">
           <DateRangePicker v-model="dateRange1" type="daterange" />
         </div>
-        <div class="value">选中值: {{ dateRange1 }}</div>
+        <div class="value">
+          选中值: {{ dateRange1 }}
+        </div>
       </div>
 
       <div class="example-item">
-        <div class="label">默认返回今天：</div>
+        <div class="label">
+          默认返回今天：
+        </div>
         <div class="component">
           <DateRangePicker v-model="dateRange2" type="daterange" :default-today="true" />
         </div>
-        <div class="value">选中值: {{ dateRange2 }}</div>
+        <div class="value">
+          选中值: {{ dateRange2 }}
+        </div>
       </div>
     </div>
 
     <div class="example-section">
       <h3>3. 自定义日期范围</h3>
       <div class="example-item">
-        <div class="label">dateRange=7（今天到未来7天）：</div>
+        <div class="label">
+          dateRange=7（今天到未来7天）：
+        </div>
         <div class="component">
           <DateRangePicker v-model="dateRange3" type="daterange" :date-range="7" />
         </div>
-        <div class="value">选中值: {{ dateRange3 }}</div>
+        <div class="value">
+          选中值: {{ dateRange3 }}
+        </div>
       </div>
 
       <div class="example-item">
-        <div class="label">dateRange=-7（过去7天到今天）：</div>
+        <div class="label">
+          dateRange=-7（过去7天到今天）：
+        </div>
         <div class="component">
           <DateRangePicker v-model="dateRange4" type="daterange" :date-range="-7" />
         </div>
-        <div class="value">选中值: {{ dateRange4 }}</div>
+        <div class="value">
+          选中值: {{ dateRange4 }}
+        </div>
       </div>
 
       <div class="example-item">
-        <div class="label">dateRange=[-7, 7]（过去7天到未来7天）：</div>
+        <div class="label">
+          dateRange=[-7, 7]（过去7天到未来7天）：
+        </div>
         <div class="component">
           <DateRangePicker v-model="dateRange5" type="daterange" :date-range="[-7, 7]" />
         </div>
-        <div class="value">选中值: {{ dateRange5 }}</div>
+        <div class="value">
+          选中值: {{ dateRange5 }}
+        </div>
       </div>
 
       <div class="example-item">
-        <div class="label">dateRange=-7（基于昨天的过去7天到今天）：</div>
+        <div class="label">
+          dateRange=-7（基于昨天的过去7天到今天）：
+        </div>
         <div class="component">
           <DateRangePicker
             v-model="dateRange18"
@@ -87,30 +109,42 @@ const dateRange11 = ref([])
             :date-range="-7"
           />
         </div>
-        <div class="value">选中值: {{ dateRange18 }}</div>
+        <div class="value">
+          选中值: {{ dateRange18 }}
+        </div>
       </div>
     </div>
 
     <div class="example-section">
       <h3>4. 禁用日期</h3>
       <div class="example-item">
-        <div class="label">minDate（今天之前的日期禁用）：</div>
+        <div class="label">
+          minDate（今天之前的日期禁用）：
+        </div>
         <div class="component">
           <DateRangePicker v-model="dateRange6" type="daterange" :min-date="today" />
         </div>
-        <div class="value">选中值: {{ dateRange6 }}</div>
+        <div class="value">
+          选中值: {{ dateRange6 }}
+        </div>
       </div>
 
       <div class="example-item">
-        <div class="label">maxDate（今天之后的日期禁用）：</div>
+        <div class="label">
+          maxDate（今天之后的日期禁用）：
+        </div>
         <div class="component">
           <DateRangePicker v-model="dateRange7" type="daterange" :max-date="today" />
         </div>
-        <div class="value">选中值: {{ dateRange7 }}</div>
+        <div class="value">
+          选中值: {{ dateRange7 }}
+        </div>
       </div>
 
       <div class="example-item">
-        <div class="label">disabledDateRange（只允许选择未来7天内的日期）：</div>
+        <div class="label">
+          disabledDateRange（只允许选择未来7天内的日期）：
+        </div>
         <div class="component">
           <DateRangePicker
             v-model="dateRange8"
@@ -118,32 +152,42 @@ const dateRange11 = ref([])
             :disabled-date-range="[today, futureWeek]"
           />
         </div>
-        <div class="value">选中值: {{ dateRange8 }}</div>
+        <div class="value">
+          选中值: {{ dateRange8 }}
+        </div>
       </div>
     </div>
 
     <div class="example-section">
       <h3>5. 快速选择选项</h3>
       <div class="example-item">
-        <div class="label">显示快速选择：</div>
+        <div class="label">
+          显示快速选择：
+        </div>
         <div class="component">
           <DateRangePicker v-model="dateRange9" type="daterange" shortcuts />
         </div>
-        <div class="value">选中值: {{ dateRange9 }}</div>
+        <div class="value">
+          选中值: {{ dateRange9 }}
+        </div>
       </div>
     </div>
 
     <div class="example-section">
       <h3>6. 尺寸和禁用</h3>
       <div class="example-item">
-        <div class="label">小尺寸：</div>
+        <div class="label">
+          小尺寸：
+        </div>
         <div class="component">
           <DateRangePicker v-model="dateRange10" type="daterange" size="small" />
         </div>
       </div>
 
       <div class="example-item">
-        <div class="label">禁用状态：</div>
+        <div class="label">
+          禁用状态：
+        </div>
         <div class="component">
           <DateRangePicker
             v-model="dateRange11"
@@ -152,7 +196,9 @@ const dateRange11 = ref([])
             :default-today="true"
           />
         </div>
-        <div class="value">选中值: {{ dateRange11 }}</div>
+        <div class="value">
+          选中值: {{ dateRange11 }}
+        </div>
       </div>
     </div>
   </div>

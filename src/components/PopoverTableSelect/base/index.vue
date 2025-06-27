@@ -106,7 +106,8 @@ watch(
       nextTick(() => {
         document.addEventListener('mousedown', handleOutsideClick)
       })
-    } else {
+    }
+    else {
       // 移除点击外部关闭的事件监听
       document.removeEventListener('mousedown', handleOutsideClick)
     }
@@ -143,7 +144,8 @@ function cleanupEventListeners() {
  * 处理点击外部区域，关闭popover
  */
 function handleOutsideClick(e: MouseEvent) {
-  if (!popoverVisible.value) return
+  if (!popoverVisible.value)
+    return
 
   // 获取popover元素
   const popoverEl = popoverRef.value
@@ -151,10 +153,10 @@ function handleOutsideClick(e: MouseEvent) {
   const virtualEl = (props.virtualRef as ComponentPublicInstance)?.$el || props.virtualRef
   // 检查点击是否在popover或virtualRef元素外部
   if (
-    popoverEl &&
-    !popoverEl.contains(e.target as Node) &&
-    virtualEl &&
-    !virtualEl.contains(e.target as Node)
+    popoverEl
+    && !popoverEl.contains(e.target as Node)
+    && virtualEl
+    && !virtualEl.contains(e.target as Node)
   ) {
     popoverVisible.value = false
     ;(props.virtualRef as HTMLElement)?.blur?.()
@@ -172,7 +174,8 @@ onUnmounted(() => {
  */
 function handleFocus() {
   // 避免重复触发
-  if (popoverVisible.value) return
+  if (popoverVisible.value)
+    return
   popoverVisible.value = true
 }
 
@@ -188,7 +191,8 @@ function handleClick() {
  * @param index 行索引
  */
 function selectRow(index: number) {
-  if (!props.data.length) return
+  if (!props.data.length)
+    return
   currentRowIndex.value = index
   const row = props.data[index]
   gridRef.value?.getTable()?.setCurrentRow(row)
@@ -200,18 +204,21 @@ function selectRow(index: number) {
  * 上下键切换选中行，回车确认选择
  */
 function handleKeydown(e: KeyboardEvent) {
-  if (!popoverVisible.value) return
+  if (!popoverVisible.value)
+    return
   if (e.key === 'ArrowDown') {
     e.preventDefault()
     if (currentRowIndex.value < props.data.length - 1) {
       selectRow(currentRowIndex.value + 1)
     }
-  } else if (e.key === 'ArrowUp') {
+  }
+  else if (e.key === 'ArrowUp') {
     e.preventDefault()
     if (currentRowIndex.value > 0) {
       selectRow(currentRowIndex.value - 1)
     }
-  } else if (e.key === 'Enter') {
+  }
+  else if (e.key === 'Enter') {
     e.preventDefault()
     if (props.data.length > 0) {
       const selectedRow = props.data[currentRowIndex.value]
@@ -221,7 +228,8 @@ function handleKeydown(e: KeyboardEvent) {
         emit('select', selectedRow)
       })
     }
-  } else if (e.key === 'Escape') {
+  }
+  else if (e.key === 'Escape') {
     e.preventDefault()
     popoverVisible.value = false
   }
@@ -230,7 +238,7 @@ function handleKeydown(e: KeyboardEvent) {
 /**
  * 处理单元格点击事件
  */
-function handleCellClick({ row, rowIndex }: { row: TableRowData; rowIndex: number }) {
+function handleCellClick({ row, rowIndex }: { row: TableRowData, rowIndex: number }) {
   currentRowIndex.value = rowIndex
 
   // 使用nextTick确保先关闭popover再触发事件

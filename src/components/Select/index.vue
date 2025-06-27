@@ -91,7 +91,7 @@ const allFilterFields = computed(() => {
         'pyCode',
         props.label,
         props.value,
-      ].filter((item) => item),
+      ].filter(item => item),
     ),
   )
 })
@@ -102,7 +102,8 @@ watch(
     if (newVal) {
       const { serverType = 'base', optionsParams = {} } = newVal || {}
       serverOrLocalOptions.value = await getServerOptions(serverType, optionsParams)
-    } else {
+    }
+    else {
       serverOrLocalOptions.value = props.options
     }
   },
@@ -116,7 +117,7 @@ const computedOptions = computed(() => {
   return getType(props.filterMethod, 'function')
     ? serverOrLocalOptions.value
     : serverOrLocalOptions.value.filter((item) => {
-        return allFilterFields.value.some((field) => item[field]?.includes(keyword.value))
+        return allFilterFields.value.some(field => item[field]?.includes(keyword.value))
       })
 })
 
@@ -146,15 +147,15 @@ const typeDefaultMap = {
   undefined,
   null: null,
 }
-type types =
-  | 'string'
-  | 'number'
-  | 'boolean'
-  | 'function'
-  | 'object'
-  | 'array'
-  | 'undefined'
-  | 'null'
+type types
+  = | 'string'
+    | 'number'
+    | 'boolean'
+    | 'function'
+    | 'object'
+    | 'array'
+    | 'undefined'
+    | 'null'
 
 function getTypeDefault(param: any, type: types) {
   return getType(param, type) ? param : typeDefaultMap[type]
