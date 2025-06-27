@@ -1,4 +1,4 @@
-import type { Plugin, Component } from 'vue'
+import type { Component, Plugin } from 'vue'
 
 const layoutFiles = import.meta.glob('./*.vue', { eager: true, import: 'default' })
 const layouts = Object.keys(layoutFiles).reduce((modules, modulePath) => {

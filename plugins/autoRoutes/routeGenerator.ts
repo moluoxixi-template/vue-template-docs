@@ -89,13 +89,11 @@ export function generateRoutes(
 
       // 从src后面一位到倒数第二位作为path
       const pathArr = filePathArr.slice(srcIndex + 1, -1)
-      console.log('pathArr', pathArr)
       const name = component.name || pathArr.at(-1)
       const path = `/${pathArr.join('/')}`
       const parentPath = `/${pathArr.slice(0, -1).join('/')}`
 
       const parentRoute = findParentRoute(modules, parentPath)
-      console.log('parentPath', parentPath, path, parentRoute)
       if (parentRoute) {
         if (!parentRoute.children) parentRoute.children = []
         parentRoute.children.push({

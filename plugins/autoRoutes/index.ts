@@ -1,6 +1,6 @@
-// autoRoutes/index.ts
-import { findParentRoute, generateRoutes, findDefaultRoute } from './routeGenerator'
 import type { Plugin } from 'vite'
+// autoRoutes/index.ts
+import { findDefaultRoute, findParentRoute, generateRoutes } from './routeGenerator'
 
 interface RouteModule {
   path: string
@@ -27,7 +27,7 @@ interface config {
 function createAutoRoutesPlugin({ routeConfig, virtualModuleId }: config): Plugin {
   const moduleCache = new Map()
   const VIRTUAL_MODULE_ID = virtualModuleId || 'virtual:auto-routes'
-  const RESOLVED_VIRTUAL_MODULE_ID = '\0' + VIRTUAL_MODULE_ID
+  const RESOLVED_VIRTUAL_MODULE_ID = `\0${VIRTUAL_MODULE_ID}`
   return {
     name: 'vite-plugin-auto-routes',
 

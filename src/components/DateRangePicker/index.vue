@@ -1,42 +1,19 @@
-<template>
-  <div class="w-full inline-block flex-1 overflow-hidden">
-    <el-date-picker
-      style="width: 100%"
-      ref="datePicker"
-      v-bind="$attrs"
-      v-model="localDateValue"
-      :format="props.format"
-      :placeholder="placeholder"
-      :start-placeholder="startPlaceholder"
-      :end-placeholder="endPlaceholder"
-      :range-separator="rangeSeparator"
-      :type="props.type"
-      :disabledDate="disabledDateFn"
-      :disabledHours="disabledHoursFn"
-      :disabledMinutes="disabledMinutesFn"
-      :disabledSeconds="disabledSecondsFn"
-      @change="handleDateChange"
-      :shortcuts="computedShortcuts"
-    />
-  </div>
-</template>
-
 <script lang="ts" setup>
-import { computed, ref, useTemplateRef, watch } from 'vue'
-import type { PropType } from 'vue'
-import moment from 'moment'
-import type { unitOfTime, Moment } from 'moment'
-import { ElDatePicker } from 'element-plus'
 import type { DatePickerProps } from 'element-plus'
-import { dateIsBefore, formatDateRange, validateDate, getTypeDefault } from '@/components/_utils'
+import type { Moment, unitOfTime } from 'moment'
+import type { PropType } from 'vue'
+import { ElDatePicker } from 'element-plus'
+import moment from 'moment'
 import { isEmpty } from 'radash'
+import { computed, ref, useTemplateRef, watch } from 'vue'
+import { dateIsBefore, formatDateRange, getTypeDefault, validateDate } from '@/components/_utils'
 
 defineOptions({
   name: 'DateRangePicker',
 })
 // 组件属性
 const props = defineProps({
-  //#region 透传给el-date-picker
+  // #region 透传给el-date-picker
   // 日期选择类型，支持 date(单日期) 和 daterange(日期范围)
   type: {
     type: String as () => DatePickerProps['type'],
@@ -73,8 +50,8 @@ const props = defineProps({
     type: String,
     default: '至',
   },
-  //#endregion
-  //#region 默认值相关
+  // #endregion
+  // #region 默认值相关
   // 绑定值
   modelValue: {
     type: Array,
@@ -116,8 +93,8 @@ const props = defineProps({
     type: [String, Object],
     default: moment(),
   },
-  //#endregion
-  //#region 禁用相关
+  // #endregion
+  // #region 禁用相关
   // 最小可选日期
   minDate: {
     type: [String, Object],
@@ -140,7 +117,7 @@ const props = defineProps({
     type: Array,
     default: () => ['hours', 'minutes', 'seconds'],
   },
-  //#endregion
+  // #endregion
   // 是否显示快速选择选项
   shortcuts: {
     type: [Boolean, Array],
@@ -153,6 +130,10 @@ const emit = defineEmits(['update:modelValue', 'change'])
 
 // 本地日期值，用于与el-date-picker交互
 const localDateValue = ref([])
+
+const computedDefaultDatetimeRange = computed(() => {
+  return props.defaultDatetimeRange ?? props.type !== 'datetime'
+})
 
 /**
  * 日期选择器引用
@@ -352,16 +333,12 @@ const computedShortcuts = computed(() => {
   return props.shortcuts === true ? defaultShortcuts : props.shortcuts || []
 })
 
-const computedDefaultDatetimeRange = computed(() => {
-  return props.defaultDatetimeRange ?? props.type !== 'datetime'
-})
-
 /**
  * value不为数组的日期类型
  */
 const singleDateTypes: string[] = ['date', 'datetime']
 // 处理日期变化事件
-const handleDateChange = (val: any) => {
+function handleDateChange(val: any) {
   const formattedDates = formatDateRange(
     val,
     props.valueFormat,
@@ -422,7 +399,6 @@ watch(
           'day',
           !computedDefaultDatetimeRange.value,
         )
-        console.log('formattedDates', formattedDates)
         emit('update:modelValue', formattedDates)
       }
     }
@@ -436,5 +412,28 @@ defineExpose({
   blur: () => datePicker.value?.blur(),
 })
 </script>
+
+<template>
+  <div class="w-full inline-block flex-1 overflow-hidden">
+    <ElDatePicker
+      ref="datePicker"
+      v-bind="$attrs"
+      v-model="localDateValue"
+      style="width: 100%"
+      :format="props.format"
+      :placeholder="placeholder"
+      :start-placeholder="startPlaceholder"
+      :end-placeholder="endPlaceholder"
+      :range-separator="rangeSeparator"
+      :type="props.type"
+      :disabled-date="disabledDateFn"
+      :disabled-hours="disabledHoursFn"
+      :disabled-minutes="disabledMinutesFn"
+      :disabled-seconds="disabledSecondsFn"
+      :shortcuts="computedShortcuts"
+      @change="handleDateChange"
+    />
+  </div>
+</template>
 
 <style scoped></style>

@@ -1,3 +1,33 @@
+<script setup>
+import moment from 'moment'
+import { ref } from 'vue'
+import DateRangePicker from './index.vue'
+
+// 日期范围选择器
+const dateRange1 = ref([])
+const dateRange2 = ref([])
+
+// 自定义日期范围
+const dateRange3 = ref([])
+const dateRange4 = ref([])
+const dateRange5 = ref([])
+const dateRange18 = ref([])
+
+// 禁用日期
+const today = moment().format('YYYY-MM-DD')
+const futureWeek = moment().add(7, 'days').format('YYYY-MM-DD')
+const dateRange6 = ref([])
+const dateRange7 = ref([])
+const dateRange8 = ref([])
+
+// 快速选择选项
+const dateRange9 = ref([])
+
+// 尺寸和禁用
+const dateRange10 = ref([])
+const dateRange11 = ref([])
+</script>
+
 <template>
   <div class="date-range-picker-example">
     <h2>日期范围选择器示例</h2>
@@ -15,7 +45,7 @@
       <div class="example-item">
         <div class="label">默认返回今天：</div>
         <div class="component">
-          <DateRangePicker v-model="dateRange2" type="daterange" :defaultToday="true" />
+          <DateRangePicker v-model="dateRange2" type="daterange" :default-today="true" />
         </div>
         <div class="value">选中值: {{ dateRange2 }}</div>
       </div>
@@ -26,7 +56,7 @@
       <div class="example-item">
         <div class="label">dateRange=7（今天到未来7天）：</div>
         <div class="component">
-          <DateRangePicker v-model="dateRange3" type="daterange" :dateRange="7" />
+          <DateRangePicker v-model="dateRange3" type="daterange" :date-range="7" />
         </div>
         <div class="value">选中值: {{ dateRange3 }}</div>
       </div>
@@ -34,7 +64,7 @@
       <div class="example-item">
         <div class="label">dateRange=-7（过去7天到今天）：</div>
         <div class="component">
-          <DateRangePicker v-model="dateRange4" type="daterange" :dateRange="-7" />
+          <DateRangePicker v-model="dateRange4" type="daterange" :date-range="-7" />
         </div>
         <div class="value">选中值: {{ dateRange4 }}</div>
       </div>
@@ -42,7 +72,7 @@
       <div class="example-item">
         <div class="label">dateRange=[-7, 7]（过去7天到未来7天）：</div>
         <div class="component">
-          <DateRangePicker v-model="dateRange5" type="daterange" :dateRange="[-7, 7]" />
+          <DateRangePicker v-model="dateRange5" type="daterange" :date-range="[-7, 7]" />
         </div>
         <div class="value">选中值: {{ dateRange5 }}</div>
       </div>
@@ -53,8 +83,8 @@
           <DateRangePicker
             v-model="dateRange18"
             type="daterange"
-            :dateRangeBaseDate="moment().subtract(1, 'days')"
-            :dateRange="-7"
+            :date-range-base-date="moment().subtract(1, 'days')"
+            :date-range="-7"
           />
         </div>
         <div class="value">选中值: {{ dateRange18 }}</div>
@@ -66,7 +96,7 @@
       <div class="example-item">
         <div class="label">minDate（今天之前的日期禁用）：</div>
         <div class="component">
-          <DateRangePicker v-model="dateRange6" type="daterange" :minDate="today" />
+          <DateRangePicker v-model="dateRange6" type="daterange" :min-date="today" />
         </div>
         <div class="value">选中值: {{ dateRange6 }}</div>
       </div>
@@ -74,7 +104,7 @@
       <div class="example-item">
         <div class="label">maxDate（今天之后的日期禁用）：</div>
         <div class="component">
-          <DateRangePicker v-model="dateRange7" type="daterange" :maxDate="today" />
+          <DateRangePicker v-model="dateRange7" type="daterange" :max-date="today" />
         </div>
         <div class="value">选中值: {{ dateRange7 }}</div>
       </div>
@@ -85,7 +115,7 @@
           <DateRangePicker
             v-model="dateRange8"
             type="daterange"
-            :disabledDateRange="[today, futureWeek]"
+            :disabled-date-range="[today, futureWeek]"
           />
         </div>
         <div class="value">选中值: {{ dateRange8 }}</div>
@@ -119,7 +149,7 @@
             v-model="dateRange11"
             type="daterange"
             :disabled="true"
-            :defaultToday="true"
+            :default-today="true"
           />
         </div>
         <div class="value">选中值: {{ dateRange11 }}</div>
@@ -127,36 +157,6 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { ref } from 'vue'
-import moment from 'moment'
-import DateRangePicker from './index.vue'
-
-// 日期范围选择器
-const dateRange1 = ref([])
-const dateRange2 = ref([])
-
-// 自定义日期范围
-const dateRange3 = ref([])
-const dateRange4 = ref([])
-const dateRange5 = ref([])
-const dateRange18 = ref([])
-
-// 禁用日期
-const today = moment().format('YYYY-MM-DD')
-const futureWeek = moment().add(7, 'days').format('YYYY-MM-DD')
-const dateRange6 = ref([])
-const dateRange7 = ref([])
-const dateRange8 = ref([])
-
-// 快速选择选项
-const dateRange9 = ref([])
-
-// 尺寸和禁用
-const dateRange10 = ref([])
-const dateRange11 = ref([])
-</script>
 
 <style scoped>
 .date-range-picker-example {

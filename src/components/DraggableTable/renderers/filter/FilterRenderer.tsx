@@ -1,9 +1,9 @@
-import { watch, ref, computed, defineComponent } from 'vue'
-import { ElInput, ElCheckbox, ElButton } from 'element-plus'
 import type { VxeGlobalRendererHandles, VxeTableDefines } from 'vxe-table'
-import { groupBy } from 'lodash'
-import { getTypeDefault } from '@/components/_utils'
 import type { objType } from '@/components/_types'
+import { ElButton, ElCheckbox, ElInput } from 'element-plus'
+import { groupBy } from 'lodash'
+import { computed, defineComponent, ref, watch } from 'vue'
+import { getTypeDefault } from '@/components/_utils'
 
 interface ColValItem {
   checked: boolean
@@ -150,7 +150,7 @@ export default defineComponent({
             case 'checkbox':
               return checkboxRender.value
             default:
-              break
+              return null
           }
         })
         .filter(Boolean)

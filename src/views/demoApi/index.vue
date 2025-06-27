@@ -1,3 +1,50 @@
+<script setup lang="ts">
+import type { CreateUserDto, User } from '@/api/services/demo.ts'
+import { onMounted, ref } from 'vue'
+import { UserApi } from '@/api'
+
+const userApi = new UserApi()
+const users = ref<User[]>([])
+const newUser = ref<CreateUserDto>({
+  name: '',
+  email: '',
+})
+
+// 获取用户列表
+async function fetchUsers() {
+  try {
+    users.value = await userApi.getUsers()
+  } catch (error) {
+    console.error('获取用户列表失败:', error)
+  }
+}
+
+// 创建用户
+async function handleCreate() {
+  try {
+    await userApi.createUser(newUser.value)
+    newUser.value = { name: '', email: '' }
+    await fetchUsers()
+  } catch (error) {
+    console.error('创建用户失败:', error)
+  }
+}
+
+// 删除用户
+async function handleDelete(id: number) {
+  try {
+    await userApi.deleteUser(id)
+    await fetchUsers()
+  } catch (error) {
+    console.error('删除用户失败:', error)
+  }
+}
+
+onMounted(() => {
+  fetchUsers()
+})
+</script>
+
 <template>
   <div class="demo-api">
     <h2>用户管理</h2>
@@ -21,53 +68,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { UserApi } from '@/api'
-import type { User, CreateUserDto } from '@/api/services/demo.ts'
-
-const userApi = new UserApi()
-const users = ref<User[]>([])
-const newUser = ref<CreateUserDto>({
-  name: '',
-  email: ''
-})
-
-// 获取用户列表
-const fetchUsers = async () => {
-  try {
-    users.value = await userApi.getUsers()
-  } catch (error) {
-    console.error('获取用户列表失败:', error)
-  }
-}
-
-// 创建用户
-const handleCreate = async () => {
-  try {
-    await userApi.createUser(newUser.value)
-    newUser.value = { name: '', email: '' }
-    await fetchUsers()
-  } catch (error) {
-    console.error('创建用户失败:', error)
-  }
-}
-
-// 删除用户
-const handleDelete = async (id: number) => {
-  try {
-    await userApi.deleteUser(id)
-    await fetchUsers()
-  } catch (error) {
-    console.error('删除用户失败:', error)
-  }
-}
-
-onMounted(() => {
-  fetchUsers()
-})
-</script>
 
 <style scoped>
 .demo-api {
