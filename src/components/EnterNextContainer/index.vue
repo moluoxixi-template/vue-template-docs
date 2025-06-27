@@ -1,9 +1,3 @@
-<template>
-  <div ref="containerRef" class="enter-next-container">
-    <slot></slot>
-  </div>
-</template>
-
 <script setup lang="ts">
 import type { ComponentInternalInstance, ComponentPublicInstance } from 'vue'
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
@@ -23,7 +17,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 // 定义可以发出的事件
 const emit = defineEmits<{
-  (e: 'no-next-input', element: HTMLElement): void // 当找不到下一个输入元素时触发
+  (e: 'noNextInput', element: HTMLElement): void // 当找不到下一个输入元素时触发
 }>()
 
 const containerRef = ref<HTMLElement | null>(null)
@@ -37,7 +31,7 @@ const elementToObserve = computed(() => {
 })
 
 // 获取容器内所有input和select元素，并为它们添加事件监听器
-const collectInputElements = () => {
+function collectInputElements() {
   const container = elementToObserve.value
   if (!container) return
 
@@ -105,7 +99,7 @@ function handleInputKeyUp(event: KeyboardEvent) {
     // 如果当前已是最后一个元素或没有更多元素
     if (currentIndex === inputElements.value.length - 1 || inputElements.value.length <= 1) {
       // 触发没有下一个元素的事件
-      emit('no-next-input', activeElement)
+      emit('noNextInput', activeElement)
     } else {
       // 还有下一个元素，正常跳转
       const nextIndex = currentIndex + 1
@@ -116,7 +110,7 @@ function handleInputKeyUp(event: KeyboardEvent) {
 }
 
 // 设置MutationObserver监听DOM变化
-const setupMutationObserver = () => {
+function setupMutationObserver() {
   if (!elementToObserve.value) return
 
   const observer = new MutationObserver(() => {
@@ -165,6 +159,12 @@ onUnmounted(() => {
   cleanup?.()
 })
 </script>
+
+<template>
+  <div ref="containerRef" class="enter-next-container">
+    <slot />
+  </div>
+</template>
 
 <style scoped>
 .enter-next-container {

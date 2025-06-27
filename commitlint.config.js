@@ -14,8 +14,8 @@ export default {
         'commit-message-rule': ({ header }) => {
           // 匹配 <type>(<scope>): <short description>
           // 注意：这里简化了校验，只要求 type 和 short description 存在
-          const typeList = '|build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test|'
-          const AngularCommitReg = new RegExp(`^(<${typeList}>(?:\\([a-zA-Z0-9_-]+\\))?):\\s.+$`)
+          const AngularCommitReg =
+            /^(?:build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)?:(?:\s.*|$)/
           // feat     新增功能，迭代项目需求
           // refactor 重构代码，非新增功能也非修复缺陷
           // perf     优化相关，比如提升性能、体验

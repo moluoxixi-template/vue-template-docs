@@ -1,5 +1,5 @@
-import { Fragment } from 'vue'
 import moment from 'moment'
+import { Fragment } from 'vue'
 
 export type DateType = string | Date | moment.Moment
 
@@ -59,11 +59,11 @@ export function getTypeDefault(obj: any, type: types) {
       string: '',
       number: 0,
       boolean: false,
-      undefined: undefined,
+      undefined,
       null: null,
       date: new Date(),
-      regexp: new RegExp(''),
-      symbol: Symbol(),
+      regexp: /^$/,
+      symbol: Symbol(''),
       object: {},
       array: [],
       function: () => {},
@@ -71,7 +71,7 @@ export function getTypeDefault(obj: any, type: types) {
       map: new Map(),
       weakmap: new WeakMap(),
       weakset: new WeakSet(),
-      error: new Error(),
+      error: new Error('错误'),
     }
     return typeDefefaultValueMap[type]
   } else {
@@ -121,7 +121,7 @@ export function dispatchEvents(target: Document, events: EventType | EventType[]
   }
 }
 
-//#region 日期相关
+// #region 日期相关
 /**
  * 匹配 以年月日 时分秒 顺序排列的任意时间格式字符串,匹配不到默认返回 YYYY-MM-DD HH:mm:ss
  * @param str
@@ -134,14 +134,15 @@ export function detectDateFormatByReplace(str: string, defaultFormat = 'YYYY-MM-
     const tokens = ['YYYY', 'MM', 'DD', 'HH', 'mm', 'ss']
     let i = 0
     let result = ''
-    let match
 
-    while ((match = pattern.exec(str as string)) !== null && i < tokens.length) {
-      result += tokens[i++] + match[2] // match[2]是分隔符（可能为空）
+    for (let match: any; i < tokens.length; i++) {
+      match = pattern.exec(str as string)
+      if (match === null) {
+        break
+      }
+      result += tokens[i] + match[2] // match[2]是分隔符（可能为空）
     }
-
     // 若未匹配到任何数字，则返回defaultFormat
-    console.log('result', result, defaultFormat)
     return i === 0 ? defaultFormat : result
   } else {
     return defaultFormat
@@ -178,7 +179,7 @@ export function getMomentIsValid(dateStr: DateType, format?: string, strictType?
 export function getMomentIsValidIsNoNum(dateStr: DateType, format?: string, strictType?: string) {
   const dateTypes = ['string', 'date']
   if (dateTypes.some((type) => getType(dateStr, type))) {
-    if (!isNaN(+dateStr)) return false
+    if (!Number.isNaN(+dateStr)) return false
     return getMomentIsValid(dateStr, format, strictType)
   } else {
     return false
@@ -256,4 +257,4 @@ export function formatDateRange(
   }
 }
 
-//#endregion
+// #endregion

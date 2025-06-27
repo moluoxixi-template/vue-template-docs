@@ -1,3 +1,4 @@
+import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 /*
  * @Author: moluoxixi 1983531544@qq.com
  * @Date: 2025-05-09 08:53:16
@@ -10,7 +11,6 @@
  */
 import axios from 'axios'
 import { addSign } from '@/utils/modules/his6.0'
-import type { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios'
 
 export class BaseApi {
   protected baseURL: string

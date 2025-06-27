@@ -1,4 +1,4 @@
-import type { VxeTableDefines, VxeColumnPropTypes, VxeTablePropTypes } from 'vxe-table'
+import type { VxeColumnPropTypes, VxeTableDefines, VxeTablePropTypes } from 'vxe-table'
 import type { objType } from '@/components/_types'
 
 export type customCustomTypes =

@@ -1,12 +1,12 @@
-import { computed, defineComponent, onMounted, ref, watch } from 'vue'
-import { detectDateFormatByReplace } from '@/components/_utils'
+import type { PropType } from 'vue'
+import type { VxeGlobalRendererHandles, VxeTableDefines } from 'vxe-table'
 import type { objType } from '@/components/_types'
 import type { customCustomTypes } from '@/components/DraggableTable/_types'
-import Select from '@/components/Select/index.vue'
+import { ElInput, ElProgress, ElSwitch, ElTag } from 'element-plus'
+import { computed, defineComponent, onMounted, ref, watch } from 'vue'
+import { detectDateFormatByReplace } from '@/components/_utils'
 import DateRangePicker from '@/components/DateRangePicker/index.vue'
-import { ElInput, ElSwitch, ElProgress, ElTag } from 'element-plus'
-import type { PropType } from 'vue'
-import type { VxeTableDefines, VxeGlobalRendererHandles } from 'vxe-table'
+import Select from '@/components/Select/index.vue'
 
 export default defineComponent({
   name: 'CellRenderer',

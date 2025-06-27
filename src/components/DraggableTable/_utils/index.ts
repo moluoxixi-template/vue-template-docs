@@ -1,4 +1,4 @@
-import type { types, ColumnType } from '@/components/DraggableTable/_types'
+import type { ColumnType, types } from '@/components/DraggableTable/_types'
 
 /**
  * 自定义的列模板
@@ -76,12 +76,12 @@ export function handleGetColumn(Column: ColumnType): ColumnType {
     colId,
     children,
     slots,
-    //#region 自定义属性部分
+    // #region 自定义属性部分
     options,
     cellProps,
     editProps,
     filterProps,
-    //#endregion
+    // #endregion
   } = Column
   return {
     type,
@@ -132,12 +132,12 @@ export function handleGetColumn(Column: ColumnType): ColumnType {
     colId,
     children,
     slots,
-    //#region 自定义属性部分
+    // #region 自定义属性部分
     options,
     cellProps,
     editProps,
     filterProps,
-    //#endregion
+    // #endregion
   }
 }
 

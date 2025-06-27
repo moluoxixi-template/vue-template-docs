@@ -1,39 +1,7 @@
-<template>
-  <div>
-    <el-select
-      append-to="#app"
-      v-model="data"
-      :clearable="props.clearable"
-      :filterable="props.filterable"
-      :filter-method="computedFilterMethod"
-      :collapse-tags="props.collapseTags"
-      :tag-type="props.tagType"
-      :teleported="props.teleported"
-      :collapse-tags-tooltip="props.collapseTagsTooltip"
-      v-bind="$attrs"
-    >
-      <el-option
-        v-for="(item, index) in computedOptions"
-        :key="index"
-        :label="item[props.label]"
-        :value="item[props.value]"
-        :disabled="
-          computedDisabledHandler({
-            label: item[props.label],
-            value: item[props.value],
-            data: item,
-          })
-        "
-      >
-      </el-option>
-    </el-select>
-  </div>
-</template>
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import getServerOptions from '@/components/Select/uitls'
 
-const data = defineModel<any>()
 /**
  * 定义组件的props
  */
@@ -112,7 +80,7 @@ const props = defineProps({
     type: Object,
   },
 })
-
+const data = defineModel<any>()
 const keyword = ref('')
 const allFilterFields = computed(() => {
   return Array.from(
@@ -128,8 +96,6 @@ const allFilterFields = computed(() => {
   )
 })
 const serverOrLocalOptions = ref<any[]>([])
-const emits = defineEmits([])
-
 watch(
   () => props.serverProps,
   async (newVal) => {
@@ -177,7 +143,7 @@ const typeDefaultMap = {
   function: () => {},
   object: {},
   array: [],
-  undefined: undefined,
+  undefined,
   null: null,
 }
 type types =
@@ -198,3 +164,34 @@ const computedDisabledHandler = computed(() => {
   return getTypeDefault(props.disabledHandler, 'function') || defaultDisabledHandler
 })
 </script>
+
+<template>
+  <div>
+    <el-select
+      v-model="data"
+      append-to="#app"
+      :clearable="props.clearable"
+      :filterable="props.filterable"
+      :filter-method="computedFilterMethod"
+      :collapse-tags="props.collapseTags"
+      :tag-type="props.tagType"
+      :teleported="props.teleported"
+      :collapse-tags-tooltip="props.collapseTagsTooltip"
+      v-bind="$attrs"
+    >
+      <el-option
+        v-for="(item, index) in computedOptions"
+        :key="index"
+        :label="item[props.label]"
+        :value="item[props.value]"
+        :disabled="
+          computedDisabledHandler({
+            label: item[props.label],
+            value: item[props.value],
+            data: item,
+          })
+        "
+      />
+    </el-select>
+  </div>
+</template>
