@@ -8,7 +8,7 @@
     ],
     "baseUrl": ".",
     "module": "ESNext",
-    "moduleResolution": "Bundler",
+    "moduleResolution": "nodenext",
     "paths": {
       "~/*": [
         "src/*"
@@ -37,22 +37,5 @@
       "@vue-macros/volar/define-slots"
     ]
   },
-  "exclude": [
-    "dist",
-    "node_modules",
-    "cypress",
-    ".storybook/**/*",
-    ".docs/.vitepress/config.ts"
-  ],
-  "references": [
-    {
-      "path": "./tsconfig.storybook.app.json"
-    },
-    {
-      "path": "./tsconfig.storybook.node.json"
-    },
-    {
-      "path": "./tsconfig.vitepress.node.json"
-    }
-  ]
+  "include": [".docs/.vitepress/config.ts"]
 }
