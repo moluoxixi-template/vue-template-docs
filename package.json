@@ -4,45 +4,6 @@
   "version": "0.0.0",
   "private": true,
   "packageManager": "pnpm@10.8.0",
-  "engines": {
-    "node": ">=20.18.0"
-  },
-  "scripts": {
-    "dev": "vite",
-    "CICD": "node ./scripts/CICD.mjs",
-    "build:old": "run-p type-check \"build-only {@}\" -- & node scripts/build.mjs",
-    "build": "vite build --mode production & node ./scripts/build.mjs",
-    "pages:build": "vite build --mode github",
-    "preview": "vite preview",
-    "type-check": "vue-tsc --noEmit",
-    "lint:eslint": "eslint . --fix",
-    "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore",
-    "prepare": "node .husky/install.mjs",
-    "lint-staged": "lint-staged",
-    "commit": "git-cz"
-  },
-  "postcss": {
-    "plugins": {
-      "tailwindcss": {},
-      "autoprefixer": {}
-    }
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx,vue}": [
-      "eslint --fix --no-warn-ignored"
-    ],
-    "*.{css,scss,less,vue}": [
-      "stylelint --fix"
-    ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-customizable"
-    },
-    "cz-customizable": {
-      "config": ".cz-config.cjs"
-    }
-  },
   "author": "1983531544@qq.com",
   "license": "MIT",
   "repository": {
@@ -68,6 +29,28 @@
     "tailwindcss",
     "template"
   ],
+  "engines": {
+    "node": ">=20.18.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "CICD": "node ./scripts/CICD.mjs",
+    "build": "vite build --mode production & node ./scripts/build.mjs",
+    "pages:build": "vite build --mode github",
+    "preview": "vite preview",
+    "type-check": "vue-tsc --noEmit",
+    "lint:eslint": "eslint . --fix",
+    "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore",
+    "prepare": "node .husky/install.mjs",
+    "lint-staged": "lint-staged",
+    "commit": "git-cz"
+  },
+  "postcss": {
+    "plugins": {
+      "tailwindcss": {},
+      "autoprefixer": {}
+    }
+  },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
     "@sentry/vite-plugin": "^3.5.0",
@@ -93,13 +76,13 @@
     "@commitlint/cli": "^19.8.0",
     "@commitlint/config-conventional": "^19.8.0",
     "@tailwindcss/postcss": "^4.1.5",
-    "@tsconfig/node22": "^22.0.1",
     "@types/crypto-js": "^4.2.2",
     "@types/lodash": "^4.17.17",
     "@types/node": "^22.14.0",
     "@types/sortablejs": "^1.15.8",
     "@types/uuid": "^10.0.0",
     "@vitejs/plugin-vue": "^5.2.3",
+    "@vue-macros/volar": "^3.0.0-beta.15",
     "@vitejs/plugin-vue-jsx": "^4.1.2",
     "autoprefixer": "^10.4.21",
     "commitizen": "^4.3.1",
@@ -134,8 +117,23 @@
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-imagemin": "^0.6.1",
     "vite-plugin-qiankun": "^1.0.15",
-    "vite-plugin-resolve-externals": "^0.2.2",
     "vite-plugin-vue-devtools": "^7.7.2",
     "vue-tsc": "^2.2.8"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,vue}": [
+      "eslint --fix --no-warn-ignored"
+    ],
+    "*.{css,scss,less,vue}": [
+      "stylelint --fix"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-customizable"
+    },
+    "cz-customizable": {
+      "config": ".cz-config.cjs"
+    }
   }
 }
