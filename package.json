@@ -4,31 +4,6 @@
   "version": "0.0.0",
   "private": true,
   "packageManager": "pnpm@10.8.0",
-  "author": "1983531544@qq.com",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/moluoxixi-template/vue-template.git"
-  },
-  "keywords": [
-    "element-plus",
-    "ElementPlus",
-    "vue",
-    "vite",
-    "vue3",
-    "ts",
-    "eslint",
-    "commitlint",
-    "husky",
-    "lint-staged",
-    "typescript",
-    "vite",
-    "pinia",
-    "router",
-    "sass",
-    "tailwindcss",
-    "template"
-  ],
   "engines": {
     "node": ">=20.18.0"
   },
@@ -49,6 +24,22 @@
     "plugins": {
       "tailwindcss": {},
       "autoprefixer": {}
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,vue}": [
+      "eslint --fix --no-warn-ignored"
+    ],
+    "*.{css,scss,less,vue}": [
+      "stylelint --fix"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-customizable"
+    },
+    "cz-customizable": {
+      "config": ".cz-config.cjs"
     }
   },
   "dependencies": {
@@ -123,20 +114,29 @@
     "vite-plugin-vue-devtools": "^7.7.2",
     "vue-tsc": "^2.2.8"
   },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx,vue}": [
-      "eslint --fix --no-warn-ignored"
-    ],
-    "*.{css,scss,less,vue}": [
-      "stylelint --fix"
-    ]
+  "author": "1983531544@qq.com",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moluoxixi-template/vue-template.git"
   },
-  "config": {
-    "commitizen": {
-      "path": "cz-customizable"
-    },
-    "cz-customizable": {
-      "config": ".cz-config.cjs"
-    }
-  }
+  "keywords": [
+    "element-plus",
+    "ElementPlus",
+    "vue",
+    "vite",
+    "vue3",
+    "ts",
+    "eslint",
+    "commitlint",
+    "husky",
+    "lint-staged",
+    "typescript",
+    "vite",
+    "pinia",
+    "router",
+    "sass",
+    "tailwindcss",
+    "template"
+  ]
 }
