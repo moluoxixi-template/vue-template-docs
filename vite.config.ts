@@ -1,37 +1,37 @@
 import type { Plugin } from 'postcss'
-// 其余vite插件与配置
 import path from 'node:path'
 import process from 'node:process'
-import tailwindcss from '@tailwindcss/postcss'
+
 // vite vue插件
 import pluginVue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import vueDevTools from 'vite-plugin-vue-devtools'
 
 // tailwind
 import autoprefixer from 'autoprefixer'
+import tailwindcss from '@tailwindcss/postcss'
+
 // 性能优化模块
 import { visualizer } from 'rollup-plugin-visualizer'
 import AutoImport from 'unplugin-auto-import/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
-
-import { defineConfig, loadEnv } from 'vite'
 import importToCDN from 'vite-plugin-cdn-import'
-
 import viteCompression from 'vite-plugin-compression'
-
-import { createHtmlPlugin } from 'vite-plugin-html'
 import viteImagemin from 'vite-plugin-imagemin'
+import { modules } from './src/constants'
 
 // qiankun
 import qiankun from 'vite-plugin-qiankun'
-import vueDevTools from 'vite-plugin-vue-devtools'
 import scopedCssPrefixPlugin from './plugins/addScopedAndReplacePrefix'
+
 // 自动路由
 import autoRoutesPlugin from './plugins/autoRoutes'
-import { modules } from './src/constants'
 
+// 其余vite插件与配置
+import { defineConfig, loadEnv } from 'vite'
 import { wrapperEnv } from './src/utils/modules/getEnv'
+import { createHtmlPlugin } from 'vite-plugin-html'
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd())
