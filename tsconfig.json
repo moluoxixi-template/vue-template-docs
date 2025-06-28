@@ -43,10 +43,14 @@
     "dist",
     "node_modules",
     "cypress",
+    "vite.config.ts",
     ".storybook/**/*",
     ".docs/.vitepress/config.ts"
   ],
   "references": [
+    {
+      "path": "./tsconfig.node.json"
+    },
     {
       "path": "./tsconfig.storybook.app.json"
     },
