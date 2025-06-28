@@ -14,6 +14,7 @@
     "pages:build": "vite build --mode github",
     "preview": "vite preview",
     "type-check": "vue-tsc --noEmit",
+    "lint-check": "eslint --inspect-config",
     "lint:eslint": "eslint . --fix",
     "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore",
     "prepare": "node .husky/install.mjs",
