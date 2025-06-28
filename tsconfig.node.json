@@ -21,6 +21,8 @@
     "allowImportingTsExtensions": true
   },
   "include": [
-    "vite.config.ts"
+    "vite.config.ts",
+    ".docs/.vitepress/config.ts",
+    ".storybook/main.ts"
   ]
 }
