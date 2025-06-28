@@ -19,21 +19,21 @@ import Components from 'unplugin-vue-components/vite'
 import importToCDN from 'vite-plugin-cdn-import'
 import viteCompression from 'vite-plugin-compression'
 import viteImagemin from 'vite-plugin-imagemin'
-import { modules } from './src/constants'
+import { modules } from './src/constants/index.ts'
 
 // sentry
 import { sentryVitePlugin } from '@sentry/vite-plugin'
 
 // qiankun
 import qiankun from 'vite-plugin-qiankun'
-import scopedCssPrefixPlugin from './plugins/addScopedAndReplacePrefix'
+import scopedCssPrefixPlugin from './plugins/addScopedAndReplacePrefix.ts'
 
 // 自动路由
-import autoRoutesPlugin from './plugins/autoRoutes'
+import autoRoutesPlugin from './plugins/autoRoutes/index.ts'
 
 // 其余vite插件与配置
 import { defineConfig, loadEnv } from 'vite'
-import { wrapperEnv } from './src/utils/modules/getEnv'
+import { wrapperEnv } from './src/utils/modules/getEnv.ts'
 import { createHtmlPlugin } from 'vite-plugin-html'
 
 export default defineConfig(({ mode }) => {
