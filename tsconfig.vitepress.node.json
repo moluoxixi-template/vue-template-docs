@@ -29,7 +29,8 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "allowImportingTsExtensions": true
   },
   "vueCompilerOptions": {
     "plugins": [
@@ -37,5 +38,7 @@
       "@vue-macros/volar/define-slots"
     ]
   },
-  "include": [".docs/.vitepress/config.ts"]
+  "include": [
+    ".docs/.vitepress/config.ts"
+  ]
 }

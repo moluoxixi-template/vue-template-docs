@@ -1,5 +1,5 @@
-import { getComponents } from './utils/serverUtils'
-import { buildBlogRSS } from './utils/rss'
+import { getComponents } from './utils/serverUtils.ts'
+import { buildBlogRSS } from './utils/rss.ts'
 
 // https://github.com/mingyuLi97/blog
 // https://vitepress.dev/reference/site-config
