@@ -19,7 +19,7 @@ import Components from 'unplugin-vue-components/vite'
 import importToCDN from 'vite-plugin-cdn-import'
 import viteCompression from 'vite-plugin-compression'
 import viteImagemin from 'vite-plugin-imagemin'
-import { modules } from './src/constants'
+import { modules } from '@/constants'
 
 // sentry
 import { sentryVitePlugin } from '@sentry/vite-plugin'
@@ -33,7 +33,7 @@ import autoRoutesPlugin from './plugins/autoRoutes'
 
 // 其余vite插件与配置
 import { defineConfig, loadEnv } from 'vite'
-import { wrapperEnv } from './src/utils/modules/getEnv'
+import { wrapperEnv } from '@/utils/modules/getEnv'
 import { createHtmlPlugin } from 'vite-plugin-html'
 
 export default defineConfig(({ mode }) => {

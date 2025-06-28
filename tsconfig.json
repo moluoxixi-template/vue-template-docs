@@ -10,10 +10,10 @@
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "paths": {
-      "~/*": [
+      "@/*": [
         "src/*"
       ],
-      "@/*": [
+      "~/*": [
         "src/*"
       ]
     },
@@ -34,7 +34,9 @@
   "vueCompilerOptions": {
     "plugins": [
       "@vue-macros/volar/define-models",
-      "@vue-macros/volar/define-slots"
+      "@vue-macros/volar/define-slots",
+      "@vue-macros/volar/define-props",
+      "@vue-macros/volar/define-emits"
     ]
   },
   "exclude": [
