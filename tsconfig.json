@@ -43,7 +43,7 @@
     "dist",
     "node_modules",
     "cypress",
-    "vite.config.ts",
+    "vite.config.ts"
   ],
   "references": [
     {
