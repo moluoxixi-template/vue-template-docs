@@ -21,6 +21,28 @@
     "lint-staged": "lint-staged",
     "commit": "git-cz"
   },
+  "postcss": {
+    "plugins": {
+      "tailwindcss": {},
+      "autoprefixer": {}
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,vue}": [
+      "eslint --fix --no-warn-ignored"
+    ],
+    "*.{css,scss,less,vue}": [
+      "stylelint --fix"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-customizable"
+    },
+    "cz-customizable": {
+      "config": ".cz-config.cjs"
+    }
+  },
   "author": "1983531544@qq.com",
   "license": "MIT",
   "repository": {
@@ -116,27 +138,5 @@
     "vite-plugin-resolve-externals": "^0.2.2",
     "vite-plugin-vue-devtools": "^7.7.2",
     "vue-tsc": "^2.2.8"
-  },
-  "postcss": {
-    "plugins": {
-      "tailwindcss": {},
-      "autoprefixer": {}
-    }
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx,vue}": [
-      "eslint --fix --no-warn-ignored"
-    ],
-    "*.{css,scss,less,vue}": [
-      "stylelint --fix"
-    ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-customizable"
-    },
-    "cz-customizable": {
-      "config": ".cz-config.cjs"
-    }
   }
 }
