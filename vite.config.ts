@@ -64,7 +64,11 @@ export default defineConfig(({ mode }) => {
           ),
         }),
       ],
-      globs: ['src/components/**/index.vue'],
+      globs: [
+        'src/components/**/index.vue',
+        '!src/components/**/components/**/*',
+        '!src/components/**/base/**/*',
+      ],
       dts: path.resolve(__dirname, './src/typings/components.d.ts'),
     }),
   ].filter(i => !!i)
