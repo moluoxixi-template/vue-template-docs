@@ -4,6 +4,23 @@
   "version": "0.0.0",
   "private": true,
   "packageManager": "pnpm@10.8.0",
+  "engines": {
+    "node": ">=20.18.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "CICD": "node ./scripts/CICD.mjs",
+    "build:old": "run-p type-check \"build-only {@}\" -- & node scripts/build.mjs",
+    "build": "vite build --mode production & node ./scripts/build.mjs",
+    "pages:build": "vite build --mode github",
+    "preview": "vite preview",
+    "type-check": "vue-tsc --noEmit",
+    "lint:eslint": "eslint . --fix",
+    "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore",
+    "prepare": "node .husky/install.mjs",
+    "lint-staged": "lint-staged",
+    "commit": "git-cz"
+  },
   "author": "1983531544@qq.com",
   "license": "MIT",
   "repository": {
@@ -29,23 +46,6 @@
     "tailwindcss",
     "template"
   ],
-  "engines": {
-    "node": ">=20.0.0"
-  },
-  "scripts": {
-    "dev": "vite",
-    "CICD": "node ./scripts/CICD.mjs",
-    "build:old": "run-p type-check \"build-only {@}\" -- & node scripts/build.mjs",
-    "build": "vite build --mode production & node ./scripts/build.mjs",
-    "pages:build": "vite build --mode github",
-    "preview": "vite preview",
-    "type-check": "vue-tsc --noEmit",
-    "lint:eslint": "eslint . --fix",
-    "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore",
-    "prepare": "node .husky/install.mjs",
-    "lint-staged": "lint-staged",
-    "commit": "git-cz"
-  },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
     "@sentry/vite-plugin": "^3.5.0",
