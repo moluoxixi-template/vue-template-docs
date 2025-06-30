@@ -28,12 +28,11 @@
 //  }
 //}
 ////#endregion
-// use v3
+//#region use v3 如果用它，需要修改依赖tailwindcss和@tailwindcss/postcss为"npm:tailwindcss@3",
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-//#region use v3 如果用它，需要修改依赖tailwindcss和@tailwindcss/postcss为"npm:tailwindcss@3",
 @layer base {
   html {
     font-size: 4px;
