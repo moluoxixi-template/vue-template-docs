@@ -105,7 +105,9 @@ const computedInput = computed(() => {
     return _debounce(handleInput, props.debounce)
   }
   else if (props.throttle) {
-    return _throttle(handleInput, props.throttle)
+    return _throttle(handleInput, props.throttle, {
+      trailing: false,
+    })
   }
   else {
     return handleInput

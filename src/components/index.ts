@@ -1,4 +1,32 @@
-import type { Component } from 'vue'
+import type { App, Component } from 'vue'
+
+import ConfigForm from '@/components/ConfigForm'
+import ConfigTable from '@/components/ConfigTable'
+import DateRangePicker from '@/components/DateRangePicker'
+import DraggableTable from '@/components/DraggableTable'
+import EnterNextContainer from '@/components/EnterNextContainer'
+import EnterNextDragTable from '@/components/EnterNextDragTable'
+import EnterNextTable from '@/components/EnterNextTable'
+import ExportExcel from '@/components/ExportExcel'
+import KeepAllAlive from '@/components/KeepAllAlive'
+import PopoverTableSelect from '@/components/PopoverTableSelect'
+import Select from '@/components/Select'
+import Tabs from '@/components/Tabs'
+
+export {
+  ConfigForm,
+  ConfigTable,
+  DateRangePicker,
+  DraggableTable,
+  EnterNextContainer,
+  EnterNextDragTable,
+  EnterNextTable,
+  ExportExcel,
+  KeepAllAlive,
+  PopoverTableSelect,
+  Select,
+  Tabs,
+}
 
 const componentFiles = import.meta.glob(['./**/index.vue', '!./**/components/*'], {
   eager: true,
@@ -17,39 +45,12 @@ const components = Object.keys(componentFiles).reduce((modules = {}, modulePath)
   }
   return modules
 }, {} as any)
-components.install = function (app: any) {
-  const componentNames = Object.keys(components)
-  componentNames.forEach((name) => {
-    app.component(name, components[name])
-  })
-}
-export default components
 
-// const componentExampleFiles = import.meta.glob('./*/Example.vue', {
-//   eager: true,
-//   import: 'default',
-// })
-// console.log('componentExampleFiles', componentExampleFiles)
-// export const componentExampleRoutes = Object.keys(componentExampleFiles).reduce(
-//   (modules = {}, modulePath) => {
-//     const name: string | undefined = modulePath.split('/').at(-2)
-//     const component: Component = componentExampleFiles[modulePath] as Component
-//     if (!component) return modules
-//     if (name) {
-//       modules.children?.push({
-//         path: `/components/${name}`,
-//         name,
-//         meta: {
-//           title: component.name || name,
-//         },
-//         component,
-//       })
-//     }
-//     return modules
-//   },
-//   {
-//     path: '/components',
-//     name: '组件示例',
-//     children: [],
-//   } as any,
-// )
+export default {
+  install(app: App) {
+    const componentNames = Object.keys(components)
+    componentNames.forEach((name) => {
+      app.component(name, components[name])
+    })
+  },
+}
