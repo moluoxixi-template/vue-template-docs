@@ -1,8 +1,32 @@
 import type { App, Component } from 'vue'
 
+import ConfigForm from '@/components/ConfigForm'
+import ConfigTable from '@/components/ConfigTable'
+import DateRangePicker from '@/components/DateRangePicker'
 import DraggableTable from '@/components/DraggableTable'
+import EnterNextContainer from '@/components/EnterNextContainer'
+import EnterNextDragTable from '@/components/EnterNextDragTable'
+import EnterNextTable from '@/components/EnterNextTable'
+import ExportExcel from '@/components/ExportExcel'
+import KeepAllAlive from '@/components/KeepAllAlive'
+import PopoverTableSelect from '@/components/PopoverTableSelect'
+import Select from '@/components/Select'
+import Tabs from '@/components/Tabs'
 
-export { DraggableTable }
+export {
+  ConfigForm,
+  ConfigTable,
+  DateRangePicker,
+  DraggableTable,
+  EnterNextContainer,
+  EnterNextDragTable,
+  EnterNextTable,
+  ExportExcel,
+  KeepAllAlive,
+  PopoverTableSelect,
+  Select,
+  Tabs,
+}
 
 const componentFiles = import.meta.glob(['./**/index.vue', '!./**/components/*'], {
   eager: true,
