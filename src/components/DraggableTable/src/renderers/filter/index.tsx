@@ -21,6 +21,6 @@ VxeUI.renderer.add('filterRenderer', {
     const { option, row, column } = params
     const { vals } = option.data
     const cellValue = row[column.field]
-    return vals.includes(cellValue.toString())
+    return vals.includes(cellValue?.toString())
   },
 })

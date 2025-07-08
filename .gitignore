@@ -2,8 +2,9 @@
 test
 test.zip
 src/typings
-
 docs
+moluoxixi
+version.json
 .docs/.vitepress/cache
 .docs/.vitepress/dist
 .docs/.vitepress/typings
