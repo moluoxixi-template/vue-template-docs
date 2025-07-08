@@ -696,12 +696,14 @@ async function getCurrentVersions(): Promise<Record<string, string>> {
  * @param dependencies 依赖分析结果
  * @param dependencies.internal
  * @param dependencies.external
+ * @param shouldPublish 是否发布组件
  */
 async function buildComponent(
   comp: string,
   entry: string,
   outputDir: string,
   dependencies: { internal: string[], external: Record<string, string> },
+  shouldPublish = false,
 ) {
   const buildName = comp || '组件库'
 
@@ -839,63 +841,38 @@ async function buildComponent(
       pkgJson.exports['./style'] = './es/style/index.css'
       pkgJson.exports['./style.css'] = './es/style/index.css'
     }
-
-    await fsp.writeFile(resolve(outputDir, 'package.json'), JSON.stringify(pkgJson, null, 2), 'utf-8')
-
-    // 5. 打包成功版本号+1
+    // 生成新版本号
     const newVersion = getNextVersion(currentVersion, 'patch')
-
-    // 6. 异步更新版本号到 constants 文件
-    const success = await writeComponentVersions({ [componentKey]: newVersion })
-    if (success) {
-      console.log(`✓ 已更新 ${componentKey} 版本号: ${currentVersion} -> ${newVersion}`)
-    }
-    else {
-      console.warn(`更新 ${componentKey} 版本号失败`)
-    }
-
-    // 更新 package.json 版本号
     pkgJson.version = newVersion
+
+    // 写入package.json
     await fsp.writeFile(resolve(outputDir, 'package.json'), JSON.stringify(pkgJson, null, 2), 'utf-8')
 
-    console.log(`==========  ${buildName} 打包完成 ==========\n`)
+    console.log(`==========  ${buildName} 打包完成 ==========`)
+    // 如果需要发布，执行发布
+    if (shouldPublish) {
+      console.log(`准备发布 ${buildName}，版本：${currentVersion} -> ${newVersion}`)
+
+      await writeComponentVersions(comp, newVersion)
+
+      try {
+        console.log(`开始发布 ${pkgJson.name}@${pkgJson.version}...`)
+
+        // 发布组件
+        const packageDir = comp ? `${LIB_NAMESPACE}/packages/${comp}` : LIB_NAMESPACE
+        execSync(`cd ${packageDir} && npm publish --tag latest`, { stdio: 'inherit' })
+        console.log(`${pkgJson.name}@${pkgJson.version} 发布成功！`)
+      }
+      catch (error) {
+        console.error('发布失败:', error)
+        return false
+      }
+    }
+
     return true
   }
   catch (error) {
     console.error(` ${buildName} 打包失败:`, error)
-    return false
-  }
-}
-
-/**
- * 发布组件
- * @param comp 组件名，如果为空则发布整个组件库
- */
-async function publishComponent(comp = '') {
-  try {
-    const packagePath = comp
-      ? resolve(rootDir, `${LIB_NAMESPACE}/packages/${comp}/package.json`)
-      : resolve(rootDir, `${LIB_NAMESPACE}/package.json`)
-
-    if (!fs.existsSync(packagePath)) {
-      return Promise.reject(new Error(`找不到 ${packagePath}，请先打包组件`))
-    }
-
-    const pkgContent = fs.readFileSync(packagePath, 'utf-8')
-    const pkg = JSON.parse(pkgContent)
-
-    // 发布组件
-    const packageDir = comp ? `${LIB_NAMESPACE}/packages/${comp}` : LIB_NAMESPACE
-    console.log(`开始发布 ${pkg.name}@${pkg.version}...`)
-
-    // 使用--tag参数来避免版本号冲突问题
-    execSync(`cd ${packageDir} && npm publish --tag latest`, { stdio: 'inherit' })
-    console.log(`${pkg.name}@${pkg.version} 发布成功！`)
-
-    return true
-  }
-  catch (error) {
-    console.error('发布失败:', error)
     return false
   }
 }
@@ -937,11 +914,11 @@ async function getComponentConfig(comp: string) {
 
 /**
  * 打包所有单个组件
- * @param _version 版本号（已废弃，现在每个组件独立管理版本）
+ * @param shouldPublish 是否发布组件
  * @returns 是否全部成功
  */
-async function buildAllComponents(_version = '1.0.0') {
-  console.log('开始打包所有单个组件...')
+async function buildAllComponents(shouldPublish = false) {
+  console.log(`开始打包所有单个组件${shouldPublish ? '并发布' : ''}...`)
 
   try {
     // 获取所有组件名
@@ -953,20 +930,20 @@ async function buildAllComponents(_version = '1.0.0') {
     for (const comp of componentNames || []) {
       try {
         const { entry, outputDir, dependencies } = await getComponentConfig(comp || '')
-        const success = await buildComponent(comp || '', entry, outputDir, dependencies)
+        const success = await buildComponent(comp || '', entry, outputDir, dependencies, shouldPublish)
         if (success)
           successCount++
       }
       catch (error) {
-        console.error(`组件 ${comp} 打包失败:`, error)
+        console.error(`组件 ${comp} ${shouldPublish ? '打包发布' : '打包'}失败:`, error)
       }
     }
 
-    console.log(`所有单个组件打包完成！成功: ${successCount}/${componentNames.length}`)
+    console.log(`所有单个组件${shouldPublish ? '打包发布' : '打包'}完成！成功: ${successCount}/${componentNames.length}`)
     return successCount === componentNames.length
   }
   catch (error) {
-    console.error('打包过程中发生错误:', error)
+    console.error(`${shouldPublish ? '打包发布' : '打包'}过程中发生错误:`, error)
     return false
   }
 }
@@ -974,85 +951,32 @@ async function buildAllComponents(_version = '1.0.0') {
 /**
  * 打包函数 - 统一处理三种模式：all、library、单个组件
  * @param mode 打包模式：'all'、'library'、或组件名
+ * @param shouldPublish 是否发布
  * @returns 是否成功
  */
-async function doBuild(mode = 'all') {
+async function doBuild(mode = 'all', shouldPublish = false) {
   try {
     if (mode === 'all') {
       // 打包整个组件库
       const { entry, outputDir, dependencies } = await getComponentConfig('')
-      const librarySuccess = await buildComponent('', entry, outputDir.replace('packages', ''), dependencies)
-      // 打包所有单个组件和整个组件库
-      const componentsSuccess = await buildAllComponents()
+      const librarySuccess = await buildComponent('', entry, outputDir.replace('packages', ''), dependencies, shouldPublish)
+      // 打包所有单个组件
+      const componentsSuccess = await buildAllComponents(shouldPublish)
       return componentsSuccess && librarySuccess
     }
     else if (mode === 'library') {
       const { entry, outputDir, dependencies } = await getComponentConfig('')
       // 打包整个组件库
-      return await buildComponent('', entry, outputDir.replace('packages', ''), dependencies)
+      return await buildComponent('', entry, outputDir.replace('packages', ''), dependencies, shouldPublish)
     }
     else {
       // 打包单个组件
       const { entry, outputDir, dependencies } = await getComponentConfig(mode)
-      return await buildComponent(mode, entry, outputDir, dependencies)
+      return await buildComponent(mode, entry, outputDir, dependencies, shouldPublish)
     }
   }
   catch (error) {
-    console.error('打包过程中发生错误:', error)
-    return false
-  }
-}
-
-/**
- * 发布函数 - 统一处理三种模式：all、library、单个组件
- * @param mode 发布模式：'all'、'library'、或组件名
- * @returns 是否成功
- */
-async function doPublish(mode = 'all') {
-  try {
-    if (mode === 'all') {
-      // 发布整个组件库和所有单个组件
-      const librarySuccess = await publishComponent('')
-      if (!librarySuccess) {
-        console.error('组件库发布失败')
-        return false
-      }
-      console.log('组件库发布成功！')
-
-      // 逐个发布单独组件
-      const componentNames = await getComponentNames()
-      let successCount = 0
-      for (const comp of componentNames) {
-        try {
-          console.log(`开始发布组件: ${comp}...`)
-          const success = await publishComponent(comp)
-          if (success) {
-            successCount++
-            console.log(`组件 ${comp} 发布成功！`)
-          }
-          else {
-            console.error(`组件 ${comp} 发布失败`)
-          }
-        }
-        catch (error) {
-          console.error(`组件 ${comp} 发布失败:`, error)
-        }
-      }
-
-      console.log(`发布完成！成功发布组件库和 ${successCount}/${componentNames.length} 个单独组件`)
-      return successCount === componentNames.length
-    }
-    else if (mode === 'library') {
-      // 只发布整个组件库
-      return await publishComponent('')
-    }
-    else {
-      // 发布单个组件
-      return await publishComponent(mode)
-    }
-  }
-  catch (error) {
-    console.error('发布过程中发生错误:', error)
+    console.error(`${shouldPublish ? '打包发布' : '打包'}过程中发生错误:`, error)
     return false
   }
 }
@@ -1061,7 +985,7 @@ async function doPublish(mode = 'all') {
 async function main() {
   // 获取命令行参数
   const args = process.argv.slice(2)
-  const command = args[0] || 'build-publish' // 默认命令是build-publish
+  const command = args[0] || 'build' // 默认命令是build
   const mode = args[1] || 'all' // 默认模式是all
 
   // 验证模式是否有效
@@ -1075,51 +999,33 @@ async function main() {
     }
   }
 
-  // 声明变量，避免在case块中声明
-  let buildSuccess, publishSuccess, buildResult, publishResult
-
   // 根据命令执行不同的操作
   switch (command) {
-    case 'build':
+    case 'build': {
       // 只构建
-      buildSuccess = await doBuild(mode)
+      const buildSuccess = await doBuild(mode, false)
       return buildSuccess ? 0 : 1
+    }
 
-    case 'publish':
-      // 只发布（假设已经构建好了）
-      publishSuccess = await doPublish(mode)
-      return publishSuccess ? 0 : 1
-
-    case 'build-publish':
-      // 先构建再发布
-      buildResult = await doBuild(mode)
-      if (!buildResult) {
-        console.error('构建失败，取消发布')
-        return 1
-      }
-
-      publishResult = await doPublish(mode)
-      return publishResult ? 0 : 1
+    case 'build-publish': {
+      // 构建并发布
+      const buildPublishResult = await doBuild(mode, true)
+      return buildPublishResult ? 0 : 1
+    }
 
     default:
       console.log(`
 使用方法:
-  node scripts/buildComponent.mjs [command] [mode] [version-type]
+  node scripts/buildComponent.mjs [command] [mode]
 
 命令:
-  build         - 仅构建组件
-  publish       - 仅发布组件（假设已经构建好）
+  build         - 仅构建组件（默认）
   build-publish - 构建并发布组件
 
 模式:
   all           - 处理所有单个组件和整个组件库（默认）
   library       - 只处理整个组件库
   <组件名>      - 只处理指定的单个组件
-
-版本类型:
-  major         - 增加主版本号（1.0.0 -> 2.0.0）
-  minor         - 增加次版本号（1.0.0 -> 1.1.0）
-  patch         - 增加补丁版本号（1.0.0 -> 1.0.1）（默认）
 
 示例:
   node scripts/buildComponent.mjs                   - 构建所有组件和组件库
