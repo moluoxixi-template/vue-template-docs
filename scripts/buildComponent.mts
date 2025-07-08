@@ -711,15 +711,14 @@ async function buildComponent(
   const currentVersion = versions[componentKey] || '0.0.1'
 
   console.log(`\n========== 开始打包: ${buildName}，版本：${currentVersion} ==========`)
-
+  const esOutputDir = resolve(outputDir, 'es')
+  const libOutputDir = resolve(outputDir, 'lib')
   try {
     // 清空目录
-    await fsp.rm(outputDir, { recursive: true, force: true }).catch(() => {})
-    await fsp.mkdir(outputDir, { recursive: true })
-
-    // 创建输出目录结构
-    await fsp.mkdir(resolve(outputDir, 'es'), { recursive: true })
-    await fsp.mkdir(resolve(outputDir, 'lib'), { recursive: true })
+    await fsp.rm(esOutputDir, { recursive: true, force: true }).catch(() => {})
+    await fsp.mkdir(esOutputDir, { recursive: true })
+    await fsp.rm(libOutputDir, { recursive: true, force: true }).catch(() => {})
+    await fsp.mkdir(libOutputDir, { recursive: true })
 
     // 初始化组件依赖为空对象，只添加分析出来的依赖
     const componentDependencies: Record<string, string> = {}
@@ -756,7 +755,7 @@ async function buildComponent(
     await bundleComponentModule({
       comp,
       entry,
-      outDir: `${outputDir}/es`,
+      outDir: esOutputDir,
       format: 'es',
       componentDependencies,
       globals,
@@ -769,7 +768,7 @@ async function buildComponent(
     await bundleComponentModule({
       comp,
       entry,
-      outDir: `${outputDir}/lib`,
+      outDir: libOutputDir,
       format: 'cjs',
       componentDependencies,
       globals,
@@ -835,7 +834,7 @@ async function buildComponent(
     }
 
     // 检查是否有样式文件
-    const stylePath = resolve(outputDir, 'es/style/index.css')
+    const stylePath = resolve(esOutputDir, 'style/index.css')
     if (fs.existsSync(stylePath)) {
       pkgJson.exports['./style'] = './es/style/index.css'
       pkgJson.exports['./style.css'] = './es/style/index.css'
