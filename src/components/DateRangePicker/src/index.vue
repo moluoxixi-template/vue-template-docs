@@ -5,7 +5,8 @@
       v-bind="$attrs"
       v-model="localDateValue"
       style="width: 100%"
-      :format="props.format"
+      :format="computedFormat"
+      :default-time="defaultTime"
       :placeholder="placeholder"
       :start-placeholder="startPlaceholder"
       :end-placeholder="endPlaceholder"
@@ -47,7 +48,7 @@ const props = defineProps({
   // 显示在输入框中的格式
   format: {
     type: String,
-    default: 'YYYY-MM-DD',
+    default: null,
   },
   // 可选，绑定值的格式，对显示值无效
   valueFormat: {
@@ -151,13 +152,21 @@ const props = defineProps({
 // 定义emit
 const emit = defineEmits(['update:modelValue', 'change'])
 
+const defaultTime: [Date, Date] = [
+  new Date(2000, 0, 0, 0, 0, 0),
+  new Date(2000, 0, 0, 23, 59, 59),
+]
+
 // 本地日期值，用于与el-date-picker交互
 const localDateValue = ref([])
 
 const computedDefaultDatetimeRange = computed(() => {
   return props.defaultDatetimeRange ?? props.type !== 'datetime'
 })
-
+const dateTimeTypes = ['datetime', 'datetimerange']
+const computedFormat = computed(() => {
+  return props.format ?? dateTimeTypes.includes(props.type) ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD'
+})
 /**
  * 日期选择器引用
  */
@@ -434,6 +443,7 @@ const computedShortcuts = computed(() => {
  * value不为数组的日期类型
  */
 const singleDateTypes: string[] = ['date', 'datetime']
+
 // 处理日期变化事件
 function handleDateChange(val: any) {
   const formattedDates = formatDateRange(

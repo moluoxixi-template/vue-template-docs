@@ -63,7 +63,6 @@ import { VxeGrid } from 'vxe-table'
 import { dispatchEvents, getClass, getStringObj, getType } from '@/components/_utils'
 import {
   getCustomType,
-  getTypeName,
   handleGetColumn,
   handleGetRequiredFields,
 } from '@/components/DraggableTable/src/_utils'
@@ -414,7 +413,6 @@ const computedColumns = computed<ColumnType[]>(() => {
 
   return columns.map((i) => {
     const col = handleGetColumn(i)
-    col.title = col.title || getTypeName(col.type as types)
     col.visible = col.visible ?? true
     const { options, editProps, filterProps, cellProps, ...item } = col
     const customType = getCustomType(item.type)

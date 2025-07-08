@@ -44,9 +44,10 @@ export default defineComponent({
         const { fullData, tableData } = $table.getTableData()
         const option = column.filters[0]
         const { vals } = option.data
+        const noValueField = ['null', 'undefined', '']
         const colValList = Object.keys(
           groupBy(renderOptsProps.value.filterType === 'full' ? fullData : tableData, column.field),
-        ).map((val) => {
+        ).filter((val: any) => !noValueField.includes(val)).map((val) => {
           return {
             checked: vals.includes(val),
             value: val,
