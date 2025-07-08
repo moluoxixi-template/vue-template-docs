@@ -1003,7 +1003,7 @@ async function doBuild(mode = 'all', shouldPublish = false) {
 async function main() {
   // 获取命令行参数
   const args = process.argv.slice(2)
-  const command = args[0] || 'build' // 默认命令是build
+  const command = args[0] || 'build-publish' // 默认命令是build
   const mode = args[1] || 'all' // 默认模式是all
 
   // 验证模式是否有效
