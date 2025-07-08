@@ -68,13 +68,13 @@ export default defineConfig(({ mode }) => {
         }),
       ],
       globs: [
-        'src/components/*/index.vue', // 简单组件结构：ComponentName/index.vue
-        'src/components/*/index.ts', // 复杂组件结构：ComponentName/src/index.vue
-        '!src/components/**/base/**/*', // 排除base子目录
-        '!src/components/**/components/**/*', // 排除组件内的子组件目录
-        '!src/components/_*/**/*', // 排除以下划线开头的工具目录
-        '!src/components/**/utils/**/*', // 排除utils子目录
-        '!src/components/**/types/**/*',
+        'src/components/**/index.vue',
+        'src/components/**/index.ts',
+        '!src/components/**/base/**/*',
+        '!src/components/**/components/**/*',
+        '!src/components/**/src/**/*',
+        '!src/components/**/_utils/**/*',
+        '!src/components/**/_types/**/*',
       ],
       dts: path.resolve(__dirname, './src/typings/components.d.ts'),
     }),
