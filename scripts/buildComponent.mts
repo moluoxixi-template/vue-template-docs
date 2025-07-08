@@ -871,7 +871,9 @@ async function buildComponent(
     if (shouldPublish) {
       console.log(`准备发布 ${buildName}，版本：${currentVersion} -> ${newVersion}`)
 
-      await writeComponentVersions(comp, newVersion)
+      await writeComponentVersions({
+        [componentKey]: newVersion,
+      })
 
       try {
         console.log(`开始发布 ${pkgJson.name}@${pkgJson.version}...`)
