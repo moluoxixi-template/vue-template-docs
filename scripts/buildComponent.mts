@@ -531,7 +531,12 @@ function createBaseConfig(comp: string, internalDeps: string[]) {
     plugins: [
       // 添加路径替换插件，将内部组件引用转换为外部包引用
       createComponentReferencePlugin(internalDeps, comp),
-      pluginVue(),
+      pluginVue({
+        script: {
+          defineModel: true,
+          propsDestructure: true,
+        },
+      }),
       vueJsx(),
       // 添加类型声明生成插件
       // dts({
@@ -790,6 +795,8 @@ async function buildComponent(
     }
 
     // 生成package.json
+    // 优化依赖分类逻辑
+    const peerDepList = ['vue', 'vxe-table', 'element-plus']
     const pkgJson: any = {
       name: `@${LIB_NAMESPACE}${(comp ? `/${comp}` : '/components').toLowerCase()}`,
       version: currentVersion,
@@ -825,16 +832,27 @@ async function buildComponent(
         '*.css',
         '*.scss',
       ],
-      peerDependencies: {
-        vue: '^3.2.0',
-      },
-      dependencies: componentDependencies,
+      peerDependencies: {},
+      dependencies: {},
       publishConfig: {
         access: 'public',
       },
       license: 'MIT',
     }
 
+    // 分类依赖到 peerDependencies 和 dependencies
+    for (const [pkg, pkgVersion] of Object.entries(componentDependencies)) {
+      if (peerDepList.includes(pkg)) {
+        pkgJson.peerDependencies[pkg] = pkgVersion
+      }
+      else {
+        pkgJson.dependencies[pkg] = pkgVersion
+      }
+    }
+    // 保证vue一定有peerDependencies
+    if (!pkgJson.peerDependencies.vue) {
+      pkgJson.peerDependencies.vue = '^3.2.0'
+    }
     // 检查是否有样式文件
     const stylePath = resolve(esOutputDir, 'style/index.css')
     if (fs.existsSync(stylePath)) {
