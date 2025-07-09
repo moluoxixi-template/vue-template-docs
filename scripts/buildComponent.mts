@@ -874,6 +874,19 @@ async function buildComponent(
         pkgJson.dependencies[pkg] = pkgVersion
       }
     }
+
+    // 添加内部组件依赖到 dependencies
+    for (const internalComp of deps.internal) {
+      // 排除当前组件的自引用
+      if (internalComp !== comp) {
+        const internalPkgName = `@${LIB_NAMESPACE}/${internalComp.toLowerCase()}`
+        // 获取内部组件的版本号，如果没有则使用默认版本
+        const internalVersion = versions[internalComp] || '^1.0.0'
+        pkgJson.dependencies[internalPkgName] = internalVersion
+        console.log(`✓ 添加内部组件依赖到 dependencies: ${internalPkgName}@${internalVersion}`)
+      }
+    }
+
     // 保证vue一定有peerDependencies
     if (!pkgJson.peerDependencies.vue) {
       pkgJson.peerDependencies.vue = '^3.2.0'
