@@ -123,30 +123,6 @@ async function analyzeComponentDeps(comp: string) {
       tsConfig: {
         fileName: resolve(rootDir, 'tsconfig.json'),
       },
-
-      // 文件扩展名
-      // extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue'],
-      // Webpack解析配置（用于别名等）
-      // webpackConfig: {
-      //   resolve: {
-      //     alias: {
-      //       '@': resolve(rootDir, 'src'),
-      //     },
-      //     extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue'],
-      //   },
-      // },
-      // // 选项
-      // options: {
-      //   includeOnly: '', // 不限制分析范围
-      //   exclude: {
-      //     path: 'node_modules', // 排除node_modules，但保留npm包引用信息
-      //   },
-      //   maxDepth: 15, // 增加分析深度，确保能找到间接依赖
-      //   moduleSystems: ['es6', 'cjs', 'tsd'],
-      //   tsPreCompilationDeps: true,
-      //   preserveSymlinks: false,
-      //   externalModuleResolutionStrategy: 'node_modules',
-      // },
       // 规则配置
       ruleSet: {
         forbidden: [],
@@ -484,6 +460,44 @@ function createComponentReferencePlugin(internalDeps: string[], currentComponent
         }
       }
 
+      // 第二步：将 @/components/xxx 转换为 @/moluoxixi/xxx（仅对组件，不包括_utils、_types等）
+      const componentImportRegex = /import\s[^"']*from\s+['"]([^'"]+)['"]/g
+      let componentMatch
+      const componentReplacements = []
+
+      // eslint-disable-next-line no-cond-assign
+      while ((componentMatch = componentImportRegex.exec(transformedCode)) !== null) {
+        const importPath = componentMatch[1]
+
+        // 检查是否是 @/components/xxx 路径（排除_utils、_types等）
+        if (importPath.startsWith('@/components/')) {
+          const pathParts = importPath.split('/')
+          const componentName = pathParts[2] // @/components/ComponentName/...
+
+          // 只转换组件，不转换_utils、_types等共享模块
+          if (componentName && !componentName.startsWith('_') && internalDeps.includes(componentName)) {
+            const newPath = importPath.replace('@/components/', `@/${LIB_NAMESPACE}/`)
+            componentReplacements.push({
+              oldImport: componentMatch[0],
+              newImport: componentMatch[0].replace(importPath, newPath),
+              componentName,
+              oldPath: importPath,
+              newPath,
+            })
+          }
+        }
+      }
+
+      // 执行组件路径替换
+      for (const replacement of componentReplacements) {
+        const newCode = transformedCode.replace(replacement.oldImport, replacement.newImport)
+        if (newCode !== transformedCode) {
+          transformedCode = newCode
+          hasChanges = true
+          console.log(`✓ 转换组件引用: ${replacement.oldPath} -> ${replacement.newPath} (文件: ${id})`)
+        }
+      }
+
       return hasChanges ? { code: transformedCode, map: null } : null
     },
 
@@ -495,6 +509,13 @@ function createComponentReferencePlugin(internalDeps: string[], currentComponent
         // 检查是否是@/components路径引用（排除当前组件的自引用）
         if (id.startsWith('@/components/')) {
           const componentMatch = id.match(/@\/components\/([A-Z][a-zA-Z0-9]+)/)
+          return !(componentMatch && componentMatch[1] === currentComponent)
+          // 标记为外部依赖
+        }
+
+        // 检查是否是@/moluoxixi路径引用（排除当前组件的自引用）
+        if (id.startsWith(`@/${LIB_NAMESPACE}/`)) {
+          const componentMatch = id.match(new RegExp(`@/${LIB_NAMESPACE}/([A-Z][a-zA-Z0-9]+)`))
           return !(componentMatch && componentMatch[1] === currentComponent)
           // 标记为外部依赖
         }
@@ -641,14 +662,17 @@ async function bundleComponentModule({
       },
       rollupOptions: {
         external: (id: string) => {
+          console.log('------------------------->id', id)
           // 检查外部依赖
           const isExternalDep = Object.keys(componentDependencies).some(dep => id === dep || id.startsWith(`${dep}/`))
           // 检查Vue相关依赖
           const isVueDep = ['vue', '@vue/runtime-core', '@vue/runtime-dom'].includes(id)
           // 检查@/components路径（内部组件依赖）
           const isInternalComponent = id.startsWith('@/components/')
+          // 检查@/moluoxixi路径（转换后的内部组件依赖）
+          const isTransformedInternalComponent = id.startsWith(`@/${LIB_NAMESPACE}/`)
 
-          return isExternalDep || isVueDep || isInternalComponent
+          return isExternalDep || isVueDep || isInternalComponent || isTransformedInternalComponent
         },
         output: {
           preserveModules: true,
@@ -755,6 +779,7 @@ async function buildComponent(
       }
     }
 
+    console.log('--------------------------->globals', globals)
     // 创建基础配置
     const baseConfig = createBaseConfig(comp, deps.internal)
 
