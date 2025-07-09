@@ -57,7 +57,12 @@ const popoverVisible = defineModel({
 })
 
 const allColumns = ref<ColumnType[]>([])
-watch(() => props.columns, initColumns, {
+
+watch(() => popoverVisible.value, (newVal) => {
+  if (newVal) {
+    initColumns()
+  }
+}, {
   immediate: true,
 })
 
@@ -73,7 +78,8 @@ function initColumns() {
 
 function handleConfirm() {
   if (allColumns.value.filter(col => !col.visible).length === 0) {
-    return ElMessage.warning('至少保留一列')
+    ElMessage.warning('至少保留一列')
+    return
   }
   emits('menuConfirm', allColumns.value)
   popoverVisible.value = false
@@ -87,7 +93,6 @@ watch(
   () => {
     // 移除旧元素的事件监听
     cleanupEventListeners()
-
     // 添加新元素的事件监听
     setupEventListeners()
   },
@@ -117,7 +122,7 @@ watch(
 function setupEventListeners() {
   virtualElement = (props.virtualRef as ComponentPublicInstance)?.$el || props.virtualRef
   if (virtualElement) {
-    //   监听事件
+    // 可以在这里添加其他事件监听器
   }
 }
 
@@ -152,7 +157,6 @@ function handleOutsideClick(e: MouseEvent) {
     && !virtualEl.contains(e.target as Node)
   ) {
     popoverVisible.value = false
-    initColumns()
     ;(props.virtualRef as HTMLElement)?.blur?.()
     ;(props.virtualRef as ComponentPublicInstance)?.$el?.blur?.()
   }
