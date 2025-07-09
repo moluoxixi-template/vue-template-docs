@@ -165,7 +165,12 @@ const computedDefaultDatetimeRange = computed(() => {
 })
 const dateTimeTypes = ['datetime', 'datetimerange']
 const computedFormat = computed(() => {
-  return props.format ?? dateTimeTypes.includes(props.type) ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD'
+  if (!props.format) {
+    return dateTimeTypes.includes(props.type) ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD'
+  }
+  else {
+    return props.format
+  }
 })
 /**
  * 日期选择器引用
