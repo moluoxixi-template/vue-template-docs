@@ -12,6 +12,9 @@ import tailwindcss from '@tailwindcss/postcss'
 import process from 'node:process'
 import { execSync } from 'node:child_process'
 import { cruise } from 'dependency-cruiser'
+import AutoImport from 'unplugin-auto-import/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import Components from 'unplugin-vue-components/vite'
 import type { ICruiseOptions, ICruiseResult } from 'dependency-cruiser'
 
 // === 组件库命名空间配置 ===
@@ -574,6 +577,32 @@ function createBaseConfig(comp: string, internalDeps: string[]) {
         },
       }),
       vueJsx(),
+      // 自动引入
+      AutoImport({
+        imports: ['vue'],
+        resolvers: [ElementPlusResolver()],
+        dts: path.resolve(rootDir, './src/typings/auto-imports.d.ts'),
+      }),
+      // 与自定义element组件冲突
+      Components({
+        resolvers: [
+          ElementPlusResolver({
+            exclude: new RegExp(
+              ([]).map(item => `^${item}$`).join('|'),
+            ),
+          }),
+        ],
+        globs: [
+          'src/components/**/index.vue',
+          'src/components/**/index.ts',
+          '!src/components/**/base/**/*',
+          '!src/components/**/components/**/*',
+          '!src/components/**/src/**/*',
+          '!src/components/**/_utils/**/*',
+          '!src/components/**/_types/**/*',
+        ],
+        dts: path.resolve(rootDir, './src/typings/components.d.ts'),
+      }),
       // 添加类型声明生成插件
       // dts({
       //   vue: true,
