@@ -678,7 +678,6 @@ async function bundleComponentModule({
       },
       rollupOptions: {
         external: (id: string) => {
-          console.log('------------------------->id', id)
           // 检查外部依赖
           const isExternalDep = Object.keys(componentDependencies).some(dep => id === dep || id.startsWith(`${dep}/`))
           // 检查Vue相关依赖
@@ -910,10 +909,10 @@ async function buildComponent(
       // 排除当前组件的自引用
       if (internalComp !== comp) {
         const internalPkgName = `@${LIB_NAMESPACE}/${internalComp.toLowerCase()}`
-        // 获取内部组件的版本号，如果没有则使用默认版本
-        const internalVersion = versions[internalComp] || '^1.0.0'
+        // 使用最新版本，允许自动更新到最新版本
+        const internalVersion = '*'
         pkgJson.dependencies[internalPkgName] = internalVersion
-        console.log(`✓ 添加内部组件依赖到 dependencies: ${internalPkgName}@${internalVersion}`)
+        console.log(`✓ 添加内部组件依赖到 dependencies: ${internalPkgName}@${internalVersion} (最新版本)`)
       }
     }
 
