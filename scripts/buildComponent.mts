@@ -469,12 +469,12 @@ function createComponentReferencePlugin(internalDeps: string[], currentComponent
       while ((componentMatch = componentImportRegex.exec(transformedCode)) !== null) {
         const importPath = componentMatch[1]
 
-        // 检查是否是 @/components/xxx 路径（排除_utils、_types等）
+        // 检查是否是 @/components/xxx 路径
         if (importPath.startsWith('@/components/')) {
           const pathParts = importPath.split('/')
           const componentName = pathParts[2] // @/components/ComponentName/...
 
-          // 只转换组件，不转换_utils、_types等共享模块
+          // 转换组件引用（排除_utils、_types等共享模块，它们应该被打包进来）
           if (componentName && !componentName.startsWith('_') && internalDeps.includes(componentName)) {
             const newPath = importPath.replace('@/components/', `@/${LIB_NAMESPACE}/`)
             componentReplacements.push({
@@ -484,6 +484,10 @@ function createComponentReferencePlugin(internalDeps: string[], currentComponent
               oldPath: importPath,
               newPath,
             })
+          }
+          // 对于_utils、_types等共享模块，保持@/components路径，让它们被打包进来
+          else if (componentName && componentName.startsWith('_')) {
+            console.log(`✓ 保持共享模块引用: ${importPath} (文件: ${id})`)
           }
         }
       }
@@ -506,8 +510,17 @@ function createComponentReferencePlugin(internalDeps: string[], currentComponent
       const originalExternal = opts.external || (() => false)
 
       opts.external = (id: string, parentId?: string, isResolved?: boolean) => {
-        // 检查是否是@/components路径引用（排除当前组件的自引用）
+        // 检查是否是@/components路径引用
         if (id.startsWith('@/components/')) {
+          const pathParts = id.split('/')
+          const componentName = pathParts[2] // @/components/ComponentName/...
+
+          // 如果是共享模块（_utils、_types等），不标记为外部依赖，让它们被打包进来
+          if (componentName && componentName.startsWith('_')) {
+            return false
+          }
+
+          // 检查是否是组件引用（排除当前组件的自引用）
           const componentMatch = id.match(/@\/components\/([A-Z][a-zA-Z0-9]+)/)
           return !(componentMatch && componentMatch[1] === currentComponent)
           // 标记为外部依赖
@@ -648,6 +661,7 @@ async function bundleComponentModule({
   chunkFileNames: string
   exportsType?: string
 }) {
+  const currentComponent = comp
   await build({
     ...baseConfig,
     build: {
@@ -667,12 +681,26 @@ async function bundleComponentModule({
           const isExternalDep = Object.keys(componentDependencies).some(dep => id === dep || id.startsWith(`${dep}/`))
           // 检查Vue相关依赖
           const isVueDep = ['vue', '@vue/runtime-core', '@vue/runtime-dom'].includes(id)
-          // 检查@/components路径（内部组件依赖）
-          const isInternalComponent = id.startsWith('@/components/')
+
+          // 检查@/components路径
+          if (id.startsWith('@/components/')) {
+            const pathParts = id.split('/')
+            const componentName = pathParts[2] // @/components/ComponentName/...
+
+            // 如果是共享模块（_utils、_types等），不标记为外部依赖，让它们被打包进来
+            if (componentName && componentName.startsWith('_')) {
+              return false
+            }
+
+            // 检查是否是组件引用（排除当前组件的自引用）
+            const componentMatch = id.match(/@\/components\/([A-Z][a-zA-Z0-9]+)/)
+            return !(componentMatch && componentMatch[1] === currentComponent)
+          }
+
           // 检查@/moluoxixi路径（转换后的内部组件依赖）
           const isTransformedInternalComponent = id.startsWith(`@/${LIB_NAMESPACE}/`)
 
-          return isExternalDep || isVueDep || isInternalComponent || isTransformedInternalComponent
+          return isExternalDep || isVueDep || isTransformedInternalComponent
         },
         output: {
           preserveModules: true,
