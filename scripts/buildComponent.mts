@@ -476,7 +476,9 @@ function createComponentReferencePlugin(internalDeps: string[], currentComponent
 
           // 转换组件引用（排除_utils、_types等共享模块，它们应该被打包进来）
           if (componentName && !componentName.startsWith('_') && internalDeps.includes(componentName)) {
-            const newPath = importPath.replace('@/components/', `@/${LIB_NAMESPACE}/`)
+            // 将组件名转换为小写，符合npm包命名规范
+            const npmPackageName = componentName.toLowerCase()
+            const newPath = `@${LIB_NAMESPACE}/${npmPackageName}`
             componentReplacements.push({
               oldImport: componentMatch[0],
               newImport: componentMatch[0].replace(importPath, newPath),
@@ -526,10 +528,10 @@ function createComponentReferencePlugin(internalDeps: string[], currentComponent
           // 标记为外部依赖
         }
 
-        // 检查是否是@/moluoxixi路径引用（排除当前组件的自引用）
-        if (id.startsWith(`@/${LIB_NAMESPACE}/`)) {
-          const componentMatch = id.match(new RegExp(`@/${LIB_NAMESPACE}/([A-Z][a-zA-Z0-9]+)`))
-          return !(componentMatch && componentMatch[1] === currentComponent)
+        // 检查是否是@moluoxixi/xxx路径引用（排除当前组件的自引用）
+        if (id.startsWith(`@${LIB_NAMESPACE}/`)) {
+          const componentMatch = id.match(new RegExp(`@${LIB_NAMESPACE}/([a-z][a-zA-Z0-9]+)`))
+          return !(componentMatch && componentMatch[1] === currentComponent.toLowerCase())
           // 标记为外部依赖
         }
 
@@ -697,8 +699,8 @@ async function bundleComponentModule({
             return !(componentMatch && componentMatch[1] === currentComponent)
           }
 
-          // 检查@/moluoxixi路径（转换后的内部组件依赖）
-          const isTransformedInternalComponent = id.startsWith(`@/${LIB_NAMESPACE}/`)
+          // 检查@moluoxixi/xxx路径（转换后的内部组件依赖）
+          const isTransformedInternalComponent = id.startsWith(`@${LIB_NAMESPACE}/`)
 
           return isExternalDep || isVueDep || isTransformedInternalComponent
         },
