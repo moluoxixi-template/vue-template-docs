@@ -31,7 +31,7 @@ export default class BaseApi {
     return config
   }
 
-  processResponseConfig(data: AxiosResponse['data']) {
+  processResponseConfig(data: AxiosResponse['data']): AxiosResponse['data'] {
     return data
   }
 
@@ -72,23 +72,23 @@ export default class BaseApi {
     )
   }
 
-  protected async request<R>(config: AxiosRequestConfig): Promise<AxiosResponse<R>> {
+  protected async request<R>(config: AxiosRequestConfig): Promise<AxiosResponse['data']> {
     return this.instance.request<R>(config)
   }
 
-  public async get<R>(url: string, params?: any, data?: any, config?: AxiosRequestConfig): Promise<AxiosResponse<R>> {
+  public async get<R>(url: string, params?: any, data?: any, config?: AxiosRequestConfig): Promise<AxiosResponse['data']> {
     return this.request<R>({ ...config, url, method: 'get', data, params })
   }
 
-  public post<R>(url: string, data?: any, params?: any, config?: AxiosRequestConfig): Promise<AxiosResponse<R>> {
+  public async post<R>(url: string, data?: any, params?: any, config?: AxiosRequestConfig): Promise<AxiosResponse['data']> {
     return this.request<R>({ ...config, url, method: 'post', data, params })
   }
 
-  public delete<R>(url: string, params?: any, data?: any, config?: AxiosRequestConfig): Promise<AxiosResponse<R>> {
+  public async delete<R>(url: string, params?: any, data?: any, config?: AxiosRequestConfig): Promise<AxiosResponse['data']> {
     return this.request<R>({ ...config, url, method: 'delete', data, params })
   }
 
-  public put<R>(url: string, data?: any, params?: any, config?: AxiosRequestConfig): Promise<AxiosResponse<R>> {
+  public async put<R>(url: string, data?: any, params?: any, config?: AxiosRequestConfig): Promise<AxiosResponse['data']> {
     return this.request<R>({ ...config, url, method: 'put', data, params })
   }
 }
