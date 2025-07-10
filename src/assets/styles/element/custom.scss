@@ -23,6 +23,23 @@
 
 //#endregion
 
+.el-button {
+  font-family: PingFangSC-Regular, serif;
+}
+
+.el-checkbox-group {
+  line-height: 16px !important;
+  font-size: 16px;
+}
+
+.el-card {
+  --el-card-padding: 16px;
+}
+
+.el-tag {
+  border-radius: var(--el-border-radius-base);
+}
+
 //#region el-menu
 ////用于头部菜单
 //.el-menu--popup-container {
@@ -101,8 +118,6 @@
   padding-left: 16px;
   font-size: 16px;
   font-family: PingFangSC-Semibold, serif;
-
-  /* font-weight: 600; */
 }
 
 .el-dialog__body {
@@ -209,19 +224,11 @@
     thead {
       color: #29354f !important;
       font-size: 12px !important;
-
-      /* font-weight: 600; */
       font-family: PingFangSC-Semibold, serif;
 
       th {
         background: #f5f7fa !important;
         border-top: 1px solid var(--border-color-1) !important;
-      }
-
-      th.el-table__cell > .cell {
-        /* top:-4px */
-
-        /* font-weight: 600; */
       }
     }
 
@@ -243,7 +250,6 @@
   .el-table__fixed-body-wrapper {
     tr {
       /* 高亮选中行 */
-
       &:hover,
       &.selected {
         td {
@@ -275,12 +281,6 @@
       border-color: var(--border-color-1) !important;
       padding: 4px 2px !important;
     }
-
-    th.el-table__cell > .cell {
-      /* top:-4px */
-
-      /* font-weight: 600; */
-    }
   }
 }
 
@@ -289,6 +289,55 @@
 //#region custom
 .bg-primary {
   background-color: var(--el-color-primary);
+}
+
+.el-table .el-table__cell {
+  &.patient-group-start {
+    padding-left: 16px !important;
+    position: relative;
+
+    &::before {
+      position: absolute;
+      height: 50%;
+      width: 12px;
+      content: '';
+      display: block;
+      transform: translate(-50%, calc(100% - 4px));
+      border-top: 2px solid var(--border-color-5);
+      border-left: 2px solid var(--border-color-5);
+    }
+  }
+
+  &.patient-group-middle {
+    padding-left: 16px !important;
+    position: relative;
+
+    &::before {
+      position: absolute;
+      height: 100%;
+      width: 12px;
+      content: '';
+      display: block;
+      transform: translate(-50%, -4px);
+      border-left: 2px solid var(--border-color-5);
+    }
+  }
+
+  &.patient-group-end {
+    padding-left: 16px !important;
+    position: relative;
+
+    &::before {
+      position: absolute;
+      height: 50%;
+      width: 12px;
+      content: '';
+      display: block;
+      transform: translate(-50%, calc(-100% + 10px));
+      border-bottom: 2px solid var(--border-color-5);
+      border-left: 2px solid var(--border-color-5);
+    }
+  }
 }
 
 //#endregion
