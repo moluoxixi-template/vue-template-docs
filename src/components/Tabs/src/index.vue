@@ -3,6 +3,7 @@
     <el-tabs
       v-model="activeName"
       type="border-card"
+      class="tabs-card"
       @tab-change="handleTabChange"
     >
       <template v-for="item in props.tabList">
@@ -34,10 +35,14 @@ const props = defineProps({
     default: () => [],
   },
 })
-
 const emits = defineEmits(['tabChange'])
 const activeName = defineModel({ default: '1', type: String })
+
 function handleTabChange(val: any) {
   emits('tabChange', val)
 }
 </script>
+
+<style scoped lang="scss">
+@forward '@/assets/styles/tab';
+</style>
