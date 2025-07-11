@@ -16,6 +16,9 @@ import AutoImport from 'unplugin-auto-import/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
 import type { ICruiseOptions, ICruiseResult } from 'dependency-cruiser'
+import viteCompression from 'vite-plugin-compression'
+import viteImagemin from 'vite-plugin-imagemin'
+import { visualizer } from 'rollup-plugin-visualizer'
 
 // === 组件库命名空间配置 ===
 const LIB_NAMESPACE = 'moluoxixi'
@@ -567,6 +570,9 @@ function createBaseConfig(comp: string, internalDeps: string[]) {
     configFile: false,
     publicDir: false,
     logLevel: 'info',
+    esbuild: {
+      pure: ['console.log', 'console.info', 'console.debug'],
+    },
     plugins: [
       // 添加路径替换插件，将内部组件引用转换为外部包引用
       createComponentReferencePlugin(internalDeps, comp),
@@ -602,6 +608,27 @@ function createBaseConfig(comp: string, internalDeps: string[]) {
           '!src/components/**/_types/**/*',
         ],
         dts: path.resolve(rootDir, './src/typings/components.d.ts'),
+      }),
+
+      viteCompression({
+        algorithm: 'gzip',
+        verbose: true,
+        disable: false,
+        ext: '.gz',
+        threshold: 10240,
+        deleteOriginFile: false,
+      }),
+      viteImagemin({
+        gifsicle: { optimizationLevel: 7, interlaced: false },
+        optipng: { optimizationLevel: 7 },
+        mozjpeg: { quality: 20 },
+        pngquant: { quality: [0.8, 0.9], speed: 4 },
+        svgo: {
+          plugins: [{ name: 'removeViewBox' }, { name: 'removeEmptyAttrs', active: false }],
+        },
+      }),
+      visualizer({
+        open: true,
       }),
       // 添加类型声明生成插件
       // dts({
