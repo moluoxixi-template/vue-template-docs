@@ -18,7 +18,6 @@ import Components from 'unplugin-vue-components/vite'
 import type { ICruiseOptions, ICruiseResult } from 'dependency-cruiser'
 import viteCompression from 'vite-plugin-compression'
 import viteImagemin from 'vite-plugin-imagemin'
-import { visualizer } from 'rollup-plugin-visualizer'
 
 // === 组件库命名空间配置 ===
 const LIB_NAMESPACE = 'moluoxixi'
@@ -626,9 +625,6 @@ function createBaseConfig(comp: string, internalDeps: string[]) {
         svgo: {
           plugins: [{ name: 'removeViewBox' }, { name: 'removeEmptyAttrs', active: false }],
         },
-      }),
-      visualizer({
-        open: true,
       }),
       // 添加类型声明生成插件
       // dts({
