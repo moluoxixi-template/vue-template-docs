@@ -18,6 +18,7 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
 import type { ICruiseOptions, ICruiseResult } from 'dependency-cruiser'
 import viteImagemin from 'vite-plugin-imagemin'
+import { obfuscator } from 'rollup-obfuscator'
 
 // === 组件库命名空间配置 ===
 const LIB_NAMESPACE = 'moluoxixi'
@@ -720,6 +721,10 @@ async function bundleComponentModule({
         formats: [format],
       },
       rollupOptions: {
+        plugins: [
+          // 添加代码混淆插件
+          obfuscator(),
+        ],
         external: (id: string) => {
           // 检查外部依赖
           const isExternalDep = Object.keys(componentDependencies).some(dep => id === dep || id.startsWith(`${dep}/`))
