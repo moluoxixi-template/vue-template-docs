@@ -152,11 +152,6 @@ const props = defineProps({
 // 定义emit
 const emit = defineEmits(['update:modelValue', 'change'])
 
-const defaultTime: [Date, Date] = [
-  new Date(2000, 0, 0, 0, 0, 0),
-  new Date(2000, 0, 0, 23, 59, 59),
-]
-
 // 本地日期值，用于与el-date-picker交互
 const localDateValue = ref([])
 
@@ -164,6 +159,17 @@ const computedDefaultDatetimeRange = computed(() => {
   return props.defaultDatetimeRange ?? props.type !== 'datetime'
 })
 const dateTimeTypes = ['datetime', 'datetimerange']
+const defaultTime = computed<[Date, Date] | undefined>(() => {
+  if (dateTimeTypes.includes(props.type)) {
+    return [
+      new Date(2000, 0, 0, 0, 0, 0),
+      new Date(2000, 0, 0, 23, 59, 59),
+    ]
+  }
+  else {
+    return undefined
+  }
+})
 const computedFormat = computed(() => {
   if (!props.format) {
     return dateTimeTypes.includes(props.type) ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD'
