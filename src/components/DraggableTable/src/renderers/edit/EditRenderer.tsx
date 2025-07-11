@@ -30,6 +30,15 @@ export default defineComponent({
       currRow.value = row
       currColumn.value = column
     }
+
+    function validateHandle() {
+      console.log('props.renderParams', props.renderParams)
+      const xTable = props.renderParams?.$grid
+      if (xTable) {
+        xTable.validateField(currRow.value, currColumn.value.field).then()
+      }
+    }
+
     watch(() => [props.renderParams, props.renderOpts], load, {
       immediate: true,
     })
@@ -52,8 +61,10 @@ export default defineComponent({
             type="date"
             {...renderOptsProps.value}
             modelValue={currRow.value[currColumn.value.field]}
-            onUpdate:modelValue={(val: string[]) =>
-              (currRow.value[currColumn.value.field] = val[0])}
+            onUpdate:modelValue={(val: string[]) => {
+              currRow.value[currColumn.value.field] = val[0]
+              validateHandle()
+            }}
           />
         )
       )
@@ -63,26 +74,33 @@ export default defineComponent({
       return (
         propsOptions.value && (
           <Select
-            teleported={false}
             class="w-full!"
+            options={propsOptions.value}
+            {...renderOptsProps.value}
+            teleported={false}
             filterable
             automatic-dropdown
-            v-model={currRow.value[currColumn.value.field]}
-            options={propsOptions.value}
+            modelValue={currRow.value[currColumn.value.field]}
+            onUpdate:modelValue={(val: any) => {
+              currRow.value[currColumn.value.field] = val
+              validateHandle()
+            }}
           />
         )
       )
     })
 
-    const inputValue = ref('')
-    onMounted(() => (inputValue.value = currRow.value[currColumn.value.field]))
     const DefaultRender = computed(() => {
       return (
         <>
           <ElInput
+            onInput={validateHandle}
             {...renderOptsProps.value}
-            v-model={inputValue.value}
-            onBlur={() => (currRow.value[currColumn.value.field] = inputValue.value)}
+            modelValue={currRow.value[currColumn.value.field]}
+            onUpdate:modelValue={(val: any) => {
+              currRow.value[currColumn.value.field] = val
+              validateHandle()
+            }}
           />
         </>
       )

@@ -8,6 +8,7 @@
       @checkbox-change="handleCheckboxChange"
       @resizable-change="handleColumnResizableChange"
       @header-cell-menu.prevent="handleHeaderCellMenu"
+      @page-change="handlePageChange"
     >
       <!--      <template #empty> -->
       <!--        <span style="color: red;"> -->
@@ -18,6 +19,22 @@
       <template #loading="params">
         <slot name="loading" v-bind="params">
           <span class="absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2">加载中...</span>
+        </slot>
+      </template>
+      <template v-if="!isEmpty(props.pagerConfig)" #pager>
+        <slot name="pager">
+          <div class="pt-12">
+            <ElPagination
+              v-if="props.pageType === 'el-pagination'"
+              :current-page="props.pagerConfig.currentPage"
+              :page-size="props.pagerConfig.pageSize"
+              :total="props.pagerConfig.total"
+              :page-sizes="transformPageSizes(props.pagerConfig.pageSizes)"
+              :layout="transformLayouts(props.pagerConfig.layouts)"
+              @current-change="handleElPaginationPageChange"
+              @size-change="handleElPaginationSizeChange"
+            />
+          </div>
         </slot>
       </template>
       <!-- 使用插槽方式渲染自定义内容 -->
@@ -39,6 +56,9 @@ import type { PropType } from 'vue'
 import type {
   VxeGridInstance,
   VxeGridProps,
+  VxeGridPropTypes,
+  VxePagerDefines,
+  VxePagerProps,
   VxeTableConstructor,
   VxeTableDefines,
   VxeTablePropTypes,
@@ -175,7 +195,7 @@ const props = defineProps({
   },
   /**
    * 筛选器布局配置，支持 input, checkbox, select
-   * @default ['input', 'select']
+   * @default ['input', 'checkbox']
    */
   filterLayout: {
     type: Array as PropType<('input' | 'checkbox' | 'select')[]>,
@@ -342,6 +362,39 @@ const props = defineProps({
     default: () => ({}),
   },
   //#endregion
+  //#region 自定义相关配置
+  customConfig: {
+    type: Object as PropType<VxeTablePropTypes.CustomConfig>,
+    default: () => ({
+      storage: true,
+    }),
+  },
+  //#endregion
+  //#region 鼠标相关配置
+  mouseConfig: {
+    type: Object as PropType<VxeTablePropTypes.MouseConfig>,
+    default: () => ({}),
+  },
+  //#endregion
+  //#region 分页配置
+  pageType: {
+    type: String,
+    default: 'el-pagination',
+  },
+  pagerConfig: {
+    type: Object as PropType<VxeGridPropTypes.PagerConfig>,
+    /**
+     * layouts 可选值：Home, PrevJump, PrevPage, Number, JumpNumber, NextPage, NextJump, End, Sizes, Jump, FullJump, PageCount, Total
+     * @see https://vxetable.cn/#/grid/api?q=pager-config
+     */
+    default: () => ({
+      total: 0,
+      currentPage: 1,
+      pageSize: 10,
+      layouts: ['PrevPage', 'Number', 'NextPage', 'Sizes', 'FullJump', 'Total'],
+    }),
+  },
+  //#endregion
 })
 
 // 组件事件
@@ -353,6 +406,7 @@ const emit = defineEmits([
   'checkboxChange',
   'checkboxAll',
   'headerCellMenu',
+  'pageChange',
 ])
 
 const attrs = useAttrs()
@@ -365,6 +419,78 @@ const tableData = defineModel({
   type: Array,
   default: [],
 })
+
+function handlePageChange(params: VxePagerDefines.PageChangeEventParams) {
+  emit('pageChange', params)
+}
+/**
+ * 处理ElPagination的分页变化事件
+ * @param page 当前页码
+ */
+function handleElPaginationPageChange(page: number) {
+  // 构造vxe-grid的page-change事件参数
+  const pageChangeParams = {
+    type: 'current',
+    currentPage: page,
+    pageSize: props.pagerConfig.pageSize,
+  }
+  emit('pageChange', pageChangeParams)
+}
+
+/**
+ * 处理ElPagination的每页条数变化事件
+ * @param size 每页条数
+ */
+function handleElPaginationSizeChange(size: number) {
+  // 构造vxe-grid的page-change事件参数
+  const pageChangeParams = {
+    type: 'size',
+    currentPage: 1,
+    pageSize: size,
+  }
+  emit('pageChange', pageChangeParams)
+}
+
+function transformPageSizes(pageSizes: VxePagerProps['pageSizes']): number[] | undefined {
+  if (props.pageType === 'el-pagination') {
+    return pageSizes?.map((item) => {
+      if (typeof item === 'number') {
+        return item
+      }
+      else {
+        return +item.value!
+      }
+    })
+  }
+}
+
+function transformLayouts(layouts: VxePagerProps['layouts']): string | undefined {
+  if (props.pageType === 'el-pagination') {
+    /*
+    Home,
+    PrevJump,
+     PrevPage, Number, JumpNumber, NextPage, NextJump, End, Sizes, Jump, FullJump, PageCount, Total
+    * */
+    const ElPaginationLayoutsMap = {
+      PrevPage: 'prev',
+      Number: 'pager',
+      NextPage: 'next',
+      Sizes: 'sizes',
+      FullJump: 'jumper',
+      Total: 'total',
+      Home: '',
+      End: '',
+      PrevJump: '',
+      NextJump: '',
+      JumpNumber: '',
+      Jump: '',
+      PageCount: '',
+    }
+    return layouts?.map((item) => {
+      return ElPaginationLayoutsMap[item]
+    }).join(',')
+  }
+}
 
 /**
  * 计算后的columns，用于提供额外功能，目前功能如下：
@@ -577,8 +703,43 @@ const getStorageKey = () => (props.id ? `table_columns_${props.id}` : ``)
 
 // 计算表格配置属性
 const gridProps = computed<VxeGridProps>(() => {
+  // 生成默认的编辑验证规则
+  const defaultEditRules: VxeTablePropTypes.EditRules = {}
+
+  // 只有在启用编辑功能时才生成验证规则
+  const isEditEnabled = props.editable || props.editConfig?.enabled
+
+  if (isEditEnabled && localColumns.value.length > 0) {
+    localColumns.value.forEach((column) => {
+      // 检查列是否有 field 且有验证规则
+      if (column.field && (column.required === true || column.min !== undefined || column.max !== undefined)) {
+        const rules: any[] = []
+
+        // 添加必填验证
+        if (column.required === true) {
+          rules.push({ required: true, message: `${column.title || ''}必须填写` })
+        }
+
+        // 添加最小值验证
+        if (column.min !== undefined) {
+          rules.push({ min: column.min, message: `${column.title || ''}不能小于${column.min}` })
+        }
+
+        // 添加最大值验证
+        if (column.max !== undefined) {
+          rules.push({ max: column.max, message: `${column.title || ''}不能大于${column.max}` })
+        }
+
+        if (rules.length > 0) {
+          defaultEditRules[column.field] = rules
+        }
+      }
+    })
+  }
+
   return {
     // 基本配置
+    id: props.id,
     border: props.border,
     autoResize: props.autoResize,
     data: tableData.value,
@@ -587,6 +748,19 @@ const gridProps = computed<VxeGridProps>(() => {
     showFooterOverflow: props.showFooterOverflow ? 'title' : false,
     height: '100%',
     keepSource: true,
+    mouseConfig: {
+      selected: true,
+      ...props.mouseConfig,
+    },
+    customConfig: {
+      ...props.customConfig,
+    },
+    pagerConfig: {
+      total: tableData.value.length,
+      currentPage: 1,
+      pageSize: 10,
+      layouts: ['Home', 'PrevJump', 'PrevPage', 'Number', 'NextPage', 'NextJump', 'End', 'Sizes', 'FullJump', 'Total'],
+    },
     editConfig: {
       enabled: props.editable,
       trigger: 'dblclick',
@@ -594,6 +768,11 @@ const gridProps = computed<VxeGridProps>(() => {
       showStatus: true,
       showIcon: false,
       ...props.editConfig,
+    },
+    // 合并默认验证规则和用户传入的验证规则
+    editRules: {
+      ...defaultEditRules,
+      ...props.editRules,
     },
     rowConfig: {
       useKey: true,
@@ -707,7 +886,10 @@ const gridProps = computed<VxeGridProps>(() => {
     },
     ...attrs,
     // 使用计算后的列配置
-    columns: localColumns.value,
+    columns: localColumns.value?.map((item: ColumnType) => {
+      const { min, max, required, ...column } = item
+      return column
+    }),
   } as VxeGridProps
 })
 
@@ -773,7 +955,8 @@ function handleGetStoredColumns(): ColumnType[] {
  */
 function handleSaveColumnsToStorage() {
   try {
-    if (!xTable.value) {
+    // 如果没有表格实例，或者启用了本地存储，不保存
+    if (!xTable.value || props.customConfig.storage) {
       return
     }
 
@@ -848,6 +1031,11 @@ function handleColumnResizableChange(params: VxeTableDefines.ResizableChangePara
 watch(
   () => computedColumns.value,
   (newColumns) => {
+    // 如果启用了本地存储，不保存
+    if (props.customConfig.storage) {
+      localColumns.value = cloneDeep(newColumns)
+      return
+    }
     // 尝试从本地存储获取列配置
     const storedColumns = handleGetStoredColumns()
     if (!isEmpty(newColumns)) {

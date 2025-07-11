@@ -28,9 +28,11 @@
         <span class="mr-8!">扩展type选择：</span>
         <el-select
           v-model="cellType"
-          class="w-[200px]!"
+          style="width: 200px"
+          clearable
           value-key="type"
           placeholder="请选择"
+          @clear="changeCellType('')"
           @change="changeCellType"
         >
           <el-option
@@ -43,7 +45,10 @@
       </div>
     </div>
     <el-button @click="loading = !loading">
-      q313
+      转变loading
+    </el-button>
+    <el-button @click="handleValidate">
+      校验表格
     </el-button>
     <!-- 使用DraggableTable组件 -->
     <DraggableTable
@@ -60,12 +65,9 @@
       :sortable="sortable"
     >
       <!-- 自定义操作列插槽 -->
-      <template #aaa="{ row }">
-        <el-button type="primary" size="small" @click="handleEdit(row)">
-          编辑
-        </el-button>
-        <el-button type="danger" size="small" @click="handleDelete(row)">
-          删除
+      <template #aaa>
+        <el-button type="danger" size="small">
+          aaa自定义插槽按钮
         </el-button>
       </template>
     </DraggableTable>
@@ -73,8 +75,8 @@
 </template>
 
 <script setup>
-import { ElMessage, ElMessageBox } from 'element-plus'
-import { onMounted, ref } from 'vue'
+import { ElMessage } from 'element-plus'
+import { onMounted, ref, useTemplateRef } from 'vue'
 import DraggableTable from './index.vue'
 
 // 表格加载状态
@@ -88,7 +90,7 @@ const editable = ref(false)
 const filterable = ref(false)
 const sortable = ref(false)
 // 表格引用
-const draggableTableRef = ref(null)
+const draggableTableRef = useTemplateRef('draggableTableRef')
 
 // 表格数据
 const tableData = ref([
@@ -156,6 +158,9 @@ const columns = ref([
   {
     field: 'name',
     title: 'Name',
+    min: 3,
+    max: 10,
+    required: true,
   },
   { field: 'createTime', title: '日期', width: 150 },
   {
@@ -175,6 +180,7 @@ const columns = ref([
   {
     field: 'age',
     title: 'Age',
+    min: 1,
   },
   { field: 'aaa', title: '操作' },
 ])
@@ -283,26 +289,8 @@ function addRow() {
 }
 
 // 编辑行
-function handleEdit(row) {
-  ElMessageBox.alert(`正在编辑: ${row.name}`, '编辑', {
-    confirmButtonText: '确定',
-  })
-}
-
-// 删除行
-function handleDelete(row) {
-  ElMessageBox.confirm(`确定要删除 ${row.name} 吗?`, '警告', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning',
-  })
-    .then(() => {
-      tableData.value = tableData.value.filter(item => item.id !== row.id)
-      ElMessage.success('删除成功')
-    })
-    .catch(() => {
-      ElMessage.info('已取消删除')
-    })
+function handleValidate() {
+  draggableTableRef.value.getTable().validate()
 }
 </script>
 
