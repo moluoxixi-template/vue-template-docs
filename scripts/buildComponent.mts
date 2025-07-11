@@ -4,6 +4,7 @@ import fs from 'node:fs'
 import fsp from 'node:fs/promises'
 import glob from 'fast-glob'
 import { build } from 'vite'
+import type { UserConfig } from 'vite'
 import pluginVue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 // import dts from 'vite-plugin-dts'
@@ -16,7 +17,6 @@ import AutoImport from 'unplugin-auto-import/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
 import type { ICruiseOptions, ICruiseResult } from 'dependency-cruiser'
-import viteCompression from 'vite-plugin-compression'
 import viteImagemin from 'vite-plugin-imagemin'
 
 // === 组件库命名空间配置 ===
@@ -563,7 +563,7 @@ function createComponentReferencePlugin(internalDeps: string[], currentComponent
  * @param internalDeps 内部组件依赖列表
  * @returns 基础配置对象
  */
-function createBaseConfig(comp: string, internalDeps: string[]) {
+function createBaseConfig(comp: string, internalDeps: string[]): UserConfig {
   return {
     root: rootDir,
     configFile: false,
@@ -607,15 +607,6 @@ function createBaseConfig(comp: string, internalDeps: string[]) {
           '!src/components/**/_types/**/*',
         ],
         dts: path.resolve(rootDir, './src/typings/components.d.ts'),
-      }),
-
-      viteCompression({
-        algorithm: 'gzip',
-        verbose: true,
-        disable: false,
-        ext: '.gz',
-        threshold: 10240,
-        deleteOriginFile: false,
       }),
       viteImagemin({
         gifsicle: { optimizationLevel: 7, interlaced: false },
@@ -721,7 +712,7 @@ async function bundleComponentModule({
     build: {
       outDir,
       emptyOutDir: true,
-      minify: false, // 关闭压缩，方便调试
+      minify: 'esbuild',
       cssCodeSplit: false, // 关闭CSS代码分割，避免文件拆分
       lib: {
         entry,
@@ -756,8 +747,8 @@ async function bundleComponentModule({
           return isExternalDep || isVueDep || isTransformedInternalComponent
         },
         output: {
-          preserveModules: true,
-          preserveModulesRoot: resolve(rootDir, `src/components/${comp}`),
+          // preserveModules: true,
+          // preserveModulesRoot: resolve(rootDir, `src/components/${comp}`),
           entryFileNames,
           chunkFileNames,
           assetFileNames: (assetInfo) => {
