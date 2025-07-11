@@ -78,6 +78,9 @@ export function handleGetColumn(Column: ColumnType): ColumnType {
     slots,
     //#region 自定义属性部分
     options,
+    required,
+    min,
+    max,
     cellProps,
     editProps,
     filterProps,
@@ -135,6 +138,9 @@ export function handleGetColumn(Column: ColumnType): ColumnType {
     slots,
     //#region 自定义属性部分
     options,
+    required,
+    min,
+    max,
     cellProps,
     editProps,
     filterProps,

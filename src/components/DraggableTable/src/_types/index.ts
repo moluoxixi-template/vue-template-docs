@@ -17,6 +17,18 @@ interface customColumnProps {
    * 仅贡编辑模式下select下拉框使用，传递后默认启动select
    */
   options?: Array<{ label: string, value: string }>
+  /**
+   * 是否必填，用于生成编辑验证规则
+   */
+  required?: boolean
+  /**
+   * 最小值，用于生成编辑验证规则
+   */
+  min?: number
+  /**
+   * 最大值，用于生成编辑验证规则
+   */
+  max?: number
   resizeWidth?: number
   filterResetMethod?: (params: VxeTableDefines.FilterChangeParams) => void
   filterRecoverMethod?: (params: VxeTableDefines.FilterChangeParams) => void
