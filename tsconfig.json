@@ -47,7 +47,8 @@
     "vite.config.ts",
     ".storybook/**/*",
     ".storybook/**/*.tsx",
-    ".docs/.vitepress/config.ts"
+    ".docs/.vitepress/config.ts",
+    "src/components/ViteConfig/**/*"
   ],
   "references": [
     {

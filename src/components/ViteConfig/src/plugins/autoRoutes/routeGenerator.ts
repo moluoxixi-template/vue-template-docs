@@ -92,7 +92,12 @@ export function generateRoutes(
 
       // 从src后面一位到倒数第二位作为path
       const pathArr = filePathArr.slice(srcIndex + 1, -1)
-      const name = component.name || pathArr.at(-1)
+      const componentName = pathArr.at(-1)
+      const name = component.name || componentName === 'src' ? pathArr.at(-2) : pathArr.at(-1)
+
+      if (pathArr.at(-1) === 'src') {
+        pathArr.pop()
+      }
       const path = `/${pathArr.join('/')}`
       const parentPath = `/${pathArr.slice(0, -1).join('/')}`
 

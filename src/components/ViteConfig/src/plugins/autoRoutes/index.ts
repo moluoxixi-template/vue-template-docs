@@ -1,6 +1,6 @@
 import type { Plugin } from 'vite'
 // autoRoutes/index.ts
-import { findDefaultRoute, findParentRoute, generateRoutes } from './routeGenerator'
+import { findDefaultRoute, findParentRoute, generateRoutes } from './routeGenerator.ts'
 
 interface RouteModule {
   path: string
