@@ -146,7 +146,7 @@ export default function createViteConfig(config: Config) {
         ...performancePlugins,
         ...monitorPlugins,
         ...qianKunPlugins,
-        autoRoutesPlugin({
+        viteEnv.VITE_AUTO_ROUTES && autoRoutesPlugin({
           root: rootPath,
           routeConfig: config.autoRoutes?.routeConfig || {
             views: ['/src/views/**/index.vue', '!/src/views/**/components/*'],

@@ -69,6 +69,10 @@ export interface ModeConfig {
    * 是否删除生产环境 console
    */
   VITE_DROP_CONSOLE?: boolean
+  /**
+   * 是否启用自动路由
+   */
+  VITE_AUTO_ROUTES?: boolean
 }
 
 export interface objRouteConfig {

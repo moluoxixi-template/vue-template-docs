@@ -4,6 +4,7 @@ export default createViteConfig({
   rootPath: __dirname,
   mode: {
     base: {
+      VITE_AUTO_ROUTES: true,
       VITE_GLOB_APP_TITLE: 'vue-template',
       VITE_GLOB_APP_CODE: 'test',
       VITE_DEVTOOLS: false,
