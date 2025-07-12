@@ -1,5 +1,4 @@
 import createViteConfig from './src/components/ViteConfig/index.ts'
-// import createViteConfig from './src/ViteConfig/es/index.mjs'
 
 export default createViteConfig({
   rootPath: __dirname,

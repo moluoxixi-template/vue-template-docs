@@ -730,6 +730,9 @@ async function bundleComponentModule({
           const isExternalDep = Object.keys(componentDependencies).some(dep => id === dep || id.startsWith(`${dep}/`))
           // 检查Vue相关依赖
           const isVueDep = ['vue', '@vue/runtime-core', '@vue/runtime-dom'].includes(id)
+          // Node.js核心模块，标记为外部依赖
+          const isNodeBuiltin = id.startsWith('node:')
+            || ['path', 'fs', 'os', 'util', 'events', 'stream', 'buffer', 'crypto', 'zlib', 'http', 'https', 'url', 'querystring', 'child_process'].includes(id)
 
           // 检查@/components路径
           if (id.startsWith('@/components/')) {
@@ -749,7 +752,7 @@ async function bundleComponentModule({
           // 检查@moluoxixi/xxx路径（转换后的内部组件依赖）
           const isTransformedInternalComponent = id.startsWith(`@${LIB_NAMESPACE}/`)
 
-          return isExternalDep || isVueDep || isTransformedInternalComponent
+          return isExternalDep || isVueDep || isTransformedInternalComponent || isNodeBuiltin
         },
         output: {
           // preserveModules: true,

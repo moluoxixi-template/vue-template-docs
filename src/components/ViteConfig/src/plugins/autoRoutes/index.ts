@@ -1,4 +1,5 @@
 import type { Plugin } from 'vite'
+import { normalizePath } from 'vite'
 import path from 'node:path'
 import fs from 'node:fs'
 // autoRoutes/index.ts
@@ -75,6 +76,9 @@ function createAutoRoutesPlugin({ routeConfig, virtualModuleId, dts, root }: con
             // 使用默认路径
             dtsPath = path.resolve(rootDir, './src/typings/auto-routes.d.ts')
           }
+
+          // 使用normalizePath规范化路径
+          dtsPath = normalizePath(dtsPath)
 
           // 确保目录存在
           const dir = path.dirname(dtsPath)
