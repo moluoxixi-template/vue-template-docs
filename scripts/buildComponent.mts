@@ -901,7 +901,7 @@ async function buildComponent(
 
     // 生成package.json
     // 优化依赖分类逻辑
-    const peerDepList = ['vue', 'vxe-table', 'element-plus']
+    const peerDepList = ['vue', 'vxe-table', 'element-plus', 'vite']
     const pkgJson: any = {
       name: `@${LIB_NAMESPACE}${(comp ? `/${comp}` : '/components').toLowerCase()}`,
       version: currentVersion,
