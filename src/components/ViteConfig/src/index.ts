@@ -31,10 +31,10 @@ import type { Config } from './_types/index.ts'
 
 // 其余vite插件与配置
 import { defineConfig, mergeConfig } from 'vite'
-import type { InlineConfig } from 'vite'
+import type { UserConfig } from 'vite'
 import { createHtmlPlugin } from 'vite-plugin-html'
 
-function createViteConfig(config: Config) {
+export default function createViteConfig(config: Config) {
   return defineConfig(({ mode }) => {
     const rootPath = config?.rootPath
 
@@ -139,7 +139,7 @@ function createViteConfig(config: Config) {
           }),
         ]
       : []
-    return {
+    const defaultConfig: UserConfig = {
       base: `/${systemCode}`,
       plugins: [
         ...vuePlugins,
@@ -234,9 +234,7 @@ function createViteConfig(config: Config) {
         proxy: {},
       },
     }
-  }) as InlineConfig
-}
 
-export default function getMergeViteConfig(config: Config) {
-  mergeConfig(createViteConfig(config), config.viteConfig || {})
+    return mergeConfig(defaultConfig, config.viteConfig || {})
+  })
 }
