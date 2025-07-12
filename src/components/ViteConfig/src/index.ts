@@ -129,7 +129,7 @@ export default function createViteConfig(config: Config) {
 
     const qianKunPlugins = useQianKun
       ? [
-          qiankun(envSystemCode!, { useDevMode }),
+          qiankun(envSystemCode, { useDevMode }),
           scopedCssPrefixPlugin({
             prefixScoped: `div[data-qiankun='${envSystemCode}']`,
             oldPrefix: 'el',
