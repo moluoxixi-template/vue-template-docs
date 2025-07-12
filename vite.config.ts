@@ -1,4 +1,5 @@
 import createViteConfig from './src/components/ViteConfig/index.ts'
+// import createViteConfig from './src/ViteConfig/es/index.mjs'
 
 export default createViteConfig({
   rootPath: __dirname,
@@ -24,5 +25,25 @@ export default createViteConfig({
     },
     development: {},
     production: {},
+  },
+  autoRoutes: {
+    // 路由配置
+    routeConfig: {
+      views: ['/src/views/**/index.vue', '!/src/views/**/components/*'],
+      examples: '/src/examples/**/index.vue',
+      componentExamples: {
+        glob: ['/src/components/**/Example.vue', '!/src/components/**/components/*'],
+        baseRoute: {
+          path: '/components',
+          name: '组件示例',
+        },
+      },
+    },
+    // 可选: 指定.d.ts文件生成位置，true表示使用默认路径，false表示不生成
+    dts: './src/typings/auto-routes.d.ts',
+    // 可选: 项目根目录，通常不需要手动设置
+    // root: __dirname,
+    // 可选: 自定义虚拟模块ID
+    // virtualModuleId: 'virtual:my-routes',
   },
 })

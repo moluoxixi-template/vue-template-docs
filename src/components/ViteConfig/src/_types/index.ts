@@ -68,12 +68,53 @@ export interface ModeConfig {
    */
   VITE_DROP_CONSOLE?: boolean
 }
+
+export interface objRouteConfig {
+  glob: string | string[]
+  baseRoute?: {
+    path: string
+    name: string
+    meta?: any
+    children?: any[]
+  }
+}
+
+export interface RouteConfig {
+  [prefix: string]: string | string[] | objRouteConfig
+}
+
+export interface AutoRoutesConfig {
+  /**
+   * 路由配置
+   */
+  routeConfig: RouteConfig
+  /**
+   * 虚拟模块ID
+   */
+  virtualModuleId?: string
+  /**
+   * 声明文件路径，true表示使用默认路径，false表示不生成声明文件
+   */
+  dts?: string | boolean
+  /**
+   * 项目根目录路径
+   */
+  root?: string
+}
+
 export interface Config {
   /**
    * 根目录
    */
   rootPath: string
+  /**
+   * 环境配置
+   */
   mode: {
     [key: string]: ModeConfig
   }
+  /**
+   * 自动路由配置
+   */
+  autoRoutes?: AutoRoutesConfig
 }

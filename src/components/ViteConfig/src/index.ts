@@ -146,7 +146,8 @@ export default function createViteConfig(config: Config) {
         ...monitorPlugins,
         ...qianKunPlugins,
         autoRoutesPlugin({
-          routeConfig: {
+          root: rootPath,
+          routeConfig: config.autoRoutes?.routeConfig || {
             views: ['/src/views/**/index.vue', '!/src/views/**/components/*'],
             examples: '/src/examples/**/index.vue',
             componentExamples: {
@@ -157,6 +158,10 @@ export default function createViteConfig(config: Config) {
               },
             },
           },
+          dts: config.autoRoutes?.dts !== undefined
+            ? config.autoRoutes.dts
+            : path.resolve(rootPath, './src/typings/auto-routes.d.ts'),
+          virtualModuleId: config.autoRoutes?.virtualModuleId,
         }),
       ],
       esbuild: {

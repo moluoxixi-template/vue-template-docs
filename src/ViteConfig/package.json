@@ -1,0 +1,61 @@
+{
+  "name": "@moluoxixi/viteconfig",
+  "version": "0.0.2",
+  "description": "ViteConfig 组件",
+  "main": "lib/index.cjs",
+  "module": "es/index.mjs",
+  "types": "es/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./es/index.d.ts",
+        "default": "./es/index.mjs"
+      },
+      "require": {
+        "types": "./lib/index.d.ts",
+        "default": "./lib/index.cjs"
+      }
+    },
+    "./es": {
+      "import": {
+        "types": "./es/index.d.ts",
+        "default": "./es/index.mjs"
+      }
+    },
+    "./lib": {
+      "require": {
+        "types": "./lib/index.d.ts",
+        "default": "./lib/index.cjs"
+      }
+    }
+  },
+  "sideEffects": [
+    "*.css",
+    "*.scss"
+  ],
+  "peerDependencies": {
+    "vue": "^3.2.0"
+  },
+  "dependencies": {
+    "postcss": "^8.5.3",
+    "@vitejs/plugin-vue": "^5.2.3",
+    "@vitejs/plugin-vue-jsx": "^4.1.2",
+    "vite-plugin-vue-devtools": "^7.7.2",
+    "autoprefixer": "^10.4.21",
+    "@tailwindcss/postcss": "^4.1.5",
+    "rollup-plugin-visualizer": "^5.14.0",
+    "unplugin-auto-import": "^19.3.0",
+    "unplugin-vue-components": "^28.7.0",
+    "vite-plugin-cdn-import": "^1.0.1",
+    "vite-plugin-compression": "^0.5.1",
+    "vite-plugin-imagemin": "^0.6.1",
+    "vite-plugin-qiankun": "^1.0.15",
+    "vite": "^6.2.4",
+    "vite-plugin-html": "^3.2.2",
+    "dotenv": "^16.5.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT"
+}

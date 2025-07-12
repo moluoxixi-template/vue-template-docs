@@ -75,17 +75,3 @@ declare const __SYSTEM_CODE__ = string
 declare global {}
 
 // 声明虚拟模块
-declare module 'virtual:auto-routes' {
-  interface RouteModule {
-    path: string
-    name: string
-    meta?: any
-    component: () => Promise<any>
-    children?: RouteModule[]
-  }
-
-  const routes: RouteModule[]
-  const findDefaultRoute: (routes: any[]) => string
-  export { findDefaultRoute, routes }
-  export default routes
-}
