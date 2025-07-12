@@ -27,11 +27,13 @@ import scopedCssPrefixPlugin from './plugins/addScopedAndReplacePrefix.ts'
 // 自动路由
 import autoRoutesPlugin from './plugins/autoRoutes/index.ts'
 
+import type { Config } from './_types/index.ts'
+
 // 其余vite插件与配置
 import { defineConfig } from 'vite'
 import { createHtmlPlugin } from 'vite-plugin-html'
 
-export default function createViteConfig(config) {
+export default function createViteConfig(config: Config) {
   return defineConfig(({ mode }) => {
     const rootPath = config?.rootPath
 
