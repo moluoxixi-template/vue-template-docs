@@ -1,3 +1,5 @@
+import type { UserConfig } from 'vite'
+
 export interface ModeConfig {
   /**
    * 项目标题
@@ -117,4 +119,5 @@ export interface Config {
    * 自动路由配置
    */
   autoRoutes?: AutoRoutesConfig
+  viteConfig?: UserConfig
 }
