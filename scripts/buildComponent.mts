@@ -4,10 +4,11 @@ import fs from 'node:fs'
 import fsp from 'node:fs/promises'
 import glob from 'fast-glob'
 import { build } from 'vite'
-import type { UserConfig } from 'vite'
+import type { InlineConfig } from 'vite'
 import pluginVue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
-// import dts from 'vite-plugin-dts'
+// import dts from 'unplugin-dts/vite'
+import dts from 'vite-plugin-dts'
 import autoprefixer from 'autoprefixer'
 import tailwindcss from '@tailwindcss/postcss'
 import process from 'node:process'
@@ -22,6 +23,14 @@ import { obfuscator } from 'rollup-obfuscator'
 
 // === 组件库命名空间配置 ===
 const LIB_NAMESPACE = 'moluoxixi'
+/**
+ * 是否严格按照目录分组
+ */
+const preserveModules = true
+/**
+ * 是否启用混淆
+ */
+const useObfuscator = false
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -564,7 +573,7 @@ function createComponentReferencePlugin(internalDeps: string[], currentComponent
  * @param internalDeps 内部组件依赖列表
  * @returns 基础配置对象
  */
-function createBaseConfig(comp: string, internalDeps: string[]): UserConfig {
+function createBaseConfig(comp: string, internalDeps: string[]): InlineConfig {
   return {
     root: rootDir,
     configFile: false,
@@ -619,26 +628,12 @@ function createBaseConfig(comp: string, internalDeps: string[]): UserConfig {
         },
       }),
       // 添加类型声明生成插件
-      // dts({
-      //   vue: true,
-      //   entryRoot: dirname(entry),
-      //   outDir: [`${LIB_NAMESPACE}/packages/${comp}/es`, `${LIB_NAMESPACE}/packages/${comp}/lib`],
-      //   include: [`src/components/${comp}/**/*`],
-      //   exclude: [
-      //     '**/*.stories.*',
-      //     '**/*.test.*',
-      //     '**/*.spec.*',
-      //     '**/node_modules/**',
-      //     '**/dist/**',
-      //     '**/temp/**',
-      //   ],
-      //   skipDiagnostics: true,
-      //   copyDtsFiles: true,
-      //   cleanVueFileName: true,
-      //   insertTypesEntry: true,
-      //   staticImport: true,
-      //   excludeExternals: true,
-      // }),
+      dts({
+        root: rootDir,
+        entryRoot: `./src/components/${comp}`,
+        tsconfigPath: './tsconfig.components.json',
+        declarationOnly: false,
+      }),
     ],
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue'],
@@ -655,8 +650,8 @@ function createBaseConfig(comp: string, internalDeps: string[]): UserConfig {
       },
       preprocessorOptions: {
         scss: {
-          // 使用legacy-compiler避免initAsyncCompiler错误
-          api: 'legacy-compiler',
+          // 使用legacy避免initAsyncCompiler错误
+          api: 'legacy',
           additionalData(content: string, filename: string) {
             if (filename.includes('element')) {
               const addStr = `$namespace: el`
@@ -723,7 +718,7 @@ async function bundleComponentModule({
       rollupOptions: {
         plugins: [
           // 添加代码混淆插件
-          obfuscator(),
+          useObfuscator && obfuscator(),
         ],
         external: (id: string) => {
           // 检查外部依赖
@@ -755,8 +750,8 @@ async function bundleComponentModule({
           return isExternalDep || isVueDep || isTransformedInternalComponent || isNodeBuiltin
         },
         output: {
-          // preserveModules: true,
-          // preserveModulesRoot: resolve(rootDir, `src/components/${comp}`),
+          preserveModules,
+          preserveModulesRoot: resolve(rootDir, `src/components/${comp}`),
           entryFileNames,
           chunkFileNames,
           assetFileNames: (assetInfo) => {

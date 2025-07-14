@@ -127,7 +127,7 @@ export default defineComponent({
             ))
       )
     })
-    return () => {
+    const render = computed(() => {
       return (
         <div>
           {currRow.value && currColumn.value
@@ -140,6 +140,9 @@ export default defineComponent({
             : null}
         </div>
       )
+    })
+    return () => {
+      return render.value
     }
   },
 })

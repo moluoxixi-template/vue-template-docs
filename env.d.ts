@@ -73,5 +73,3 @@ declare interface ViteEnv {
 declare const __SYSTEM_CODE__ = string
 
 declare global {}
-
-// 声明虚拟模块
