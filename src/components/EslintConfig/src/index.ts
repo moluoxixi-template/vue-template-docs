@@ -1,7 +1,8 @@
 import antfu from '@antfu/eslint-config'
-import type { Awaitable, OptionsConfig, TypedFlatConfigItem } from '@antfu/eslint-config'
 
-export default function createEslintConfig(config: OptionsConfig & Omit<TypedFlatConfigItem, 'files'>, ...userConfigs: Awaitable<TypedFlatConfigItem | TypedFlatConfigItem[]>[]) {
+import type { optionsType, userConfigType } from './_types/index.ts'
+
+export default function createEslintConfig(config: optionsType, ...userConfigs: userConfigType[]) {
   return antfu(
     {
       formatters: true,
