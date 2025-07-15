@@ -121,7 +121,6 @@ function createAutoRoutesPlugin({ routeConfig, virtualModuleId, dts, root }: con
           ${findParentRouteString}
           ${findDefaultRouteString}
           const routes = [${routes.join(',\n')}];
-          ${findDefaultRoute}
           export { routes, findDefaultRoute };
           export default routes;
         `
