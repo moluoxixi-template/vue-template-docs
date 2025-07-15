@@ -507,6 +507,7 @@ function transformLayouts(layouts: VxePagerProps['layouts']): string | undefined
  *    如果slotsDiff中存在"valid-${field}"，且存在column.editRules,column.editRender，则作为defaultSlots.valid
  * 2. 添加基于field的自定义筛选器渲染器,该渲染器基于当前列显示的内容进行筛选，支持input搜索，checkbox多选，可通过filterLayout配置
  * 3. 添加基于field的自定义编辑渲染器，当前列满足正常年月日顺序的任意字符串时间格式/Date时，显示单日期时间选择器，列传递options，显示select,否则显示input
+ * 4. 添加基于field的自定义默认渲染器，额外提供以下type功能：'input' | 'select' | 'date' | 'datetime' | 'switch' | 'progress' | 'tag'
  */
 const computedColumns = computed<ColumnType[]>(() => {
   const typeSet = new Set<types | undefined>([])

@@ -67,20 +67,6 @@ watch(dateRange, (newVal) => {
 | clearable         | Boolean         | true                  | 是否可清空                                                                                            |
 | size              | String          | 'default'             | 输入框尺寸                                                                                            |
 
-## 事件（Events）
-
-| 事件名            | 参数               | 说明                   |
-| ----------------- | ------------------ | ---------------------- |
-| update:modelValue | (dateRange: Array) | 日期范围更新事件       |
-| change            | (dateRange: Array) | 用户确认选定的值时触发 |
-
-## 方法（Methods）
-
-| 方法名 | 参数 | 返回值 | 说明              |
-| ------ | ---- | ------ | ----------------- |
-| focus  | 无   | 无     | 使 input 获取焦点 |
-| blur   | 无   | 无     | 使 input 失去焦点 |
-
 ## 快速选择项
 
 当 `quickOptions` 设置为 `true` 时，会显示以下快速选择选项：
@@ -89,7 +75,3 @@ watch(dateRange, (newVal) => {
 - 三天：最近三天（今天和前两天）
 - 一周：最近一周（今天和前六天）
 - 一月：最近一个月（今天和前29天）
-
-## 示例
-
-参考 `DateRangePickerExample.vue` 文件，该文件展示了组件的完整用法示例。

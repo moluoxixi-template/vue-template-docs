@@ -6,34 +6,35 @@
 
 - 支持行拖拽排序
 - 支持列拖拽排序
+- 支持编辑模式
+- 支持过滤
+- 支持排序
 - 自动同步拖拽后的数据和列配置
-- 支持通过插槽自定义列内容
-- 支持自定义筛选器和编辑器
 - 与VXE-Grid兼容的所有功能
+- 提供额外功能：
+  1. 提供基于field的插槽，规则如下：
+     如果slotsDiff中存在"${field}"，则作为defaultSlots.default，
+     如果slotsDiff中存在"header-${field}"，则作为defaultSlots.header，
+     如果slotsDiff中存在"footer-${field}"，则作为defaultSlots.footer，
+     如果slotsDiff中存在"title-${field}"，且column.type等于checkbox或radio，则作为defaultSlots.title，
+     如果slotsDiff中存在"checkbox-${field}"，且column.type等于checkbox，则作为defaultSlots.checkbox，
+     如果slotsDiff中存在"radio-${field}"，且column.type等于radio，则作为defaultSlots.radio，
+     如果slotsDiff中存在"content-${field}"，且column.type等于expand，则作为defaultSlots.content，
+     如果slotsDiff中存在"filter-${field}"，且存在column.filterRender并且不存在column.filters，则作为defaultSlots.filter，
+     如果slotsDiff中存在"edit-${field}"，且存在column.editRender，则作为defaultSlots.edit，
+     如果slotsDiff中存在"valid-${field}"，且存在column.editRules,column.editRender，则作为defaultSlots.valid
+  2. 添加基于field的自定义筛选器渲染器,该渲染器基于当前列显示的内容进行筛选，支持input搜索，checkbox多选，可通过filterLayout配置
+  3. 添加基于field的自定义编辑渲染器，当前列满足正常年月日顺序的任意字符串时间格式/Date时，显示单日期时间选择器，列传递options，显示select,否则显示input
+  4. 添加基于field的自定义默认渲染器，额外提供以下type功能：'input' | 'select' | 'date' | 'datetime' | 'switch' | 'progress' | 'tag'
 
 ## 安装和引入
 
-确保已安装vxe-table相关依赖：
-
 ```bash
-npm install xe-utils vxe-table
+npm install @moluoxixi/draggabletable
 # 或者
-yarn add xe-utils vxe-table
+yarn add @moluoxixi/draggabletable
 # 或者
-pnpm add xe-utils vxe-table
-```
-
-在main.js中全局安装VXE-Table：
-
-```js
-import { createApp } from 'vue'
-import VXETable from 'vxe-table'
-import App from './App.vue'
-import 'vxe-table/lib/style.css'
-
-const app = createApp(App)
-app.use(VXETable)
-app.mount('#app')
+pnpm add @moluoxixi/draggabletable
 ```
 
 ## 基本用法
@@ -170,48 +171,6 @@ function handleDelete(row) {
 | sortable     | Boolean          | 是否可排序                                  |
 | align        | String           | 对齐方式，可选值: 'left', 'center', 'right' |
 | slot         | String           | 自定义插槽名称                              |
-| editRender   | Object           | 编辑渲染器配置，详见下方说明                |
-| filterRender | Object           | 筛选渲染器配置，详见下方说明                |
-
-### 编辑渲染器配置
-
-当设置 `editable: true` 后，可以为列配置 `editRender` 属性来自定义编辑方式：
-
-```js
-{
-  field: 'name',
-  title: '姓名',
-  editRender: {
-    name: 'input', // 渲染器类型
-    props: {       // 传递给渲染器的属性
-      placeholder: '请输入姓名',
-      type: 'text'
-    }
-  }
-}
-```
-
-如果不配置 `editRender`，组件会根据字段值类型自动选择合适的编辑器：
-
-- 对于日期类型的值，会使用日期选择器
-- 对于其他类型的值，会使用文本输入框
-
-### 筛选渲染器配置
-
-当设置 `filterable: true` 后，可以为列配置 `filterRender` 属性来自定义筛选方式：
-
-```js
-{
-  field: 'status',
-  title: '状态',
-  filterRender: {
-    name: 'filterRenderer', // 使用自定义的筛选渲染器
-    props: {
-      filterLayout: ['input', 'checkbox'] // 筛选器布局配置
-    }
-  }
-}
-```
 
 ## 事件（Events）
 
@@ -241,10 +200,4 @@ function handleDelete(row) {
 
 | 方法名           | 参数 | 返回值       | 说明            |
 | ---------------- | ---- | ------------ | --------------- |
-| getTableInstance | 无   | VXE-Grid实例 | 获取VXE表格实例 |
-| refreshTable     | 无   | 无           | 刷新表格        |
-| getSelectedRows  | 无   | Array        | 获取选中行数据  |
-
-## 示例
-
-参考 `Example.vue` 文件，该文件展示了组件的完整用法示例。
+| getTable | 无   | VXE-Grid实例 | 获取VXE表格实例 |
