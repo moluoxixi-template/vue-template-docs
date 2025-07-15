@@ -1,4 +1,4 @@
-import type { UserConfig } from 'vite'
+import type { ConfigEnv, UserConfig } from 'vite'
 
 export interface ModeConfig {
   /**
@@ -123,5 +123,5 @@ export interface Config {
    * 自动路由配置
    */
   autoRoutes?: AutoRoutesConfig
-  viteConfig?: UserConfig
+  viteConfig?: UserConfig | ((mode: ConfigEnv) => UserConfig)
 }

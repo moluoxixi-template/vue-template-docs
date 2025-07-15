@@ -31,11 +31,12 @@ import type { Config } from './_types/index.ts'
 
 // 其余vite插件与配置
 import { defineConfig, mergeConfig } from 'vite'
-import type { UserConfig } from 'vite'
+import type { ConfigEnv, UserConfig } from 'vite'
 import { createHtmlPlugin } from 'vite-plugin-html'
 
 export default function createViteConfig(config: Config) {
-  return defineConfig(({ mode }) => {
+  return defineConfig((params: ConfigEnv) => {
+    const { mode } = params
     const rootPath = config?.rootPath
 
     const modeConfig = config?.mode || {}
@@ -234,7 +235,9 @@ export default function createViteConfig(config: Config) {
         proxy: {},
       },
     }
-
-    return mergeConfig(defaultConfig, config.viteConfig || {})
+    const viteConfig = typeof config.viteConfig === 'function'
+      ? config.viteConfig(params)
+      : config.viteConfig
+    return mergeConfig(defaultConfig, viteConfig || {})
   })
 }
