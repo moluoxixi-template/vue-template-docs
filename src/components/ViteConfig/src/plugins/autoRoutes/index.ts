@@ -115,9 +115,12 @@ function createAutoRoutesPlugin({ routeConfig, virtualModuleId, dts, root }: con
         // 生成路由JS代码
         const code = `
           ${imports.join('\n')}
+          ${findParentRoute}
+          ${findDefaultRoute}
+          // 用于routes
           const generateRoutes = ${generateRoutes};
+          // 用于导出
           const findDefaultRoute = ${findDefaultRoute};
-          const findParentRoute = ${findParentRoute};
           const routes = [${routes.join(',\n')}];
           export { routes, findDefaultRoute };
           export default routes;
