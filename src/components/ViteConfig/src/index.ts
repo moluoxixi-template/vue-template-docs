@@ -152,7 +152,7 @@ export default function createViteConfig(config: Config) {
         ...qianKunPlugins,
         viteEnv.VITE_AUTO_ROUTES && autoRoutesPlugin({
           root: rootPath,
-          routeConfig: config.autoRoutes?.routeConfig || {
+          routeConfig: {
             views: ['/src/views/**/index.vue', '!/src/views/**/components/*'],
             examples: '/src/examples/**/index.vue',
             componentExamples: {
@@ -163,10 +163,8 @@ export default function createViteConfig(config: Config) {
               },
             },
           },
-          dts: config.autoRoutes?.dts !== undefined
-            ? config.autoRoutes.dts
-            : path.resolve(rootPath, './src/typings/auto-routes.d.ts'),
-          virtualModuleId: config.autoRoutes?.virtualModuleId,
+          dts: path.resolve(rootPath, './src/typings/auto-routes.d.ts'),
+          ...config.autoRoutes,
         }),
       ],
       esbuild: {
@@ -241,11 +239,33 @@ export default function createViteConfig(config: Config) {
     const viteConfig = typeof config.viteConfig === 'function'
       ? config.viteConfig(params)
       : config.viteConfig
-    const viteConfigPlugin = viteConfig?.plugins || []
-    const defaultPlugin = defaultConfig.plugins || []
+    const viteConfigPluginNames = (viteConfig?.plugins || []).map((i) => {
+      if (Array.isArray(i)) {
+        return i[0].name
+      }
+      else {
+        return i.name
+      }
+    })
+    const defaultPluginNamesMap = (defaultConfig.plugins || []).reduce((nameMap, i) => {
+      if (Array.isArray(i)) {
+        nameMap[i[0].name] = i
+      }
+      else {
+        nameMap[i.name] = i
+      }
+      return nameMap
+    }, {})
 
-    console.log('defaultPlugin', defaultPlugin)
-    console.log('viteConfigPlugin', viteConfigPlugin)
+    const uniquePlugin = []
+
+    Object.keys(defaultPluginNamesMap).forEach((name) => {
+      if (!viteConfigPluginNames.includes(name)) {
+        uniquePlugin.push(defaultPluginNamesMap[name])
+      }
+    })
+
+    defaultConfig.plugins = uniquePlugin
     return mergeConfig(defaultConfig, viteConfig || {})
   })
 }
