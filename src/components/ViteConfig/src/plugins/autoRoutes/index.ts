@@ -3,7 +3,7 @@ import { normalizePath } from 'vite'
 import path from 'node:path'
 import fs from 'node:fs'
 // autoRoutes/index.ts
-import { findDefaultRoute as defaultRouteHandler, findParentRoute, generateRoutes } from './routeGenerator.ts'
+import { findDefaultRouteHandle, findParentRouteHandle, generateRoutes } from './routeGenerator.ts'
 
 interface RouteModule {
   path: string
@@ -115,11 +115,14 @@ function createAutoRoutesPlugin({ routeConfig, virtualModuleId, dts, root }: con
         // 生成路由JS代码
         const code = `
           ${imports.join('\n')}
-          const findParentRoute = ${findParentRoute}
+          const findParentRoute = ${findParentRouteHandle}
           // 用于routes
           const generateRoutes = ${generateRoutes};
           // 用于导出
-          const findDefaultRoute = ${defaultRouteHandler};
+          const findDefaultRoute = ${findDefaultRouteHandle};
+
+          ${findParentRouteHandle}
+          ${findDefaultRouteHandle}
           const routes = [${routes.join(',\n')}];
           export { routes, findDefaultRoute };
           export default routes;

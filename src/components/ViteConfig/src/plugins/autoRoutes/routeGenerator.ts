@@ -40,7 +40,7 @@ export interface FilesMap {
  * @param parentPath - 要查找的父级路由路径
  * @returns 找到的父级路由对象或undefined
  */
-export function findParentRoute(
+export function findParentRouteHandle(
   modules: RouteModule[],
   parentPath: string,
 ): RouteModule | undefined {
@@ -49,7 +49,7 @@ export function findParentRoute(
       return route
     }
     if (route.children) {
-      const found = findParentRoute(route.children, parentPath)
+      const found = findParentRouteHandle(route.children, parentPath)
       if (found)
         return found
     }
@@ -101,7 +101,7 @@ export function generateRoutes(
       const path = `/${pathArr.join('/')}`
       const parentPath = `/${pathArr.slice(0, -1).join('/')}`
 
-      const parentRoute = findParentRoute(modules, parentPath)
+      const parentRoute = findParentRouteHandle(modules, parentPath)
       if (parentRoute) {
         if (!parentRoute.children)
           parentRoute.children = []
@@ -132,14 +132,14 @@ export function generateRoutes(
  * 查找默认路由
  * @param routes
  */
-export function findDefaultRoute(routes: any[]): string {
+export function findDefaultRouteHandle(routes: any[]): string {
   for (const route of routes) {
     if (route.meta?.default) {
       return route.path
     }
     else {
       if (route.children?.length) {
-        return findDefaultRoute(route.children)
+        return findDefaultRouteHandle(route.children)
       }
     }
   }
