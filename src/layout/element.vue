@@ -51,7 +51,7 @@ import subMenu from '@/components/subMenu.vue'
 import { useSystemStore } from '@/stores/modules/system.ts'
 
 const router = useRouter()
-const routes = reactive(router.options.routes[0].children)
+const routes = reactive(router.options.routes[0].children!)
 const systemStore = useSystemStore()
 const themeColor = computed(() => systemStore.themeColor)
 const systemCode = computed(() => {
