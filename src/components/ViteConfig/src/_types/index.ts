@@ -1,4 +1,4 @@
-import type { ConfigEnv, UserConfig } from 'vite'
+import type { ConfigEnv, PluginOption, UserConfig } from 'vite'
 import type { Options as unpluginVueComponentsOptions } from 'unplugin-vue-components/types'
 import type { Options as unpluginAutoImportOptions } from 'unplugin-auto-import/types'
 import type { Options as CDNImportOptions } from 'vite-plugin-cdn-import'
@@ -143,4 +143,10 @@ export interface Config {
     globs: string[]
   }
   CDNImportOptions?: CDNImportOptions
+}
+
+export type PluginType = PluginOption & { name: string }
+
+export interface PluginMap {
+  [key: string]: PluginOption
 }

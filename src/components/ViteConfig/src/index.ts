@@ -27,11 +27,11 @@ import scopedCssPrefixPlugin from './plugins/addScopedAndReplacePrefix.ts'
 // 自动路由
 import autoRoutesPlugin from './plugins/autoRoutes/index.ts'
 
-import type { Config } from './_types/index.ts'
+import type { Config, PluginMap, PluginType } from './_types/index.ts'
 
 // 其余vite插件与配置
 import { defineConfig, mergeConfig } from 'vite'
-import type { ConfigEnv, UserConfig } from 'vite'
+import type { ConfigEnv, PluginOption, UserConfig } from 'vite'
 import { createHtmlPlugin } from 'vite-plugin-html'
 
 export default function createViteConfig(config: Config) {
@@ -240,24 +240,15 @@ export default function createViteConfig(config: Config) {
       ? config.viteConfig(params)
       : config.viteConfig
     const viteConfigPluginNames = (viteConfig?.plugins || []).map((i) => {
-      if (Array.isArray(i)) {
-        return i[0].name
-      }
-      else {
-        return i.name
-      }
+      return Array.isArray(i) ? (i[0] as PluginType)?.name : (i as PluginType)?.name
     })
     const defaultPluginNamesMap = (defaultConfig.plugins || []).reduce((nameMap, i) => {
-      if (Array.isArray(i)) {
-        nameMap[i[0].name] = i
-      }
-      else {
-        nameMap[i.name] = i
-      }
+      const name: string = Array.isArray(i) ? (i[0] as PluginType)?.name : (i as PluginType)?.name
+      nameMap[name] = i
       return nameMap
-    }, {})
+    }, {} as PluginMap)
 
-    const uniquePlugin = []
+    const uniquePlugin: PluginOption[] = []
 
     Object.keys(defaultPluginNamesMap).forEach((name) => {
       if (!viteConfigPluginNames.includes(name)) {
