@@ -42,13 +42,13 @@
   </el-config-provider>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import { qiankunWindow } from 'vite-plugin-qiankun/dist/helper'
 import { computed, reactive } from 'vue'
 import { RouterView, useRouter } from 'vue-router'
 import subMenu from '@/components/subMenu.vue'
-import { useSystemStore } from '@/stores/modules/system.js'
+import { useSystemStore } from '@/stores/modules/system.ts'
 
 const router = useRouter()
 const routes = reactive(router.options.routes[0].children)

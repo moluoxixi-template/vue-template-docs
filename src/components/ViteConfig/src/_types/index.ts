@@ -1,4 +1,7 @@
 import type { ConfigEnv, UserConfig } from 'vite'
+import type { Options as unpluginVueComponentsOptions } from 'unplugin-vue-components/types'
+import type { Options as unpluginAutoImportOptions } from 'unplugin-auto-import/types'
+import type { Options as CDNImportOptions } from 'vite-plugin-cdn-import'
 
 export interface ModeConfig {
   /**
@@ -37,6 +40,10 @@ export interface ModeConfig {
    * dev环境是否启用qiankun
    */
   VITE_QIANKUN_DEV?: boolean
+  /**
+   * 是否启用命名空间
+   */
+  VITE_USE_NAMESPACE?: boolean
   /**
    * 是否生成包预览文件
    */
@@ -124,4 +131,16 @@ export interface Config {
    */
   autoRoutes?: AutoRoutesConfig
   viteConfig?: UserConfig | ((mode: ConfigEnv) => UserConfig)
+  unpluginAutoImportOptions?: unpluginAutoImportOptions
+  unpluginVueComponentsOptions?: unpluginVueComponentsOptions & {
+    /**
+     * 需要排除的element-plus组件
+     */
+    elementExcludes: string[]
+    /**
+     * 除resolve规则外，额外需要引入的组件所需匹配规则
+     */
+    globs: string[]
+  }
+  CDNImportOptions?: CDNImportOptions
 }

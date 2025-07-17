@@ -47,7 +47,7 @@ export default function createViteConfig(config: Config) {
     const isDev = mode === 'development'
     const systemCode = viteEnv.VITE_GLOB_APP_CODE
     const useDevMode = viteEnv.VITE_QIANKUN_DEV
-    const envSystemCode = isDev && !useDevMode ? 'el' : viteEnv.VITE_GLOB_APP_CODE
+    const envSystemCode = isDev && !useDevMode ? 'el' : viteEnv.VITE_USE_NAMESPACE ? viteEnv.VITE_GLOB_APP_CODE : systemCode
 
     const useDoc = mode === 'github'
     const useQianKun = viteEnv.VITE_USE_QIANKUN && !useDoc
@@ -61,13 +61,14 @@ export default function createViteConfig(config: Config) {
         imports: ['vue'],
         resolvers: [ElementPlusResolver()],
         dts: path.resolve(rootPath, './src/typings/auto-imports.d.ts'),
+        ...config.unpluginAutoImportOptions,
       }),
       // 与自定义element组件冲突
       Components({
         resolvers: [
           ElementPlusResolver({
             exclude: new RegExp(
-              (useDoc ? [] : ['ElButton', 'ElDrawer', 'ElDialog']).map(item => `^${item}$`).join('|'),
+              (useDoc ? [] : config.unpluginVueComponentsOptions?.elementExcludes || ['ElButton', 'ElDrawer', 'ElDialog']).map((item: string) => `^${item}$`).join('|'),
             ),
           }),
         ],
@@ -81,6 +82,7 @@ export default function createViteConfig(config: Config) {
           '!src/components/**/_types/**/*',
         ],
         dts: path.resolve(rootPath, './src/typings/components.d.ts'),
+        ...config.unpluginVueComponentsOptions,
       }),
     ].filter(i => !!i)
 
@@ -118,6 +120,7 @@ export default function createViteConfig(config: Config) {
         enableInDevMode: viteEnv.VITE_USE_CDN_IS_DEV,
         prodUrl: `${viteEnv.VITE_CDN_BASE_URL}/{name}@{version}{path}`,
         modules,
+        ...config.CDNImportOptions,
       }),
     ].filter(i => !!i)
 
@@ -238,6 +241,11 @@ export default function createViteConfig(config: Config) {
     const viteConfig = typeof config.viteConfig === 'function'
       ? config.viteConfig(params)
       : config.viteConfig
+    const viteConfigPlugin = viteConfig?.plugins || []
+    const defaultPlugin = defaultConfig.plugins || []
+
+    console.log('defaultPlugin', defaultPlugin)
+    console.log('viteConfigPlugin', viteConfigPlugin)
     return mergeConfig(defaultConfig, viteConfig || {})
   })
 }
