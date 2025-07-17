@@ -5,7 +5,6 @@ src/typings
 docs
 moluoxixi
 src/ViteConfig
-version.json
 .docs/.vitepress/cache
 .docs/.vitepress/dist
 .docs/.vitepress/typings
