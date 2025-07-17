@@ -50,10 +50,13 @@ function collectInputElements() {
 
   // 收集所有的input和select元素
   const elements = Array.from(container.querySelectorAll('input, select')) as HTMLElement[]
-  inputElements.value = elements
+
+  // 过滤掉有 disabled 属性的元素
+  const enabledElements = elements.filter(el => !el.hasAttribute('disabled'))
+  inputElements.value = enabledElements
 
   // 为每个元素添加keyup事件监听
-  elements.forEach((el) => {
+  enabledElements.forEach((el) => {
     el.addEventListener('keyup', handleInputKeyUp)
   })
 }
