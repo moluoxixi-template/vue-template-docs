@@ -158,7 +158,7 @@ const handleConfirm = () => {
 
 ## 配置项
 
-### useApiDialog 返回值
+### createApiDialog 返回值
 
 | 返回值 | 说明 | 类型 |
 | ----- | ---- | ---- |
