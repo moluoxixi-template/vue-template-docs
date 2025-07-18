@@ -141,6 +141,8 @@ export interface Config {
   CDNImportOptions?: CDNImportOptions
 }
 
+export type ViteConfigType = Config | ((mode: ConfigEnv) => Config)
+
 export type PluginType = PluginOption & { name: string }
 
 export interface PluginMap {

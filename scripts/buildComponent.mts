@@ -1161,10 +1161,10 @@ async function main() {
   <组件名>      - 只处理指定的单个组件
 
 示例:
-  node scripts/buildComponent.mjs                   - 构建所有组件和组件库
-  node scripts/buildComponent.mjs build library     - 只构建组件库
-  node scripts/buildComponent.mjs build Icon        - 只构建Icon组件
-  node scripts/buildComponent.mjs build-publish     - 构建并发布所有组件和组件库
+  tsx scripts/buildComponent.mts                   - 构建所有组件和组件库
+  tsx scripts/buildComponent.mts build library     - 只构建组件库
+  tsx scripts/buildComponent.mts build Icon        - 只构建Icon组件
+  tsx scripts/buildComponent.mts build-publish     - 构建并发布所有组件和组件库
       `)
       return 1
   }
