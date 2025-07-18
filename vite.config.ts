@@ -1,4 +1,9 @@
-import createViteConfig from './src/components/ViteConfig/index.ts'
+import createViteConfig, { wrapperEnv } from './src/components/ViteConfig/index.ts'
+import process from 'node:process'
+
+// sentry
+import { sentryVitePlugin } from '@sentry/vite-plugin'
+import { loadEnv } from 'vite'
 
 export default createViteConfig({
   rootPath: __dirname,
@@ -13,7 +18,6 @@ export default createViteConfig({
       VITE_OPEN: true,
       VITE_USE_QIANKUN: false,
       VITE_QIANKUN_DEV: false,
-      VITE_SENTRY: false,
       VITE_REPORT: true,
       VITE_COMPRESS: true,
       VITE_IMAGEMIN: true,
@@ -45,5 +49,19 @@ export default createViteConfig({
     // root: __dirname,
     // 可选: 自定义虚拟模块ID
     // virtualModuleId: 'virtual:my-routes',
+  },
+  viteConfig: ({ mode }) => {
+    const env = loadEnv(mode, process.cwd())
+    const viteEnv = wrapperEnv(env)
+    return {
+      plugins: [
+        viteEnv.VITE_SENTRY
+        && sentryVitePlugin({
+          authToken: process.env.SENTRY_AUTH_TOKEN,
+          org: 'f1f562b9b82f',
+          project: 'javascript-vue',
+        }),
+      ],
+    }
   },
 })

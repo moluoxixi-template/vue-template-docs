@@ -29,10 +29,6 @@ export interface ModeConfig {
    */
   VITE_OPEN?: boolean
   /**
-   * 是否启用sentry监控
-   */
-  VITE_SENTRY?: boolean
-  /**
    * 是否启用qiankun
    */
   VITE_USE_QIANKUN?: boolean
