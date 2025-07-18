@@ -29,7 +29,7 @@
 
 <script setup>
 import { ref, reactive } from 'vue'
-import ConfigTable from '@/components/ConfigTable/index.vue'
+import ConfigTable from '@/components/ConfigTable'
 
 const loading = ref(false)
 const tableData = ref([
@@ -85,7 +85,7 @@ const handleSearch = (params) => {
 <script setup>
 import { ref, reactive, h } from 'vue'
 import { ElTag, ElButton } from 'element-plus'
-import ConfigTable from '@/components/ConfigTable/index.vue'
+import ConfigTable from '@moluoxixi/ConfigTable'
 
 const loading = ref(false)
 const tableData = ref([
@@ -161,7 +161,7 @@ const handleSearch = (params) => {
 
 <script setup>
 import { ref, reactive } from 'vue'
-import ConfigTable from '@/components/ConfigTable/index.vue'
+import ConfigTable from '@moluoxixi/ConfigTable'
 
 const loading = ref(false)
 const tableData = ref([/* 表格数据 */])
@@ -234,7 +234,7 @@ const handleSearch = (params) => {
 
 <script setup>
 import { ref, reactive } from 'vue'
-import ConfigTable from '@/components/ConfigTable/index.vue'
+import ConfigTable from '@moluoxixi/ConfigTable'
 
 const loading = ref(false)
 const tableData = ref([/* 表格数据 */])

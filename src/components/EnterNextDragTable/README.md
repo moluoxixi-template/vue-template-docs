@@ -25,7 +25,7 @@ EnterNextDragTable 是一个封装了 DraggableTable 和 EnterNextContainer 功�
 
 <script setup>
 import { ref } from 'vue'
-import EnterNextDragTable from '@/components/EnterNextDragTable/index.vue'
+import EnterNextDragTable from '@moluoxixi/EnterNextDragTable'
 
 const tableData = ref([
   { id: 1, name: '张三', age: 25 },

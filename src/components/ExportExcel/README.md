@@ -43,7 +43,7 @@ npm install xlsx file-saver
 
 <script setup>
 import { ref } from 'vue'
-import ExportExcel from '@/components/ExportExcel/index.vue'
+import ExportExcel from '@moluoxixi/ExportExcel'
 
 const tableData = ref([
   { name: '张三', age: 18, address: '北京市' },
@@ -91,7 +91,7 @@ const columns = ref([
 
 <script setup>
 import { computed, ref } from 'vue'
-import ExportExcel from '@/components/ExportExcel/index.vue'
+import ExportExcel from '@moluoxixi/ExportExcel'
 
 const tableData = ref([
   { id: 1, name: '张三', status: 0 },
@@ -149,7 +149,7 @@ const exportColumns = computed(() => [
 
 <script setup>
 import { ref } from 'vue'
-import ExportExcel from '@/components/ExportExcel/index.vue'
+import ExportExcel from '@moluoxixi/ExportExcel'
 
 const tableData = ref([
   { name: '张三', info: { age: 18, address: '北京市' } },

@@ -13,7 +13,7 @@ TableEnterNext 是一个基于 EnterNextContainer 和 el-table 的增强组件�
 ## 安装与导入
 
 ```js
-import TableEnterNext from '@/components/TableEnterNext/index.vue'
+import TableEnterNext from '@moluoxixi/TableEnterNext'
 ```
 
 ## 基本用法
@@ -48,7 +48,7 @@ import TableEnterNext from '@/components/TableEnterNext/index.vue'
 
 <script setup>
 import { ref } from 'vue'
-import TableEnterNext from '@/components/TableEnterNext/index.vue'
+import TableEnterNext from '@moluoxixi/TableEnterNext'
 
 const tableData = ref([
   { name: '张三', age: '25', gender: '男' },
@@ -94,7 +94,7 @@ function handleNoNextInput(element, rowIndex) {
 
 <script setup>
 import { ref } from 'vue'
-import TableEnterNext from '@/components/TableEnterNext/index.vue'
+import TableEnterNext from '@moluoxixi/TableEnterNext'
 
 const tableData = ref([{ name: '张三', age: '25', gender: '男' }])
 

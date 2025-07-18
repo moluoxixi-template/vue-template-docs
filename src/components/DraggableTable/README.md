@@ -64,7 +64,7 @@ pnpm add @moluoxixi/draggabletable
 
 <script setup>
 import { ref } from 'vue'
-import DraggableTable from '@/components/DraggableTable/index.vue'
+import DraggableTable from '@moluoxixi/DraggableTable'
 
 // 表格数据
 const tableData = ref([
