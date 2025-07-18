@@ -17,10 +17,13 @@
 </template>
 
 <script setup lang="ts">
-import type { noNextInputParams } from '@/components/EnterNextTable/src/_types'
 import { ElTable } from 'element-plus'
 import { nextTick, ref, watch } from 'vue'
 import EnterNextContainer from '@/components/EnterNextContainer/index.ts'
+import type {
+  noNextInputParams,
+  noSelectValueParams,
+} from '@/components/EnterNextTable/src/_types'
 
 const props = defineProps({
   data: {
@@ -32,20 +35,21 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  containerType: {
+    type: String as PropType<'row' | 'table'>,
+    default: 'row',
+    validator: (value: string) => {
+      return ['row', 'table'].includes(value)
+    },
+  },
 })
 
 const emit = defineEmits<{
   // 当在表格中最后一个输入元素按下Enter键时触发
-  (e: 'noNextInput', { row, rowIndex }: noNextInputParams): void
+  (e: 'noNextInput', { row, rowIndex, colIndex }: noNextInputParams): void
   // 当在表格中select下拉为空时触发
   (e: 'noSelectValue', { row, rowIndex, colIndex }: noSelectValueParams): void
 }>()
-
-interface noSelectValueParams {
-  row: any
-  rowIndex: number
-  colIndex: number
-}
 
 // 防抖函数，正确定义类型
 function debounce<T extends (...args: any[]) => void>(
@@ -80,9 +84,14 @@ function collectTableRows() {
       return
     }
 
+    const tables = Array.from(table.querySelectorAll('tbody')) as HTMLElement[]
     // 获取所有tr元素(不包括表头tr)
-    const rows = Array.from(table.querySelectorAll('tbody tr'))
-    tableRows.value = rows.map(row => row as HTMLElement)
+    const rows = Array.from(table.querySelectorAll('tbody tr')) as HTMLElement[]
+    const containerTypeMap = {
+      row: rows,
+      table: tables,
+    }
+    tableRows.value = containerTypeMap[props.containerType]
   }
   catch (error) {
     console.error('EnterNextTable: 收集行元素时出错', error)
@@ -97,12 +106,21 @@ function handleNoNextInput(element: HTMLElement) {
   // 查找当前行的索引
   const row = element.closest('tr')
   const rowIndex = row ? tableRows.value.indexOf(row) : -1
+  // 获取当前元素最近的td祖先
+  const td = element.closest('td')
+  // 获取所有td元素
+  const tds = row ? Array.from(row.querySelectorAll('td')) : []
+
+  // 计算td在所有td中的索引位置（从0开始）
+  const colIndex = td ? tds.indexOf(td as HTMLTableCellElement) : -1
   // 向外传递事件，并包含更多信息
   emit('noNextInput', {
     row: props.data[rowIndex],
     rowIndex,
+    colIndex,
   })
 }
+
 // 当找不到下拉框输入元素值时的处理
 function handleNoSelectValue(element: HTMLElement) {
   // 查找当前行的索引
@@ -132,8 +150,14 @@ watch(
       debouncedCollectTableRows()
     })
   },
-  { deep: true, immediate: true },
+  { immediate: true },
 )
+
+watch(() => props.containerType, () => {
+  nextTick(() => {
+    debouncedCollectTableRows()
+  })
+})
 
 // 暴露方法给父组件
 defineExpose({

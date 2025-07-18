@@ -7,6 +7,11 @@ export interface EnterNextDragTableProps {
    * @default false
    */
   allowSelectNextInEmpty?: boolean
+  /**
+   * 表格容器类型
+   * @default row
+   */
+  containerType?: 'row' | 'table'
 }
 
 /**
@@ -21,6 +26,10 @@ export interface NoNextInputParams {
    * 行索引
    */
   rowIndex: number
+  /**
+   * 列索引
+   */
+  colIndex: number
 }
 
 /**

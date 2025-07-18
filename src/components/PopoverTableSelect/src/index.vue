@@ -52,6 +52,7 @@ const props = defineProps({
       | HTMLElement
       | null,
     default: null,
+    required: false,
   },
 })
 const emits = defineEmits(['focus', 'input'])

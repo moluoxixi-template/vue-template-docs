@@ -32,6 +32,7 @@ import EnterNextContainer from '@/components/EnterNextContainer/index.ts'
 
 const props = withDefaults(defineProps<EnterNextDragTableProps>(), {
   allowSelectNextInEmpty: false,
+  containerType: 'row',
 })
 
 const emit = defineEmits<{
@@ -84,9 +85,14 @@ function collectTableRows() {
       return
     }
 
-    // 获取所有表格行元素(不包括表头行)
-    const rows = Array.from(table.querySelectorAll('tbody tr'))
-    tableRows.value = rows.map(row => row as HTMLElement)
+    const tables = Array.from(table.querySelectorAll('tbody')) as HTMLElement[]
+    // 获取所有tr元素(不包括表头tr)
+    const rows = Array.from(table.querySelectorAll('tbody tr')) as HTMLElement[]
+    const containerTypeMap = {
+      row: rows,
+      table: tables,
+    }
+    tableRows.value = containerTypeMap[props.containerType]
   }
   catch (error) {
     console.error('EnterNextDragTable: 收集行元素时出错', error)
@@ -101,12 +107,20 @@ function handleNoNextInput(element: HTMLElement) {
   // 查找当前行的索引
   const row = element.closest('.vxe-body--row') as HTMLElement
   const rowIndex = row ? tableRows.value.indexOf(row) : -1
+  // 获取当前元素最近的td祖先
+  const td = element.closest('td')
+  // 获取所有td元素
+  const tds = row ? Array.from(row.querySelectorAll('td')) : []
+
+  // 计算td在所有td中的索引位置（从0开始）
+  const colIndex = td ? tds.indexOf(td as HTMLTableCellElement) : -1
 
   // 向外传递事件，并包含更多信息
   if (rowIndex !== -1 && tableData.value) {
     emit('noNextInput', {
       row: tableData.value[rowIndex],
       rowIndex,
+      colIndex,
     })
   }
 }
