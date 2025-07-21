@@ -3,7 +3,7 @@
 import type { Meta, StoryFn, StoryObj } from '@storybook/vue3'
 import DraggableTable from '@/components/DraggableTable/index.ts'
 import { ref } from 'vue'
-import type { TableRowData } from '@/components/DraggableTable/_types'
+import type { TableRowData } from '@/components/DraggableTable/src/_types'
 
 /**
  * 可拖拽表格组件
