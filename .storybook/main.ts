@@ -26,7 +26,7 @@ const config: StorybookConfig = {
     }
     const excludePlugins = ['vite-plugin-cdn-import']
     const filterPluginsRecursive = (plugins: any[]): any[] => {
-      return plugins.filter((item) => {
+      return plugins.filter(Boolean).filter((item) => {
         if (Array.isArray(item)) {
           const filtered = filterPluginsRecursive(item)
           return filtered.length > 0
