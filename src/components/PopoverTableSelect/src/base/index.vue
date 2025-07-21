@@ -274,6 +274,7 @@ function handleCellClick({ row, rowIndex }: { row: TableRowData, rowIndex: numbe
     emit('select', selectedRow)
   })
 }
+defineExpose({})
 </script>
 
 <style scoped></style>
