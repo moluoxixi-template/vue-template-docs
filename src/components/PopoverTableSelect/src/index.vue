@@ -36,6 +36,10 @@ const props = defineProps({
     type: String as PropType<'default' | 'input'>,
     default: 'default',
   },
+  placeholder: {
+    type: String,
+    default: '点击或按下方向键试试',
+  },
   inputProps: {
     type: Object as PropType<InputProps>,
     default: () => ({}),
@@ -75,7 +79,7 @@ watch(
   },
 )
 const computedPlaceholder = computed(() => {
-  return cacheInputValue.value || '点击试试'
+  return cacheInputValue.value || props.placeholder
 })
 const inputRef = ref<HTMLElement | null>(null)
 const computedVirtualRef = computed(() => {
