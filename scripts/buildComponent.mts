@@ -20,6 +20,7 @@ import Components from 'unplugin-vue-components/vite'
 import type { ICruiseOptions, ICruiseResult } from 'dependency-cruiser'
 import viteImagemin from 'vite-plugin-imagemin'
 import { obfuscator } from 'rollup-obfuscator'
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 
 // === 组件库命名空间配置 ===
 const LIB_NAMESPACE = 'moluoxixi'
@@ -634,6 +635,7 @@ function createBaseConfig(comp: string, internalDeps: string[]): InlineConfig {
         tsconfigPath: './tsconfig.components.json',
         declarationOnly: false,
       }),
+      cssInjectedByJsPlugin(),
     ],
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue'],
@@ -754,13 +756,6 @@ async function bundleComponentModule({
           preserveModulesRoot: resolve(rootDir, `src/components/${comp}`),
           entryFileNames,
           chunkFileNames,
-          assetFileNames: (assetInfo) => {
-            const name = assetInfo.names?.[0] || ''
-            if (name.endsWith('.css')) {
-              return 'style/[name][extname]'
-            }
-            return '[name][extname]'
-          },
           globals,
           ...(exportsType ? { exports: exportsType } : {}),
           manualChunks: undefined, // 禁用手动分块，避免文件拆分

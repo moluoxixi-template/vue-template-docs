@@ -59,7 +59,7 @@ const props = defineProps({
     required: false,
   },
 })
-const emits = defineEmits(['focus', 'input'])
+const emits = defineEmits(['focus', 'input', 'blur'])
 // 获取插槽
 const slots = useSlots()
 const slotNames = computed(() => Object.keys(slots))
@@ -96,7 +96,7 @@ function handleFocus(e: any) {
 }
 
 function handleBlur() {
-  popoverModel.value = false
+  emits('blur')
   currentInputValue.value = cacheInputValue.value
   cacheInputValue.value = ''
 }
