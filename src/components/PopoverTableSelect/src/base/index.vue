@@ -17,7 +17,12 @@
         :model-value="data"
         :height="height"
         @cell-click="handleCellClick"
-      />
+      >
+        <!-- 使用插槽方式渲染自定义内容 -->
+        <template v-for="name in slotNames" #[name]="slotParams" :key="name">
+          <slot :name="name" v-bind="slotParams" />
+        </template>
+      </DraggableTable>
     </div>
   </ElPopover>
 </template>
@@ -25,10 +30,10 @@
 <script lang="ts" setup>
 import type { InputInstance } from 'element-plus'
 import type { ComponentInternalInstance, ComponentPublicInstance } from 'vue'
+import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import type { VxeTablePropTypes } from 'vxe-table'
 import type { ColumnType, TableRowData } from '@/components/DraggableTable/src/_types'
 import { ElPopover } from 'element-plus'
-import { nextTick, ref, useTemplateRef, watch } from 'vue'
 import DraggableTable from '@/components/DraggableTable'
 
 defineOptions({
@@ -77,7 +82,9 @@ const props = defineProps({
 const emit = defineEmits<{
   select: [row: TableRowData]
 }>()
-
+// 获取插槽
+const slots = useSlots()
+const slotNames = computed(() => Object.keys(slots))
 const popoverVisible = defineModel({
   type: Boolean,
   default: false,
