@@ -22,6 +22,8 @@ import { useSystemStore } from './stores/modules/system.ts'
 
 import '@/assets/styles/main.css'
 
+import '@/assets/fonts/index.css'
+
 import 'moment/dist/locale/zh-cn' // 中文化
 
 moment.locale('zh-cn')
