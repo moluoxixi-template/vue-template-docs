@@ -13,7 +13,7 @@ const envObj = Object.fromEntries(
     .map(line => line.split('=')),
 )
 
-const appCode = envObj.VITE_GLOB_APP_CODE.replace(/["']/g, '')
+const appCode = envObj.VITE_GLOB_APP_CODE?.replace(/["']/g, '')
 
 const ciPath = path.resolve(__dirname, '../.gitlab-ci.yml')
 if (fs.existsSync(ciPath)) {
