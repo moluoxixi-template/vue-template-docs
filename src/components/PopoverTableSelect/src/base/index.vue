@@ -12,8 +12,6 @@
         :id="props.id"
         v-bind="$attrs"
         ref="gridRef"
-        border
-        highlight-current-row
         :columns="columns"
         :model-value="data"
         :height="height"
