@@ -10,6 +10,7 @@
       <slot name="default" />
       <DraggableTable
         :id="props.id"
+        v-bind="$attrs"
         ref="gridRef"
         border
         highlight-current-row
