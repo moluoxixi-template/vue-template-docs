@@ -10,7 +10,6 @@
           style="width: 240px"
         />
         <PopoverTableSelect
-          v-model="showPopover"
           :virtual-ref="inputRef"
           :columns="columns"
           :data="tableData"
@@ -28,7 +27,6 @@
           style="width: 240px"
         />
         <PopoverTableSelect
-          v-model="selectShowPopover"
           :virtual-ref="selectInputRef"
           :columns="columns"
           :data="tableData"
@@ -55,12 +53,13 @@
       <h2>自带input用法</h2>
       <div class="w-[240px]!">
         <PopoverTableSelect
-          v-model="inputShowPopover"
+          :throttle="2000"
           :input-value="inputValue1"
           pop-type="input"
           :columns="columns"
           :data="tableData"
           @select="handleInputSelect"
+          @input="handleInput"
         />
       </div>
     </div>
@@ -143,29 +142,27 @@ const tableData = [
 
 //#region 基础示例
 const inputValue = ref('')
-const showPopover = ref(false)
 const inputRef = ref()
 
 function handleSelect(row: any) {
   inputValue.value = row.name
-  showPopover.value = false
 }
 //#endregion
 
 //#region 带select插槽示例
-const selectInputRef = useTemplateRef('selectInputRef')
-const selectShowPopover = ref(false)
+const selectInputRef = useTemplateRef<any>('selectInputRef')
 const inputValue2 = ref('')
 const inputValue2Select = ref(1)
 //#endregion
 
 //#region 自带input用法
 const inputValue1 = ref('')
-const inputShowPopover = ref(false)
 
 function handleInputSelect(row: any) {
   inputValue1.value = row.name
-  // inputShowPopover.value = false
+}
+function handleInput(val: string) {
+  console.log('input', val)
 }
 //#endregion
 </script>
