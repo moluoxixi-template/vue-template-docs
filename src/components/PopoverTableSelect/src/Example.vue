@@ -8,7 +8,6 @@
           v-model="inputValue"
           placeholder="点击或按下方向键试试"
           style="width: 240px"
-          @focus="showPopover = true"
         />
         <PopoverTableSelect
           v-model="showPopover"
@@ -27,7 +26,6 @@
           v-model="inputValue2"
           placeholder="点击或按下方向键试试"
           style="width: 240px"
-          @focus="selectShowPopover = true"
         />
         <PopoverTableSelect
           v-model="selectShowPopover"
@@ -62,7 +60,6 @@
           pop-type="input"
           :columns="columns"
           :data="tableData"
-          select-trigger="dblclick"
           @select="handleInputSelect"
         />
       </div>
@@ -168,7 +165,7 @@ const inputShowPopover = ref(false)
 
 function handleInputSelect(row: any) {
   inputValue1.value = row.name
-  inputShowPopover.value = false
+  // inputShowPopover.value = false
 }
 //#endregion
 </script>

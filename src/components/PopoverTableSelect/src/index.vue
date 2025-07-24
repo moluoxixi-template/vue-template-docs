@@ -6,6 +6,7 @@
   </PopoverTableSelect>
   <ElInput
     v-if="props.popType === 'input'"
+    ref="inputRef"
     v-bind="props.inputProps"
     v-model="currentInputValue"
     :placeholder="computedPlaceholder"
@@ -81,13 +82,12 @@ watch(
 const computedPlaceholder = computed(() => {
   return cacheInputValue.value || props.placeholder
 })
-const inputRef = ref<HTMLElement | null>(null)
+const inputRef = useTemplateRef('inputRef')
 const computedVirtualRef = computed(() => {
   return props.virtualRef || inputRef.value
 })
 
-function handleFocus(e: any) {
-  inputRef.value = e.target
+function handleFocus() {
   cacheInputValue.value = currentInputValue.value
   currentInputValue.value = ''
   emits('focus')

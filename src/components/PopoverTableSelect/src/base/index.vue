@@ -32,8 +32,8 @@
         :columns="columns"
         :model-value="data"
         :height="height"
-        @cell-click="handleCellClick"
-        @cell-dblclick="handleCellDblclick"
+        @cell-click.stop="handleCellClick"
+        @cell-dblclick.stop="handleCellDblclick"
       >
         <!-- 使用插槽方式渲染自定义内容 -->
         <template v-for="name in slotNames" #[name]="slotParams" :key="name">
@@ -235,7 +235,7 @@ const props = defineProps({
   //#region 透传给DraggableTable
   id: {
     type: String,
-    default: '',
+    default: 'popoverTableSelect',
   },
   columns: {
     type: Array as () => ColumnType[],
