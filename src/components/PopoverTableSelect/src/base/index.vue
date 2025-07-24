@@ -33,6 +33,7 @@
         :model-value="data"
         :height="height"
         @cell-click="handleCellClick"
+        @cell-dblclick="handleCellDblclick"
       >
         <!-- 使用插槽方式渲染自定义内容 -->
         <template v-for="name in slotNames" #[name]="slotParams" :key="name">
@@ -48,7 +49,7 @@ import type { InputInstance } from 'element-plus'
 import type { ComponentInternalInstance, ComponentPublicInstance } from 'vue'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import type { VxeTablePropTypes } from 'vxe-table'
-import type { ColumnType, TableRowData } from '@/components/DraggableTable/src/_types'
+import type { ColumnType } from '@/components/DraggableTable/src/_types'
 import { ElPopover } from 'element-plus'
 import DraggableTable from '@/components/DraggableTable'
 
@@ -244,17 +245,26 @@ const props = defineProps({
     type: Array as () => VxeTablePropTypes.Data,
     default: () => [],
   },
+  selectTrigger: {
+    type: String as PropType<'click' | 'dblclick' | 'none'>,
+    default: 'click',
+    validator: (value: string) => ['click', 'dblclick', 'none'].includes(value),
+  },
   //#endregion
 })
-const emit = defineEmits<{
-  select: [row: TableRowData]
-}>()
+const emit = defineEmits([
+  'select',
+  'cellClick',
+  'cellDblClick',
+])
+
 interface PopperOptions {
   modifiers?: Array<{
     name: string
     options?: Record<string, any>
   }>
 }
+
 // 获取插槽
 const slots = useSlots()
 const slotNames = computed(() => Object.keys(slots))
@@ -442,17 +452,39 @@ function handleKeydown(e: KeyboardEvent) {
 /**
  * 处理单元格点击事件
  */
-function handleCellClick({ row, rowIndex }: { row: TableRowData, rowIndex: number }) {
-  currentRowIndex.value = rowIndex
+function handleCellClick(params) {
+  const { row, rowIndex } = params
+  emit('cellClick', params)
+  if (props.selectTrigger === 'click') {
+    currentRowIndex.value = rowIndex
 
-  const selectedRow = row
-  popoverVisible.value = false
-
-  // 使用nextTick延迟emit，确保popover关闭后再触发事件
-  nextTick(() => {
-    emit('select', selectedRow)
-  })
+    const selectedRow = row
+    popoverVisible.value = false
+    // 使用nextTick延迟emit，确保popover关闭后再触发事件
+    nextTick(() => {
+      emit('select', selectedRow)
+    })
+  }
 }
+
+/**
+ * 处理单元格双击事件
+ */
+function handleCellDblclick(params) {
+  const { row, rowIndex } = params
+  emit('cellDblClick', params)
+  if (props.selectTrigger === 'dblclick') {
+    currentRowIndex.value = rowIndex
+
+    const selectedRow = row
+    popoverVisible.value = false
+    // 使用nextTick延迟emit，确保popover关闭后再触发事件
+    nextTick(() => {
+      emit('select', selectedRow)
+    })
+  }
+}
+
 defineExpose({})
 </script>
 

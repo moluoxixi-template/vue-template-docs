@@ -62,6 +62,7 @@
           pop-type="input"
           :columns="columns"
           :data="tableData"
+          select-trigger="dblclick"
           @select="handleInputSelect"
         />
       </div>
