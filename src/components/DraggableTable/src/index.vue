@@ -23,7 +23,7 @@
       </template>
       <template v-if="!isEmpty(props.pagerConfig)" #pager>
         <slot name="pager">
-          <div class="pt-12">
+          <div style="padding-top: 12px;overflow:auto;">
             <ElPagination
               v-if="props.pageType === 'el-pagination'"
               :current-page="props.pagerConfig.currentPage"
@@ -387,12 +387,7 @@ const props = defineProps({
      * layouts 可选值：Home, PrevJump, PrevPage, Number, JumpNumber, NextPage, NextJump, End, Sizes, Jump, FullJump, PageCount, Total
      * @see https://vxetable.cn/#/grid/api?q=pager-config
      */
-    default: () => ({
-      total: 0,
-      currentPage: 1,
-      pageSize: 10,
-      layouts: ['PrevPage', 'Number', 'NextPage', 'Sizes', 'FullJump', 'Total'],
-    }),
+    default: null,
   },
   //#endregion
 })

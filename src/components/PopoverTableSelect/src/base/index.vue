@@ -5,6 +5,23 @@
     :virtual-ref="props.virtualRef"
     :width="props.width"
     :placement="props.placement"
+    :persistent="props.persistent"
+    :teleported="props.teleported"
+    :tabindex="props.tabindex"
+    :auto-close="props.autoClose"
+    :hide-after="props.hideAfter"
+    :show-after="props.showAfter"
+    :popper-style="props.popperStyle"
+    :popper-class="props.popperClass"
+    :popper-options="props.popperOptions"
+    :show-arrow="props.showArrow"
+    :transition="props.transition"
+    :offset="props.offset"
+    :disabled="props.disabled"
+    :content="props.content"
+    :effect="props.effect"
+    :title="props.title"
+    :trigger="props.trigger"
   >
     <div ref="popoverRef">
       <slot name="default" />
@@ -52,6 +69,158 @@ const props = defineProps({
   placement: {
     type: String,
     default: 'bottom',
+  }, /**
+      * 触发方式，支持多种交互类型
+      * @values 'click', 'focus', 'hover', 'contextmenu'
+      * @default 'hover'
+      */
+  trigger: {
+    type: String as PropType<'click' | 'focus' | 'hover' | 'contextmenu'>,
+    default: 'hover',
+    validator: (value: string) =>
+      ['click', 'focus', 'hover', 'contextmenu'].includes(value),
+  }, /**
+      * 标题文本内容
+      */
+  title: {
+    type: String,
+    default: '',
+  }, /**
+      * Tooltip 主题样式
+      * @values 'dark' / 'light'
+      * @default 'light'
+      */
+  effect: {
+    type: String as PropType<Effect>,
+    default: 'light',
+  },
+
+  /**
+   * 显示的主内容（可通过 slot 覆盖）
+   */
+  content: {
+    type: String,
+    default: '',
+  },
+
+  /**
+   * 是否禁用 Popover
+   * @default false
+   */
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
+
+  /**
+   * 浮层相对于触发元素的偏移量（单位：像素）
+   * @default 12
+   */
+  offset: {
+    type: Number,
+    default: 12,
+  },
+
+  /**
+   * 浮层显示动画效果
+   * @default 'el-fade-in-linear'
+   */
+  transition: {
+    type: String,
+    default: 'el-fade-in-linear',
+  },
+
+  /**
+   * 是否显示箭头指示器
+   * @default true
+   */
+  showArrow: {
+    type: Boolean,
+    default: true,
+  },
+
+  /**
+   * Popper.js 的配置对象（高级定制）
+   * @see https://popper.js.org/docs/v2/
+   * @default { modifiers: [{ name: 'computeStyles', options: { gpuAcceleration: false } }] }
+   */
+  popperOptions: {
+    type: Object as PropType<PopperOptions>,
+    default: () => ({
+      modifiers: [{
+        name: 'computeStyles',
+        options: { gpuAcceleration: false },
+      }],
+    }),
+  },
+
+  /**
+   * 自定义浮层容器的 class 名称
+   */
+  popperClass: {
+    type: String,
+    default: '',
+  },
+
+  /**
+   * 自定义浮层容器的行内样式
+   */
+  popperStyle: {
+    type: [String, Object] as PropType<string | CSSProperties>,
+    default: '',
+  },
+
+  /**
+   * 触发后延迟显示的时间（毫秒）
+   * @default 0
+   */
+  showAfter: {
+    type: Number,
+    default: 0,
+  },
+
+  /**
+   * 关闭浮层的延迟时间（毫秒）
+   * @default 200
+   */
+  hideAfter: {
+    type: Number,
+    default: 200,
+  },
+
+  /**
+   * 自动关闭延时（毫秒）
+   * @default 0
+   */
+  autoClose: {
+    type: Number,
+    default: 0,
+  },
+
+  /**
+   * Popover 的 tabindex 属性
+   */
+  tabindex: {
+    type: Number,
+    default: undefined,
+  },
+
+  /**
+   * 是否将浮层插入至 body 元素（解决定位被遮挡问题）
+   * @default true
+   */
+  teleported: {
+    type: Boolean,
+    default: true,
+  },
+
+  /**
+   * 是否持久化保留 Popover DOM（false 时长时间不触发会被销毁）
+   * @default true
+   */
+  persistent: {
+    type: Boolean,
+    default: true,
   },
   width: {
     type: [String, Number],
@@ -77,10 +246,15 @@ const props = defineProps({
   },
   //#endregion
 })
-
 const emit = defineEmits<{
   select: [row: TableRowData]
 }>()
+interface PopperOptions {
+  modifiers?: Array<{
+    name: string
+    options?: Record<string, any>
+  }>
+}
 // 获取插槽
 const slots = useSlots()
 const slotNames = computed(() => Object.keys(slots))
