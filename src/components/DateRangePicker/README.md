@@ -12,10 +12,8 @@
 
 ## 安装和引入
 
-确保已安装相关依赖：
-
 ```bash
-# 已在项目中安装
+pnpm add @moluoxixi/daterangepicker
 ```
 
 ## 基本用法
