@@ -445,7 +445,6 @@ function handleKeydown(e: KeyboardEvent) {
 function handleCellClick({ row, rowIndex }: { row: TableRowData, rowIndex: number }) {
   currentRowIndex.value = rowIndex
 
-  // 使用nextTick确保先关闭popover再触发事件
   const selectedRow = row
   popoverVisible.value = false
 

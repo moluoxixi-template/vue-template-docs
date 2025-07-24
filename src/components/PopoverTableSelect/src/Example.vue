@@ -69,7 +69,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="tsx" setup>
 import { ElInput } from 'element-plus'
 import { ref } from 'vue'
 import PopoverTableSelect from './index.vue'

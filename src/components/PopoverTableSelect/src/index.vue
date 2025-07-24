@@ -88,7 +88,6 @@ const computedVirtualRef = computed(() => {
 
 function handleFocus(e: any) {
   inputRef.value = e.target
-  popoverModel.value = true
   cacheInputValue.value = currentInputValue.value
   currentInputValue.value = ''
   emits('focus')
