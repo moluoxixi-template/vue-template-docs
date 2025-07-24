@@ -98,50 +98,51 @@ function showDialog() {
 ### 使用插槽内容
 
 ```vue
+
 <template>
   <el-button @click="showDialogWithSlots">带插槽的对话框</el-button>
 </template>
 
 <script setup>
-import { h } from 'vue'
-import { createApiDialog } from '@moluoxixi/api-dialog'
-import { ElButton, ElInput, ElForm, ElFormItem } from 'element-plus'
-// 你的dialog组件
-import ComplexDialog from './ComplexDialog.vue'
+  import { h } from 'vue'
+  import { createApiDialog } from '@moluoxixi/api-dialog'
+  import { ElButton, ElInput } from 'element-plus'
+  // 你的dialog组件
+  import ComplexDialog from './ComplexDialog.vue'
 
-const { show } = createApiDialog(ComplexDialog)
+  const { show } = createApiDialog(ComplexDialog)
 
-function showDialogWithSlots() {
-  try {
-    show({
-      props: { 
-        title: '带插槽的对话框',
-        width: '500px'
-      },
-      slots: {
-        default: h('div', { class: 'custom-content' }, [
-          h('h3', { style: 'color: #409EFF' }, '自定义内容'),
-          h('p', null, '这是通过API方式传入的插槽内容'),
-          h(ElInput, { 
-            modelValue: '', 
-            placeholder: '请输入内容',
-            style: 'margin: 10px 0'
-          })
-        ]),
-        footer: h('div', { class: 'custom-footer' }, [
-          h(ElButton, { onClick: () => {} }, '取消'),
-          h(ElButton, { type: 'primary', onClick: () => {} }, '确定')
-        ])
-      }
-    }).then(result => {
-      console.log('结果:', result)
-    }).catch(error => {
-      console.log('对话框关闭:', error)
-    })
-  } catch (error) {
-    console.error('发生错误:', error)
+  function showDialogWithSlots () {
+    try {
+      show({
+             props: {
+               title: '带插槽的对话框',
+               width: '500px'
+             },
+             slots: {
+               default: h('div', { class: 'custom-content' }, [
+                 h('h3', { style: 'color: #409EFF' }, '自定义内容'),
+                 h('p', null, '这是通过API方式传入的插槽内容'),
+                 h(ElInput, {
+                   modelValue: '',
+                   placeholder: '请输入内容',
+                   style: 'margin: 10px 0'
+                 })
+               ]),
+               footer: h('div', { class: 'custom-footer' }, [
+                 h(ElButton, { onClick: () => {} }, '取消'),
+                 h(ElButton, { type: 'primary', onClick: () => {} }, '确定')
+               ])
+             }
+           }).then(result => {
+        console.log('结果:', result)
+      }).catch(error => {
+        console.log('对话框关闭:', error)
+      })
+    } catch (error) {
+      console.error('发生错误:', error)
+    }
   }
-}
 </script>
 ```
 
