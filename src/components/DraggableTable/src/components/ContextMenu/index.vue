@@ -8,7 +8,7 @@
       placement="bottom"
       width="200"
     >
-      <div ref="popoverRef" class="flex flex-col" @click.stop="handleClick">
+      <div ref="popoverRef" class="flex flex-col">
         <div class="flex flex-col">
           <ElCheckbox
             v-for="col in allColumns"
@@ -49,7 +49,7 @@ const props = defineProps({
     default: () => [],
   },
 })
-const emits = defineEmits(['menuConfirm', 'contextmenuClick'])
+const emits = defineEmits(['menuConfirm', 'headerContextMenu'])
 // 右键菜单弹窗控制
 const popoverVisible = defineModel({
   type: Boolean,
@@ -107,6 +107,7 @@ watch(
     if (visible) {
       // 添加点击外部关闭的事件监听
       nextTick(() => {
+        emits('headerContextMenu', popoverRef.value)
         document.addEventListener('mousedown', handleOutsideClick)
       })
     }
@@ -163,15 +164,6 @@ function handleOutsideClick(e: MouseEvent) {
   }
 }
 
-/**
- * 容器的点击事件
- */
-function handleClick(e: MouseEvent) {
-  emits('contextmenuClick', {
-    event: e,
-    container: popoverRef.value,
-  })
-}
 // 组件卸载时清理
 onUnmounted(() => {
   cleanupEventListeners()

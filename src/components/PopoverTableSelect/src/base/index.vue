@@ -35,7 +35,7 @@
         @cell-click.stop="handleCellClick"
         @cell-dblclick.stop="handleCellDblclick"
         @resizable-change="handleColumnResizableChange"
-        @header-context-menu-click="handleHeaderContextMenuClick"
+        @header-context-menu="handleHeaderContextMenu"
       >
         <!-- 使用插槽方式渲染自定义内容 -->
         <template v-for="name in slotNames" #[name]="slotParams" :key="name">
@@ -259,7 +259,7 @@ const emit = defineEmits([
   'cellClick',
   'cellDblClick',
   'resizableChange',
-  'headerContextMenuClick',
+  'headerContextMenu',
 ])
 
 interface PopperOptions {
@@ -362,6 +362,7 @@ function cleanupEventListeners() {
  * draggabletable表头右键菜单
  */
 const headerContextContainer = ref<HTMLElement | null>(null)
+
 /**
  * 处理点击外部区域，关闭popover
  */
@@ -369,20 +370,23 @@ function handleOutsideClick(e: MouseEvent) {
   if (!popoverVisible.value)
     return
 
+  // 获取事件源
+  const target = e.target as Node
   // 获取popover元素
   const popoverEl = popoverRef.value
   // 获取virtualRef元素
   const virtualEl = (props.virtualRef as ComponentPublicInstance)?.$el || props.virtualRef
-
+  // 获取表头右键菜单
   const headerContextContainerEl = headerContextContainer.value
+
+  console.log('target', headerContextContainerEl, target, headerContextContainerEl.contains(target))
   // 检查点击是否在popover或virtualRef或表头右键菜单 元素外部
   if (
     popoverEl
-    && !popoverEl.contains(e.target as Node)
+    && !popoverEl.contains(target)
     && virtualEl
-    && !virtualEl.contains(e.target as Node)
-    && headerContextContainerEl
-    && !headerContextContainerEl.contains(e.target as Node)
+    && !virtualEl.contains(target)
+    && (headerContextContainerEl ? !headerContextContainerEl.contains(target) : true)
   ) {
     popoverVisible.value = false
     ;(props.virtualRef as HTMLElement)?.blur?.()
@@ -513,13 +517,15 @@ function handleColumnResizableChange(params: VxeTableDefines.ResizableChangePara
   focusVirtual()
   emit('resizableChange', params)
 }
+
 /**
  * 处理表头右键菜单点击事件
  */
-function handleHeaderContextMenuClick(params: { event: MouseEvent, container: HTMLElement }) {
-  headerContextContainer.value = params.container
-  emit('headerContextMenuClick', params)
+function handleHeaderContextMenu(params: HTMLElement) {
+  headerContextContainer.value = params
+  emit('headerContextMenu', params)
 }
+
 defineExpose({})
 </script>
 
