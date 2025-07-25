@@ -23,6 +23,7 @@ import type { InputInstance, InputProps } from 'element-plus'
 import type { ComponentInternalInstance, ComponentPublicInstance, PropType } from 'vue'
 import { ElInput } from 'element-plus'
 import { debounce as _debounce, throttle as _throttle } from 'lodash'
+import type { DebounceSettingsLeading, ThrottleSettingsLeading } from 'lodash'
 import { computed, watch } from 'vue'
 import PopoverTableSelect from '@/components/PopoverTableSelect/src/base/index.vue'
 
@@ -34,6 +35,15 @@ const props = defineProps({
   throttle: {
     type: Number,
     default: 300,
+  },
+  /**
+   * 防抖节流的配置
+   * @see https://github.com/pikax/vue-throttle-debounce#throttle
+   * @see https://github.com/pikax/vue-throttle-debounce#debounce
+   */
+  options: {
+    type: Object as PropType<DebounceSettingsLeading | ThrottleSettingsLeading>,
+    default: () => ({}),
   },
   popType: {
     type: String as PropType<'default' | 'input'>,
@@ -110,12 +120,10 @@ function handleInput(val: string) {
 
 const computedInput = computed(() => {
   if (props.debounce) {
-    return _debounce(handleInput, props.debounce)
+    return _debounce(handleInput, props.debounce, props.options)
   }
   else if (props.throttle) {
-    return _throttle(handleInput, props.throttle, {
-      trailing: false,
-    })
+    return _throttle(handleInput, props.throttle, props.options)
   }
   else {
     return handleInput
