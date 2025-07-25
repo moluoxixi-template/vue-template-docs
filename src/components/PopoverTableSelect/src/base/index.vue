@@ -379,7 +379,6 @@ function handleOutsideClick(e: MouseEvent) {
   // 获取表头右键菜单
   const headerContextContainerEl = headerContextContainer.value
 
-  console.log('target', headerContextContainerEl, target, headerContextContainerEl.contains(target))
   // 检查点击是否在popover或virtualRef或表头右键菜单 元素外部
   if (
     popoverEl
