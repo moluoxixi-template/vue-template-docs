@@ -11,6 +11,7 @@ import ExportExcel from '@/components/ExportExcel'
 import KeepAllAlive from '@/components/KeepAllAlive'
 import PopoverTableSelect from '@/components/PopoverTableSelect'
 import Select from '@/components/Select'
+import Splitter from '@/components/Splitter'
 import Tabs from '@/components/Tabs'
 
 export {
@@ -25,6 +26,7 @@ export {
   KeepAllAlive,
   PopoverTableSelect,
   Select,
+  Splitter,
   Tabs,
 }
 
