@@ -455,15 +455,16 @@ function handleKeydown(e: KeyboardEvent) {
 function handleCellClick(params) {
   const { row, rowIndex } = params
   emit('cellClick', params)
+  currentRowIndex.value = rowIndex
   if (props.selectTrigger === 'click') {
-    currentRowIndex.value = rowIndex
-
-    const selectedRow = row
     popoverVisible.value = false
     // 使用nextTick延迟emit，确保popover关闭后再触发事件
     nextTick(() => {
-      emit('select', selectedRow)
+      emit('select', row)
     })
+  }
+  else {
+    props.virtualRef?.focus?.()
   }
 }
 
@@ -471,16 +472,13 @@ function handleCellClick(params) {
  * 处理单元格双击事件
  */
 function handleCellDblclick(params) {
-  const { row, rowIndex } = params
   emit('cellDblClick', params)
   if (props.selectTrigger === 'dblclick') {
     currentRowIndex.value = rowIndex
-
-    const selectedRow = row
     popoverVisible.value = false
     // 使用nextTick延迟emit，确保popover关闭后再触发事件
     nextTick(() => {
-      emit('select', selectedRow)
+      emit('select', row)
     })
   }
 }

@@ -745,7 +745,7 @@ const gridProps = computed<VxeGridProps>(() => {
     height: '100%',
     keepSource: true,
     mouseConfig: {
-      selected: true,
+      selected: false,
       ...props.mouseConfig,
     },
     customConfig: {
@@ -772,6 +772,7 @@ const gridProps = computed<VxeGridProps>(() => {
     },
     rowConfig: {
       useKey: true,
+      resizable: true,
       drag: props.dragType === 'vxe' && (props.rowdragable || props.dragable),
       keyField: props.rowId,
       isCurrent: true,
