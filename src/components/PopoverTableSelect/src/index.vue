@@ -1,19 +1,21 @@
 <template>
-  <PopoverTableSelect v-model="popoverModel" :virtual-ref="computedVirtualRef" v-bind="$attrs">
-    <template v-for="name in slotNames" #[name]="slotParams" :key="name">
-      <slot :name="name" v-bind="slotParams" />
-    </template>
-  </PopoverTableSelect>
-  <ElInput
-    v-if="props.popType === 'input'"
-    ref="inputRef"
-    v-bind="props.inputProps"
-    v-model="currentInputValue"
-    :placeholder="computedPlaceholder"
-    @focus="handleFocus"
-    @blur="handleBlur"
-    @input="computedInput"
-  />
+  <div>
+    <PopoverTableSelect v-model="popoverModel" :virtual-ref="computedVirtualRef" v-bind="$attrs">
+      <template v-for="name in slotNames" #[name]="slotParams" :key="name">
+        <slot :name="name" v-bind="slotParams" />
+      </template>
+    </PopoverTableSelect>
+    <ElInput
+      v-if="props.popType === 'input'"
+      ref="inputRef"
+      v-bind="props.inputProps"
+      v-model="currentInputValue"
+      :placeholder="computedPlaceholder"
+      @focus="handleFocus"
+      @blur="handleBlur"
+      @input="computedInput"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -91,7 +93,9 @@ function handleFocus() {
   cacheInputValue.value = currentInputValue.value
   currentInputValue.value = ''
   emits('focus')
-  emits('input', currentInputValue.value)
+  if (!popoverModel.value) {
+    emits('input', currentInputValue.value)
+  }
 }
 
 function handleBlur() {

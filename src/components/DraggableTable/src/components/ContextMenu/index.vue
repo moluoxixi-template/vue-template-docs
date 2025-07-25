@@ -8,7 +8,7 @@
       placement="bottom"
       width="200"
     >
-      <div ref="popoverRef" class="flex flex-col">
+      <div ref="popoverRef" class="flex flex-col" @click.stop="handleClick">
         <div class="flex flex-col">
           <ElCheckbox
             v-for="col in allColumns"
@@ -49,7 +49,7 @@ const props = defineProps({
     default: () => [],
   },
 })
-const emits = defineEmits(['menuConfirm'])
+const emits = defineEmits(['menuConfirm', 'contextmenuClick'])
 // 右键菜单弹窗控制
 const popoverVisible = defineModel({
   type: Boolean,
@@ -77,7 +77,8 @@ function initColumns() {
 }
 
 function handleConfirm() {
-  if (allColumns.value.filter(col => !col.visible).length === 0) {
+  console.log('allColumns', allColumns)
+  if (allColumns.value.filter(col => col.visible === undefined || col.visible === null || col.visible === true).length === 0) {
     ElMessage.warning('至少保留一列')
     return
   }
@@ -162,6 +163,15 @@ function handleOutsideClick(e: MouseEvent) {
   }
 }
 
+/**
+ * 容器的点击事件
+ */
+function handleClick(e: MouseEvent) {
+  emits('contextmenuClick', {
+    event: e,
+    container: popoverRef.value,
+  })
+}
 // 组件卸载时清理
 onUnmounted(() => {
   cleanupEventListeners()

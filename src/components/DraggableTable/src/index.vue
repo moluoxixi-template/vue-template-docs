@@ -47,6 +47,7 @@
       :columns="fullColumns"
       :virtual-ref="virtualRef"
       @menu-confirm="handleMenuConfirm"
+      @contextmenu-click="handleContextMenuClick"
     />
   </div>
 </template>
@@ -402,6 +403,7 @@ const emit = defineEmits([
   'checkboxAll',
   'headerCellMenu',
   'pageChange',
+  'headerContextMenuClick',
 ])
 
 const attrs = useAttrs()
@@ -916,6 +918,12 @@ function handleMenuConfirm(columns: ColumnType[]) {
   localColumns.value = columns
 }
 
+/**
+ * 表头右键菜单点击事件
+ */
+function handleContextMenuClick(params: { event: MouseEvent, container: HTMLElement }) {
+  emit('headerContextMenuClick', params)
+}
 /**
  * 表格复选框全选事件
  * @param params
