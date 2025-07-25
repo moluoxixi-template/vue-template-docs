@@ -23,7 +23,7 @@
     :title="props.title"
     :trigger="props.trigger"
   >
-    <div ref="popoverRef">
+    <div ref="popoverRef" @click.stop.prevent="handlePopoverClick">
       <slot name="default" />
       <DraggableTable
         :id="props.id"
@@ -524,7 +524,9 @@ function handleHeaderContextMenu(params: HTMLElement) {
   headerContextContainer.value = params
   emit('headerContextMenu', params)
 }
-
+function handlePopoverClick() {
+  focusVirtual()
+}
 defineExpose({})
 </script>
 
