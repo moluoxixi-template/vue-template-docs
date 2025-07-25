@@ -474,6 +474,7 @@ function handleCellClick(params) {
 function handleCellDblclick(params) {
   emit('cellDblClick', params)
   if (props.selectTrigger === 'dblclick') {
+    const { row, rowIndex } = params
     currentRowIndex.value = rowIndex
     popoverVisible.value = false
     // 使用nextTick延迟emit，确保popover关闭后再触发事件
