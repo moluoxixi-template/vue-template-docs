@@ -1,17 +1,35 @@
 <template>
-  <ElSplitter :layout="props.layout" @resize="onResize">
-    <ElSplitterPanel
-      v-for="(slotName) in slotNames"
-      :key="slotName"
-    >
-      <slot :name="slotName" />
-    </ElSplitterPanel>
+  <ElSplitter v-bind="$attrs">
+    <template v-for="(slotName, index) in slotNames" :key="slotName">
+      <slot v-if="slotName === 'default'" name="default" />
+      <ElSplitterPanel
+        v-else
+        :size="getPanelProp(slotName, 'size')"
+        :min="getPanelProp(slotName, 'min')"
+        :max="getPanelProp(slotName, 'max')"
+        :resizable="getPanelProp(slotName, 'resizable', true)"
+        :collapsible="getPanelProp(slotName, 'collapsible', false)"
+      >
+        <div class="bg-white w-full h-full">
+          <slot :name="getPanelProp(index, 'slot', slotName)" />
+        </div>
+      </ElSplitterPanel>
+    </template>
   </ElSplitter>
 </template>
 
 <script setup lang="ts">
 import { computed, useSlots } from 'vue'
-import { ElSplitter, ElSplitterPanel } from 'element-plus'
+import { ElSplitter } from 'element-plus'
+
+// 面板配置接口
+interface PanelConfig {
+  slot: string
+  min?: string | number
+  max?: string | number
+  resizable?: boolean
+  collapsible?: boolean
+}
 
 // 定义组件选项
 defineOptions({
@@ -21,29 +39,48 @@ defineOptions({
 
 // 定义属性和事件
 const props = withDefaults(defineProps<{
-  layout?: 'horizontal' | 'vertical'
-  size?: string
+  panels?: PanelConfig[]
+  splitWidth?: number
 }>(), {
   layout: 'horizontal',
-  size: '100%',
+  splitWidth: 8,
+  panels: () => [],
 })
-
-// 定义事件
-const emits = defineEmits<{
-  (e: 'resize', sizes: number[]): void
-}>()
 
 // 获取可用的插槽名称
 const slots = useSlots()
 
 // 获取插槽名称
 const slotNames = computed(() => Object.keys(slots))
-
-// 处理大小调整事件
-function onResize(index: number, sizes: number[]) {
-  emits('resize', sizes)
+// 获取指定面板的属性值
+function getPanelProp<T>(slotName: number, prop: keyof PanelConfig, defaultValue?: T): T | undefined {
+  const item = props.panels.find(item => item.slot === slotName)
+  if (item) {
+    return item[prop] as unknown as T
+  }
+  return defaultValue
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+/* 自定义分割条样式 */
+:deep(.el-splitter-bar) {
+  .el-splitter-bar__dragger-horizontal {
+    z-index: 2;
+
+    &::before {
+      width: v-bind('`${props.splitWidth}px`');
+      background-color: #f1f2f4;
+    }
+  }
+
+  .el-splitter-bar__dragger-vertical {
+    z-index: 1;
+
+    &::before {
+      height: v-bind('`${props.splitWidth}px`');
+      background-color: #f1f2f4;
+    }
+  }
+}
 </style>
