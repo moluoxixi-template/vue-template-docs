@@ -34,6 +34,7 @@
         :height="height"
         @cell-click.stop="handleCellClick"
         @cell-dblclick.stop="handleCellDblclick"
+        @resizable-change="handleColumnResizableChange"
       >
         <!-- 使用插槽方式渲染自定义内容 -->
         <template v-for="name in slotNames" #[name]="slotParams" :key="name">
@@ -48,7 +49,7 @@
 import type { InputInstance } from 'element-plus'
 import type { ComponentInternalInstance, ComponentPublicInstance } from 'vue'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
-import type { VxeTablePropTypes } from 'vxe-table'
+import type { VxeTableDefines, VxeTablePropTypes } from 'vxe-table'
 import type { ColumnType } from '@/components/DraggableTable/src/_types'
 import { ElPopover } from 'element-plus'
 import DraggableTable from '@/components/DraggableTable'
@@ -256,6 +257,7 @@ const emit = defineEmits([
   'select',
   'cellClick',
   'cellDblClick',
+  'resizableChange',
 ])
 
 interface PopperOptions {
@@ -450,6 +452,15 @@ function handleKeydown(e: KeyboardEvent) {
 }
 
 /**
+ * 聚焦虚拟元素
+ */
+function focusVirtual() {
+  ;(props.virtualRef as HTMLElement)?.focus?.()
+  ;(props.virtualRef as ComponentPublicInstance)?.$el?.focus?.()
+  popoverVisible.value = true
+}
+
+/**
  * 处理单元格点击事件
  */
 function handleCellClick(params) {
@@ -464,7 +475,7 @@ function handleCellClick(params) {
     })
   }
   else {
-    props.virtualRef?.focus?.()
+    focusVirtual()
   }
 }
 
@@ -482,6 +493,15 @@ function handleCellDblclick(params) {
       emit('select', row)
     })
   }
+}
+
+/**
+ * 处理列宽变化
+ * @param params
+ */
+function handleColumnResizableChange(params: VxeTableDefines.ResizableChangeParams) {
+  focusVirtual()
+  emit('resizableChange', params)
 }
 
 defineExpose({})
