@@ -29,6 +29,7 @@ import type { EnterNextDragTableProps, NoNextInputParams, NoSelectValueParams } 
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import DraggableTable from '@/components/DraggableTable/index.ts'
 import EnterNextContainer from '@/components/EnterNextContainer/index.ts'
+import type { slotsType } from '@/components/_types'
 
 const props = withDefaults(defineProps<EnterNextDragTableProps>(), {
   allowSelectNextInEmpty: false,
@@ -42,6 +43,9 @@ const emit = defineEmits<{
   (e: 'noSelectValue', params: NoSelectValueParams): void
   (e: 'toggleTreeExpand', params: VxeTableDefines.ToggleRowExpandEventParams): void
 }>()
+
+// 获取插槽
+const slots = defineSlots<slotsType>()
 
 // 防抖函数，正确定义类型
 function debounce<T extends (...args: any[]) => void>(
@@ -66,9 +70,7 @@ const tableData = defineModel({
   default: () => [],
 })
 
-// 获取插槽
-const slots = useSlots()
-const slotNames = computed(() => Object.keys(slots))
+const slotNames = computed<string[]>(() => Object.keys(slots) as string[])
 const tableRef = useTemplateRef<typeof DraggableTable>('tableRef')
 const tableRows = ref<HTMLElement[]>([])
 

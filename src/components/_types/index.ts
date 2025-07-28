@@ -2,6 +2,9 @@ export interface objType {
   [key: string]: any
 }
 
+export interface slotsType {
+  [key: string]: (props: objType) => any
+}
 /**
  * 将 readonly 类型转换为非 readonly 类型
  */

@@ -27,7 +27,7 @@ const LIB_NAMESPACE = 'moluoxixi'
 /**
  * 是否严格按照目录分组
  */
-const preserveModules = true
+const preserveModules = false
 /**
  * 是否启用混淆
  */
@@ -36,6 +36,67 @@ const useObfuscator = false
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 const rootDir = resolve(__dirname, '..')
+
+// 主函数
+async function main() {
+  // 获取命令行参数
+  const args = process.argv.slice(2)
+  const command = args[0] || 'build-publish' // 默认命令是build
+  const mode = args[1] || 'all' // 默认模式是all
+
+  // 验证模式是否有效
+  if (mode !== 'all' && mode !== 'library') {
+    // 如果不是all或library，则检查是否是有效的组件名
+    const componentNames = await getComponentNames()
+    if (!componentNames.includes(mode)) {
+      console.error(`错误: 无效的模式或组件名 "${mode}"`)
+      console.error(`可用的组件: ${componentNames.join(', ')}`)
+      return 1
+    }
+  }
+
+  // 根据命令执行不同的操作
+  switch (command) {
+    case 'build': {
+      // 只构建
+      const buildSuccess = await doBuild(mode, false)
+      return buildSuccess ? 0 : 1
+    }
+
+    case 'build-publish': {
+      // 构建并发布
+      const buildPublishResult = await doBuild(mode, true)
+      return buildPublishResult ? 0 : 1
+    }
+
+    default:
+      console.log(`
+使用方法:
+  node scripts/buildComponent.mjs [command] [mode]
+
+命令:
+  build         - 仅构建组件（默认）
+  build-publish - 构建并发布组件
+
+模式:
+  all           - 处理所有单个组件和整个组件库（默认）
+  library       - 只处理整个组件库
+  <组件名>      - 只处理指定的单个组件
+
+示例:
+  tsx scripts/buildComponent.mts                   - 构建所有组件和组件库
+  tsx scripts/buildComponent.mts build library     - 只构建组件库
+  tsx scripts/buildComponent.mts build Icon        - 只构建Icon组件
+  tsx scripts/buildComponent.mts build-publish     - 构建并发布所有组件和组件库
+      `)
+      return 1
+  }
+}
+
+// 执行主函数
+main().then((exitCode) => {
+  process.exit(exitCode)
+})
 
 // 获取组件列表（只分目录的组件）
 async function getComponentNames() {
@@ -1108,64 +1169,3 @@ async function doBuild(mode = 'all', shouldPublish = false) {
     return false
   }
 }
-
-// 主函数
-async function main() {
-  // 获取命令行参数
-  const args = process.argv.slice(2)
-  const command = args[0] || 'build-publish' // 默认命令是build
-  const mode = args[1] || 'all' // 默认模式是all
-
-  // 验证模式是否有效
-  if (mode !== 'all' && mode !== 'library') {
-    // 如果不是all或library，则检查是否是有效的组件名
-    const componentNames = await getComponentNames()
-    if (!componentNames.includes(mode)) {
-      console.error(`错误: 无效的模式或组件名 "${mode}"`)
-      console.error(`可用的组件: ${componentNames.join(', ')}`)
-      return 1
-    }
-  }
-
-  // 根据命令执行不同的操作
-  switch (command) {
-    case 'build': {
-      // 只构建
-      const buildSuccess = await doBuild(mode, false)
-      return buildSuccess ? 0 : 1
-    }
-
-    case 'build-publish': {
-      // 构建并发布
-      const buildPublishResult = await doBuild(mode, true)
-      return buildPublishResult ? 0 : 1
-    }
-
-    default:
-      console.log(`
-使用方法:
-  node scripts/buildComponent.mjs [command] [mode]
-
-命令:
-  build         - 仅构建组件（默认）
-  build-publish - 构建并发布组件
-
-模式:
-  all           - 处理所有单个组件和整个组件库（默认）
-  library       - 只处理整个组件库
-  <组件名>      - 只处理指定的单个组件
-
-示例:
-  tsx scripts/buildComponent.mts                   - 构建所有组件和组件库
-  tsx scripts/buildComponent.mts build library     - 只构建组件库
-  tsx scripts/buildComponent.mts build Icon        - 只构建Icon组件
-  tsx scripts/buildComponent.mts build-publish     - 构建并发布所有组件和组件库
-      `)
-      return 1
-  }
-}
-
-// 执行主函数
-main().then((exitCode) => {
-  process.exit(exitCode)
-})

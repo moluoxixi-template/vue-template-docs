@@ -19,12 +19,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, useSlots } from 'vue'
+import { computed } from 'vue'
 import { ElSplitter } from 'element-plus'
+import type { slotsType } from '@/components/_types'
 
 // 面板配置接口
 interface PanelConfig {
-  slot: string
+  slot?: string
+  size?: string | number
   min?: string | number
   max?: string | number
   resizable?: boolean
@@ -48,12 +50,12 @@ const props = withDefaults(defineProps<{
 })
 
 // 获取可用的插槽名称
-const slots = useSlots()
+const slots = defineSlots<slotsType>()
 
 // 获取插槽名称
-const slotNames = computed(() => Object.keys(slots))
+const slotNames = computed<string[]>(() => Object.keys(slots) as string[])
 // 获取指定面板的属性值
-function getPanelProp<T>(slotName: number, prop: keyof PanelConfig, defaultValue?: T): T | undefined {
+function getPanelProp<T>(slotName: string | number | undefined, prop: keyof PanelConfig, defaultValue?: T): T | undefined {
   const item = props.panels.find(item => item.slot === slotName)
   if (item) {
     return item[prop] as unknown as T

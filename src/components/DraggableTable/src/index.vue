@@ -75,7 +75,6 @@ import {
   onBeforeUnmount,
   ref,
   useAttrs,
-  useSlots,
   useTemplateRef,
   watch,
 } from 'vue'
@@ -94,6 +93,7 @@ import {
 import ContextMenu from './components/ContextMenu/index.vue'
 // 导入自定义渲染器
 import './renderers'
+import type { slotsType } from '@/components/_types'
 
 defineOptions({
   name: 'DraggableTable',
@@ -406,11 +406,12 @@ const emit = defineEmits([
   'headerContextMenu',
 ])
 
+// 获取插槽
+const slots = defineSlots<slotsType>()
+
 const attrs = useAttrs()
 
-// 获取插槽
-const slots = useSlots()
-const slotNames = computed(() => Object.keys(slots))
+const slotNames = computed<string[]>(() => Object.keys(slots) as string[])
 
 const tableData = defineModel({
   type: Array,

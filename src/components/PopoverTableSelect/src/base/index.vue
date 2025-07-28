@@ -54,6 +54,7 @@ import type { VxeTableDefines, VxeTablePropTypes } from 'vxe-table'
 import type { ColumnType } from '@/components/DraggableTable/src/_types'
 import { ElPopover } from 'element-plus'
 import DraggableTable from '@/components/DraggableTable'
+import type { slotsType } from '@/components/_types'
 
 defineOptions({
   name: 'PopoverTableSelect',
@@ -94,7 +95,7 @@ const props = defineProps({
       * @default 'light'
       */
   effect: {
-    type: String as PropType<Effect>,
+    type: String as PropType<'dark' | 'light'>,
     default: 'light',
   },
 
@@ -169,7 +170,7 @@ const props = defineProps({
    * 自定义浮层容器的行内样式
    */
   popperStyle: {
-    type: [String, Object] as PropType<string | CSSProperties>,
+    type: [String, Object] as PropType<string>,
     default: '',
   },
 
@@ -262,6 +263,9 @@ const emit = defineEmits([
   'headerContextMenu',
 ])
 
+// 获取插槽
+const slots = defineSlots<slotsType>()
+
 interface PopperOptions {
   modifiers?: Array<{
     name: string
@@ -269,9 +273,7 @@ interface PopperOptions {
   }>
 }
 
-// 获取插槽
-const slots = useSlots()
-const slotNames = computed(() => Object.keys(slots))
+const slotNames = computed<string[]>(() => Object.keys(slots) as string[])
 const popoverVisible = defineModel({
   type: Boolean,
   default: false,
@@ -476,7 +478,7 @@ function focusVirtual() {
 /**
  * 处理单元格点击事件
  */
-function handleCellClick(params) {
+function handleCellClick(params: VxeTableDefines.CellClickParams) {
   const { row, rowIndex } = params
   emit('cellClick', params)
   currentRowIndex.value = rowIndex
@@ -495,7 +497,7 @@ function handleCellClick(params) {
 /**
  * 处理单元格双击事件
  */
-function handleCellDblclick(params) {
+function handleCellDblclick(params: VxeTableDefines.CellDblclickParams) {
   emit('cellDblClick', params)
   if (props.selectTrigger === 'dblclick') {
     const { row, rowIndex } = params

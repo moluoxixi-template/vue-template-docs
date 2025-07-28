@@ -26,6 +26,7 @@ import { debounce as _debounce, throttle as _throttle } from 'lodash'
 import type { DebounceSettingsLeading, ThrottleSettingsLeading } from 'lodash'
 import { computed, watch } from 'vue'
 import PopoverTableSelect from '@/components/PopoverTableSelect/src/base/index.vue'
+import type { slotsType } from '@/components/_types'
 
 const props = defineProps({
   debounce: {
@@ -74,8 +75,8 @@ const props = defineProps({
 })
 const emits = defineEmits(['focus', 'input', 'blur'])
 // 获取插槽
-const slots = useSlots()
-const slotNames = computed(() => Object.keys(slots))
+const slots = defineSlots<slotsType>()
+const slotNames = computed<string[]>(() => Object.keys(slots) as string[])
 
 const popoverModel = defineModel({
   type: Boolean,
@@ -94,8 +95,10 @@ watch(
 const computedPlaceholder = computed(() => {
   return cacheInputValue.value || props.placeholder
 })
-const inputRef = useTemplateRef('inputRef')
-const computedVirtualRef = computed(() => {
+const inputRef = useTemplateRef<HTMLElement>('inputRef')
+const computedVirtualRef = computed<HTMLElement | ComponentPublicInstance
+  | ComponentInternalInstance
+  | InputInstance | null>(() => {
   return props.virtualRef || inputRef.value
 })
 

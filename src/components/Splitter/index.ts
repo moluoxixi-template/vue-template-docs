@@ -10,5 +10,5 @@ export { Example }
 
 // 用于Vue插件形式注册
 export function install(app: App) {
-  app.component('Splitter', ExportExcel)
+  app.component('Splitter', Splitter)
 }

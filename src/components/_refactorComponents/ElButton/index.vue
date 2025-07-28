@@ -10,7 +10,8 @@
 import { ElButton as OldElButton } from 'element-plus'
 // 获取插槽
 import { throttle as _throttle } from 'lodash'
-import { computed, useSlots } from 'vue'
+import { computed } from 'vue'
+import type { slotsType } from '@/components/_types'
 
 defineOptions({
   name: 'ElButton',
@@ -22,8 +23,8 @@ const props = defineProps({
   },
 })
 const emit = defineEmits(['click'])
-const slots = useSlots()
-const slotNames = computed(() => Object.keys(slots))
+const slots = defineSlots<slotsType>()
+const slotNames = computed<string[]>(() => Object.keys(slots) as string[])
 async function handleClick(params: any) {
   emit('click', params)
 }
