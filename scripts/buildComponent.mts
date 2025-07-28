@@ -33,6 +33,10 @@ const preserveModules = false
  */
 const useObfuscator = false
 /**
+ * 是否启用依赖排除,不启用时，仅排除核心依赖（vue模块，node模块）
+ */
+const useExternal = true
+/**
  * 需要项目预设的依赖
  */
 const presetGlobals = {
@@ -800,7 +804,9 @@ async function bundleComponentModule({
           // Node.js核心模块，标记为外部依赖
           const isNodeBuiltin = id.startsWith('node:')
             || ['path', 'fs', 'os', 'util', 'events', 'stream', 'buffer', 'crypto', 'zlib', 'http', 'https', 'url', 'querystring', 'child_process'].includes(id)
-
+          if (!useExternal) {
+            return isVueDep || isNodeBuiltin
+          }
           // 检查@/components路径
           if (id.startsWith('@/components/')) {
             const pathParts = id.split('/')
@@ -819,7 +825,7 @@ async function bundleComponentModule({
           // 检查@moluoxixi/xxx路径（转换后的内部组件依赖）
           const isTransformedInternalComponent = id.startsWith(`@${LIB_NAMESPACE}/`)
 
-          return isExternalDep || isTransformedInternalComponent || isNodeBuiltin || isVueDep
+          return isExternalDep || isTransformedInternalComponent || isVueDep || isNodeBuiltin
         },
         output: {
           preserveModules,
