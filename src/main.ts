@@ -22,6 +22,9 @@ import { useSystemStore } from './stores/modules/system.ts'
 
 import '@/assets/styles/main.css'
 
+import '@/assets/styles/element/index.scss'
+import 'vxe-table/lib/style.css'
+
 import '@/assets/fonts/index.css'
 
 import 'moment/dist/locale/zh-cn' // 中文化
