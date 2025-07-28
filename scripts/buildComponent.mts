@@ -32,7 +32,16 @@ const preserveModules = false
  * 是否启用混淆
  */
 const useObfuscator = false
-
+/**
+ * 需要项目预设的依赖
+ */
+const presetGlobals = {
+  'vue': 'Vue',
+  'vxe-table': 'VXETable',
+  'element-plus': 'ElementPlus',
+  'vite': 'Vite',
+}
+const peerDepList = Object.keys(presetGlobals)
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 const rootDir = resolve(__dirname, '..')
@@ -810,14 +819,14 @@ async function bundleComponentModule({
           // 检查@moluoxixi/xxx路径（转换后的内部组件依赖）
           const isTransformedInternalComponent = id.startsWith(`@${LIB_NAMESPACE}/`)
 
-          return isExternalDep || isVueDep || isTransformedInternalComponent || isNodeBuiltin
+          return isExternalDep || isTransformedInternalComponent || isNodeBuiltin || isVueDep
         },
         output: {
           preserveModules,
           preserveModulesRoot: resolve(rootDir, `src/components/${comp}`),
           entryFileNames,
           chunkFileNames,
-          globals,
+          globals: Object.assign(globals, presetGlobals),
           ...(exportsType ? { exports: exportsType } : {}),
           manualChunks: undefined, // 禁用手动分块，避免文件拆分
         },
@@ -893,16 +902,11 @@ async function buildComponent(
 
     // 为每个外部依赖添加版本约束
     for (const [pkg, pkgVersion] of Object.entries(deps.external)) {
-      // vue作为peerDependency，不添加到dependencies中
-      if (pkg !== 'vue') {
-        componentDependencies[pkg] = pkgVersion
-      }
+      componentDependencies[pkg] = pkgVersion
     }
 
     // 构建 globals 配置
-    const globals: Record<string, string> = {
-      vue: 'Vue',
-    }
+    const globals: Record<string, string> = {}
     for (const compName of deps.internal) {
       // 排除当前组件的自引用
       if (compName !== comp) {
@@ -951,8 +955,6 @@ async function buildComponent(
     }
 
     // 生成package.json
-    // 优化依赖分类逻辑
-    const peerDepList = ['vue', 'vxe-table', 'element-plus', 'vite']
     const pkgJson: any = {
       name: `@${LIB_NAMESPACE}${(comp ? `/${comp}` : '/components').toLowerCase()}`,
       version: currentVersion,

@@ -44,6 +44,4 @@ function getCdnModules(modules: Array<string | CdnModule>): any {
     })
 }
 
-export const modules = getCdnModules([
-  'vue',
-])
+export const modules = getCdnModules([])
