@@ -123,6 +123,29 @@ export default function createViteConfig(Config: ViteConfigType) {
         enableInDevMode: viteEnv.VITE_USE_CDN_IS_DEV,
         prodUrl: `${viteEnv.VITE_CDN_BASE_URL}/{name}@{version}{path}`,
         modules,
+        generateScriptTag: (name, scriptUrl) => {
+          const esmArr = ['esm', '.mjs']
+          const isESM = esmArr.some(item => scriptUrl.includes(item))
+          if (isESM) {
+            return {
+              attrs: {
+                src: scriptUrl,
+                type: 'module',
+                crossorigin: 'anonymous',
+              },
+              injectTo: 'head',
+            }
+          }
+          else {
+            return {
+              attrs: {
+                src: scriptUrl,
+                crossorigin: 'anonymous',
+              },
+              injectTo: 'head',
+            }
+          }
+        },
         ...config.CDNImportOptions,
       }),
     ].filter(i => !!i)
