@@ -198,8 +198,8 @@ function createBaseConfig(comp: string, internalDeps: string[]): InlineConfig {
     css: {
       postcss: {
         plugins: [
-          autoprefixer(),
           tailwindcss(),
+          autoprefixer(),
         ],
       },
       preprocessorOptions: {

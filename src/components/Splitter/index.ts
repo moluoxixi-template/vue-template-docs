@@ -1,12 +1,10 @@
 import Splitter from './src/index.vue'
 import type { App } from 'vue'
-import Example from './src/Example.vue'
 
 export * from './src/types'
 
 // 导出组件
 export default Splitter
-export { Example }
 
 // 用于Vue插件形式注册
 export function install(app: App) {
