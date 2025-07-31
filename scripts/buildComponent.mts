@@ -121,6 +121,128 @@ async function getComponentNames() {
 }
 
 /**
+ * 创建基础Vite配置
+ * @param comp 组件名
+ * @param internalDeps 内部组件依赖列表
+ * @returns 基础配置对象
+ */
+function createBaseConfig(comp: string, internalDeps: string[]): InlineConfig {
+  return {
+    root: rootDir,
+    configFile: false,
+    publicDir: false,
+    logLevel: 'info',
+    esbuild: {
+      pure: ['console.log', 'console.info', 'console.debug'],
+    },
+    plugins: [
+      // 添加路径替换插件，将内部组件引用转换为外部包引用
+      createComponentReferencePlugin(internalDeps, comp),
+      pluginVue({
+        script: {
+          defineModel: true,
+          propsDestructure: true,
+        },
+      }),
+      vueJsx(),
+      // 自动引入
+      AutoImport({
+        imports: ['vue'],
+        resolvers: [ElementPlusResolver()],
+        dts: path.resolve(rootDir, './src/typings/auto-imports.d.ts'),
+      }),
+      // 与自定义element组件冲突
+      Components({
+        resolvers: [
+          ElementPlusResolver({
+            exclude: new RegExp(
+              ([]).map(item => `^${item}$`).join('|'),
+            ),
+          }),
+        ],
+        globs: [
+          'src/components/**/index.vue',
+          'src/components/**/index.ts',
+          '!src/components/**/base/**/*',
+          '!src/components/**/components/**/*',
+          '!src/components/**/src/**/*',
+          '!src/components/**/_utils/**/*',
+          '!src/components/**/_types/**/*',
+        ],
+        dts: path.resolve(rootDir, './src/typings/components.d.ts'),
+      }),
+      viteImagemin({
+        gifsicle: { optimizationLevel: 7, interlaced: false },
+        optipng: { optimizationLevel: 7 },
+        mozjpeg: { quality: 20 },
+        pngquant: { quality: [0.8, 0.9], speed: 4 },
+        svgo: {
+          plugins: [{ name: 'removeViewBox' }, { name: 'removeEmptyAttrs', active: false }],
+        },
+      }),
+      // 添加类型声明生成插件
+      dts({
+        root: rootDir,
+        entryRoot: `./src/components/${comp}`,
+        tsconfigPath: './tsconfig.components.json',
+        declarationOnly: false,
+      }),
+      cssInjectedByJsPlugin(),
+    ],
+    resolve: {
+      extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue'],
+      alias: {
+        '@': resolve(rootDir, './src'),
+      },
+    },
+    css: {
+      postcss: {
+        plugins: [
+          autoprefixer(),
+          tailwindcss(),
+        ],
+      },
+      preprocessorOptions: {
+        scss: {
+          // 使用legacy避免initAsyncCompiler错误
+          api: 'legacy',
+          additionalData(content: string, filename: string) {
+            if (filename.includes('element')) {
+              const addStr = `$namespace: el`
+              return `${addStr}\n${content}`
+            }
+            return content
+          },
+        },
+      },
+    },
+  }
+}
+
+//#region 版本管理
+/**
+ * 异步获取所有组件的版本号对象
+ * @returns 版本号对象 Record<string, string>
+ */
+async function getCurrentVersions(): Promise<Record<string, string>> {
+  try {
+    const versionPath = resolve(rootDir, 'version.json')
+    if (!fs.existsSync(versionPath)) {
+      // 如果不存在，创建默认版本文件
+      const defaultVersions: Record<string, string> = {}
+      await fsp.writeFile(versionPath, JSON.stringify(defaultVersions, null, 2), 'utf-8')
+      return defaultVersions
+    }
+    const content = await fsp.readFile(versionPath, 'utf-8')
+    return JSON.parse(content)
+  }
+  catch (error) {
+    console.warn(`获取版本号对象失败: ${(error as Error).message}`)
+    return {}
+  }
+}
+
+/**
  * 获取下一个版本号
  * @param currentVersion 当前版本号
  * @param type 版本类型：major, minor, patch
@@ -181,7 +303,9 @@ async function writeComponentVersions(versions: Record<string, string>): Promise
     return false
   }
 }
+//#endregion
 
+//#region 依赖分析与转换
 /**
  * 使用dependency-cruiser分析组件的完整依赖关系
  * 返回内部依赖和外部依赖
@@ -640,106 +764,9 @@ function createComponentReferencePlugin(internalDeps: string[], currentComponent
     },
   }
 }
+//#endregion
 
-/**
- * 创建基础Vite配置
- * @param comp 组件名
- * @param internalDeps 内部组件依赖列表
- * @returns 基础配置对象
- */
-function createBaseConfig(comp: string, internalDeps: string[]): InlineConfig {
-  return {
-    root: rootDir,
-    configFile: false,
-    publicDir: false,
-    logLevel: 'info',
-    esbuild: {
-      pure: ['console.log', 'console.info', 'console.debug'],
-    },
-    plugins: [
-      // 添加路径替换插件，将内部组件引用转换为外部包引用
-      createComponentReferencePlugin(internalDeps, comp),
-      pluginVue({
-        script: {
-          defineModel: true,
-          propsDestructure: true,
-        },
-      }),
-      vueJsx(),
-      // 自动引入
-      AutoImport({
-        imports: ['vue'],
-        resolvers: [ElementPlusResolver()],
-        dts: path.resolve(rootDir, './src/typings/auto-imports.d.ts'),
-      }),
-      // 与自定义element组件冲突
-      Components({
-        resolvers: [
-          ElementPlusResolver({
-            exclude: new RegExp(
-              ([]).map(item => `^${item}$`).join('|'),
-            ),
-          }),
-        ],
-        globs: [
-          'src/components/**/index.vue',
-          'src/components/**/index.ts',
-          '!src/components/**/base/**/*',
-          '!src/components/**/components/**/*',
-          '!src/components/**/src/**/*',
-          '!src/components/**/_utils/**/*',
-          '!src/components/**/_types/**/*',
-        ],
-        dts: path.resolve(rootDir, './src/typings/components.d.ts'),
-      }),
-      viteImagemin({
-        gifsicle: { optimizationLevel: 7, interlaced: false },
-        optipng: { optimizationLevel: 7 },
-        mozjpeg: { quality: 20 },
-        pngquant: { quality: [0.8, 0.9], speed: 4 },
-        svgo: {
-          plugins: [{ name: 'removeViewBox' }, { name: 'removeEmptyAttrs', active: false }],
-        },
-      }),
-      // 添加类型声明生成插件
-      dts({
-        root: rootDir,
-        entryRoot: `./src/components/${comp}`,
-        tsconfigPath: './tsconfig.components.json',
-        declarationOnly: false,
-      }),
-      cssInjectedByJsPlugin(),
-    ],
-    resolve: {
-      extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue'],
-      alias: {
-        '@': resolve(rootDir, './src'),
-      },
-    },
-    css: {
-      postcss: {
-        plugins: [
-          autoprefixer(),
-          tailwindcss(),
-        ],
-      },
-      preprocessorOptions: {
-        scss: {
-          // 使用legacy避免initAsyncCompiler错误
-          api: 'legacy',
-          additionalData(content: string, filename: string) {
-            if (filename.includes('element')) {
-              const addStr = `$namespace: el`
-              return `${addStr}\n${content}`
-            }
-            return content
-          },
-        },
-      },
-    },
-  }
-}
-
+//#region 组件打包
 /**
  * 通用模块打包函数
  * @param {object} options - 配置选项
@@ -841,25 +868,41 @@ async function bundleComponentModule({
 }
 
 /**
- * 异步获取所有组件的版本号对象
- * @returns 版本号对象 Record<string, string>
+ * 获取组件的入口文件、输出目录和依赖分析
+ * @param comp 组件名
+ * @returns 组件的配置信息
  */
-async function getCurrentVersions(): Promise<Record<string, string>> {
+async function getComponentConfig(comp: string) {
+  const componentName = `\\${comp}`
+
+  // 获取入口文件
+  let entry = null
+  if (fs.existsSync(resolve(rootDir, `src/components${componentName}/index.ts`))) {
+    entry = resolve(rootDir, `src/components${componentName}/index.ts`)
+  }
+  else if (fs.existsSync(resolve(rootDir, `src/components${componentName}/index.vue`))) {
+    entry = resolve(rootDir, `src/components${componentName}/index.vue`)
+  }
+  else {
+    throw new Error(`组件 ${comp} 没有找到入口文件`)
+  }
+
+  // 获取输出目录
+  const outputDir = resolve(rootDir, `${LIB_NAMESPACE}/${comp ? `/packages${componentName}` : ''}`)
+
+  // 分析组件依赖
+  let dependencies: { internal: string[], external: Record<string, string> } = {
+    internal: [],
+    external: {},
+  }
   try {
-    const versionPath = resolve(rootDir, 'version.json')
-    if (!fs.existsSync(versionPath)) {
-      // 如果不存在，创建默认版本文件
-      const defaultVersions: Record<string, string> = {}
-      await fsp.writeFile(versionPath, JSON.stringify(defaultVersions, null, 2), 'utf-8')
-      return defaultVersions
-    }
-    const content = await fsp.readFile(versionPath, 'utf-8')
-    return JSON.parse(content)
+    dependencies = await analyzeComponentDeps(comp)
   }
   catch (error) {
-    console.warn(`获取版本号对象失败: ${(error as Error).message}`)
-    return {}
+    console.warn(`分析组件 ${comp} 依赖失败: ${(error as Error).message}`)
   }
+
+  return { entry, outputDir, dependencies }
 }
 
 /**
@@ -891,9 +934,11 @@ async function buildComponent(
   const libOutputDir = resolve(outputDir, 'lib')
   try {
     // 清空目录
-    await fsp.rm(esOutputDir, { recursive: true, force: true }).catch(() => {})
+    await fsp.rm(esOutputDir, { recursive: true, force: true }).catch(() => {
+    })
     await fsp.mkdir(esOutputDir, { recursive: true })
-    await fsp.rm(libOutputDir, { recursive: true, force: true }).catch(() => {})
+    await fsp.rm(libOutputDir, { recursive: true, force: true }).catch(() => {
+    })
     await fsp.mkdir(libOutputDir, { recursive: true })
 
     // 初始化组件依赖为空对象，只添加分析出来的依赖
@@ -1076,41 +1121,6 @@ async function buildComponent(
 }
 
 /**
- * 获取组件的入口文件、输出目录和依赖分析
- * @param comp 组件名
- * @returns 组件的配置信息
- */
-async function getComponentConfig(comp: string) {
-  const componentName = `\\${comp}`
-
-  // 获取入口文件
-  let entry = null
-  if (fs.existsSync(resolve(rootDir, `src/components${componentName}/index.ts`))) {
-    entry = resolve(rootDir, `src/components${componentName}/index.ts`)
-  }
-  else if (fs.existsSync(resolve(rootDir, `src/components${componentName}/index.vue`))) {
-    entry = resolve(rootDir, `src/components${componentName}/index.vue`)
-  }
-  else {
-    throw new Error(`组件 ${comp} 没有找到入口文件`)
-  }
-
-  // 获取输出目录
-  const outputDir = resolve(rootDir, `${LIB_NAMESPACE}/${comp ? `/packages${componentName}` : ''}`)
-
-  // 分析组件依赖
-  let dependencies: { internal: string[], external: Record<string, string> } = { internal: [], external: {} }
-  try {
-    dependencies = await analyzeComponentDeps(comp)
-  }
-  catch (error) {
-    console.warn(`分析组件 ${comp} 依赖失败: ${(error as Error).message}`)
-  }
-
-  return { entry, outputDir, dependencies }
-}
-
-/**
  * 打包所有单个组件
  * @param shouldPublish 是否发布组件
  * @returns 是否全部成功
@@ -1178,3 +1188,4 @@ async function doBuild(mode = 'all', shouldPublish = false) {
     return false
   }
 }
+//#endregion

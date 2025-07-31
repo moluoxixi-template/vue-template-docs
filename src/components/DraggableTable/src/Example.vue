@@ -74,7 +74,7 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { ElMessage } from 'element-plus'
 import { onMounted, ref, useTemplateRef } from 'vue'
 import DraggableTable from './index.vue'
