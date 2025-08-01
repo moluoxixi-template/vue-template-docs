@@ -39,12 +39,18 @@ const useExternal = false
 /**
  * 需要项目预设的依赖
  */
-const presetGlobals = {
-  'vxe-table': 'VXETable',
-  'element-plus': 'ElementPlus',
-  'vite': 'Vite',
-}
+const presetGlobals = useExternal
+  ? {
+      'vxe-table': 'VXETable',
+      'element-plus': 'ElementPlus',
+      'vite': 'Vite',
+      'vue': 'Vue',
+    }
+  : {
+      vue: 'Vue',
+    }
 const peerDepList = Object.keys(presetGlobals)
+console.log('peerDepList', peerDepList)
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 const rootDir = resolve(__dirname, '..')
@@ -351,6 +357,8 @@ async function analyzeComponentDeps(comp: string) {
     // 处理分析结果
     const internalDeps = new Set()
     const externalDeps = new Map()
+    const newExternalDeps = new Map()
+    const peerDeps = new Map()
 
     // 读取项目package.json获取版本信息
     const projectPkg = JSON.parse(fs.readFileSync(resolve(rootDir, 'package.json'), 'utf-8'))
@@ -520,12 +528,27 @@ async function analyzeComponentDeps(comp: string) {
     for (const file of files) {
       await scanFileForDeps(file)
     }
+    for (const externalDep of externalDeps) {
+      const [dep, version] = externalDep
+      if (peerDepList.includes(dep)) {
+        peerDeps.set(dep, version)
+      }
+      else {
+        newExternalDeps.set(dep, version)
+      }
+    }
+    if (!useExternal) {
+      newExternalDeps.clear()
+    }
+    console.log('peerDeps', peerDeps, newExternalDeps)
 
     // 转换结果
-    const result: { internal: string[], external: Record<string, string> } = {
+    const result: { internal: string[], external: Record<string, string>, peerDependencies: Record<string, string> } = {
       internal: Array.from(internalDeps).sort() as string[],
-      external: Object.fromEntries(externalDeps),
+      external: Object.fromEntries(newExternalDeps),
+      peerDependencies: Object.fromEntries(peerDeps),
     }
+    console.log('result', result)
 
     // 输出结果
     console.log(`\n=== 组件 ${comp} 依赖分析结果 ===`)
@@ -547,6 +570,17 @@ async function analyzeComponentDeps(comp: string) {
     }
     else {
       console.log(`\n外部包依赖: 无`)
+    }
+
+    const peerDepCount = Object.keys(result.peerDependencies).length
+    if (peerDepCount > 0) {
+      console.log(`\nPeer 依赖 (${peerDepCount}个):`)
+      Object.entries(result.peerDependencies).forEach(([pkg, version]) => {
+        console.log(`  - ${pkg}@${version}`)
+      })
+    }
+    else {
+      console.log(`\nPeer 依赖: 无`)
     }
 
     console.log(`=== 分析完成 ===\n`)
@@ -774,7 +808,7 @@ function createComponentReferencePlugin(internalDeps: string[], currentComponent
  * @param {string} options.entry - 入口文件
  * @param {string} options.outDir - 输出目录
  * @param {'es'|'cjs'} options.format - 模块格式：'es' 或 'cjs'
- * @param {Record<string, string>} options.componentDependencies - 组件依赖
+ * @param {Record<string, string>} options.dependencies - 组件依赖
  * @param {Record<string, string>} options.globals - 全局变量配置
  * @param {any} options.baseConfig - 基础配置
  * @param {string} options.entryFileNames - 入口文件名格式
@@ -786,7 +820,7 @@ async function bundleComponentModule({
   entry,
   outDir,
   format,
-  componentDependencies,
+  dependencies,
   globals,
   baseConfig,
   entryFileNames,
@@ -797,7 +831,11 @@ async function bundleComponentModule({
   entry: string
   outDir: string
   format: 'es' | 'cjs'
-  componentDependencies: Record<string, string>
+  dependencies: {
+    internal: string[]
+    external: Record<string, string>
+    peerDependencies: Record<string, string>
+  }
   globals: Record<string, string>
   baseConfig: any
   entryFileNames: string
@@ -824,7 +862,7 @@ async function bundleComponentModule({
         ],
         external: (id: string) => {
           // 检查外部依赖
-          const isExternalDep = Object.keys(componentDependencies).some(dep => id === dep || id.startsWith(`${dep}/`))
+          const isExternalDep = Object.keys(dependencies.external)
           // 检查Vue相关依赖
           const isVueDep = ['vue', '@vue/runtime-core', '@vue/runtime-dom'].includes(id)
           // Node.js核心模块，标记为外部依赖
@@ -919,7 +957,7 @@ async function buildComponent(
   comp: string,
   entry: string,
   outputDir: string,
-  dependencies: { internal: string[], external: Record<string, string> },
+  dependencies: { internal: string[], external: Record<string, string>, peerDependencies: Record<string, string> },
   shouldPublish = false,
 ) {
   const buildName = comp || '组件库'
@@ -941,19 +979,12 @@ async function buildComponent(
     })
     await fsp.mkdir(libOutputDir, { recursive: true })
 
-    // 初始化组件依赖为空对象，只添加分析出来的依赖
-    const componentDependencies: Record<string, string> = {}
-
     // 使用传入的依赖分析结果
     const deps = dependencies
     console.log(`使用传入的依赖分析结果:`)
     console.log(`- 内部组件: ${deps.internal.join(', ') || '无'}`)
     console.log(`- 外部依赖: ${Object.keys(deps.external).join(', ') || '无'}`)
-
-    // 为每个外部依赖添加版本约束
-    for (const [pkg, pkgVersion] of Object.entries(deps.external)) {
-      componentDependencies[pkg] = pkgVersion
-    }
+    console.log(`- 预设依赖: ${Object.keys(deps.peerDependencies).join(', ') || '无'}`)
 
     // 构建 globals 配置
     const globals: Record<string, string> = {
@@ -976,7 +1007,7 @@ async function buildComponent(
       entry,
       outDir: esOutputDir,
       format: 'es',
-      componentDependencies,
+      dependencies,
       globals,
       baseConfig,
       entryFileNames: `[name].mjs`,
@@ -989,7 +1020,7 @@ async function buildComponent(
       entry,
       outDir: libOutputDir,
       format: 'cjs',
-      componentDependencies,
+      dependencies,
       globals,
       baseConfig,
       entryFileNames: `[name].cjs`,
@@ -1051,30 +1082,12 @@ async function buildComponent(
     }
 
     // 分类依赖到 peerDependencies 和 dependencies
-    for (const [pkg, pkgVersion] of Object.entries(componentDependencies)) {
-      if (peerDepList.includes(pkg)) {
-        pkgJson.peerDependencies[pkg] = pkgVersion
-      }
-      else {
-        pkgJson.dependencies[pkg] = pkgVersion
-      }
+    pkgJson.peerDependencies = {
+      ...deps.preerDependencies,
     }
-
-    // 添加内部组件依赖到 dependencies
-    for (const internalComp of deps.internal) {
-      // 排除当前组件的自引用
-      if (internalComp !== comp) {
-        const internalPkgName = `@${LIB_NAMESPACE}/${internalComp.toLowerCase()}`
-        // 使用最新版本，允许自动更新到最新版本
-        const internalVersion = '*'
-        pkgJson.dependencies[internalPkgName] = internalVersion
-        console.log(`✓ 添加内部组件依赖到 dependencies: ${internalPkgName}@${internalVersion} (最新版本)`)
-      }
-    }
-
-    // 保证vue一定有peerDependencies
-    if (!pkgJson.peerDependencies.vue) {
-      pkgJson.peerDependencies.vue = '^3.2.0'
+    pkgJson.dependencies = {
+      ...deps.internal,
+      ...deps.external,
     }
     // 检查是否有样式文件
     const stylePath = resolve(esOutputDir, 'style/index.css')

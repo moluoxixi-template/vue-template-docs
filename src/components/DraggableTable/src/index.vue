@@ -79,7 +79,7 @@ import {
   watch,
 } from 'vue'
 import { VxeGrid } from 'vxe-table'
-
+import 'vxe-table/lib/style.css'
 import { dispatchEvents, getClass, getStringObj, getType } from '@/components/_utils'
 import {
   getCustomType,
