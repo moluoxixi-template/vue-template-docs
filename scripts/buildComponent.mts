@@ -36,6 +36,7 @@ const useObfuscator = false
  * 是否启用依赖排除,不启用时，仅排除核心依赖（vue模块，node模块）
  */
 const useExternal = false
+const requireExternalComponents = ['ViteConfig', 'EslintConfig']
 /**
  * 需要项目预设的依赖
  */
@@ -537,7 +538,8 @@ async function analyzeComponentDeps(comp: string) {
         newExternalDeps.set(dep, version)
       }
     }
-    if (!useExternal) {
+    const isExternal = useExternal || requireExternalComponents.includes(comp)
+    if (!isExternal) {
       newExternalDeps.clear()
     }
     console.log('peerDeps', peerDeps, newExternalDeps)
@@ -885,7 +887,8 @@ async function bundleComponentModule({
             const componentMatch = id.match(/@\/components\/([A-Z][a-zA-Z0-9]+)/)
             return !(componentMatch && componentMatch[1] === currentComponent)
           }
-          if (!useExternal) {
+          const isExternal = useExternal || requireExternalComponents.includes(comp)
+          if (!isExternal) {
             return isVueDep || isNodeBuiltin
           }
           // 检查@moluoxixi/xxx路径（转换后的内部组件依赖）
