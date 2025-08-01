@@ -35,7 +35,7 @@ const useObfuscator = false
 /**
  * 是否启用依赖排除,不启用时，仅排除核心依赖（vue模块，node模块）
  */
-const useExternal = true
+const useExternal = false
 /**
  * 需要项目预设的依赖
  */
