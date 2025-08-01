@@ -261,6 +261,7 @@ const emit = defineEmits([
   'cellDblClick',
   'resizableChange',
   'headerContextMenu',
+  'enter',
 ])
 
 // 获取插槽
@@ -457,6 +458,7 @@ function handleKeydown(e: KeyboardEvent) {
       popoverVisible.value = false
       nextTick(() => {
         emit('select', selectedRow)
+        emit('enter', selectedRow)
       })
     }
   }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PopoverTableSelect v-model="popoverModel" :virtual-ref="computedVirtualRef" v-bind="$attrs">
+    <PopoverTableSelect v-model="popoverModel" :virtual-ref="computedVirtualRef" v-bind="$attrs" @enter="handleEnter">
       <template v-for="name in slotNames" #[name]="slotParams" :key="name">
         <slot :name="name" v-bind="slotParams" />
       </template>
@@ -72,8 +72,12 @@ const props = defineProps({
     default: null,
     required: false,
   },
+  successiveShowType: {
+    type: String as PropType<'enter' | 'select' | 'input'>,
+    default: '',
+  },
 })
-const emits = defineEmits(['focus', 'input', 'blur'])
+const emits = defineEmits(['focus', 'input', 'blur', 'enter'])
 // 获取插槽
 const slots = defineSlots<slotsType>()
 const slotNames = computed<string[]>(() => Object.keys(slots) as string[])
@@ -117,7 +121,17 @@ function handleBlur() {
   cacheInputValue.value = ''
 }
 
+function handleEnter(val: any) {
+  emits('enter', val)
+  if (props.successiveShowType === 'enter') {
+    popoverModel.value = true
+  }
+}
+
 function handleInput(val: string) {
+  if (props.successiveShowType === 'input') {
+    popoverModel.value = true
+  }
   emits('input', val)
 }
 
