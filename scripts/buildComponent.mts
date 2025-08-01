@@ -35,7 +35,7 @@ const useObfuscator = false
 /**
  * 是否启用依赖排除,不启用时，仅排除核心依赖（vue模块，node模块）
  */
-const useExternal = false
+const useExternal = true
 /**
  * 需要项目预设的依赖
  */
@@ -759,6 +759,7 @@ function createComponentReferencePlugin(internalDeps: string[], currentComponent
       const originalExternal = opts.external || (() => false)
 
       opts.external = (id: string, parentId?: string, isResolved?: boolean) => {
+        console.log('id', id)
         // 检查是否是@/components路径引用
         if (id.startsWith('@/components/')) {
           const pathParts = id.split('/')
@@ -861,16 +862,15 @@ async function bundleComponentModule({
           useObfuscator && obfuscator(),
         ],
         external: (id: string) => {
+          console.log('did', id)
           // 检查外部依赖
-          const isExternalDep = Object.keys(dependencies.external)
+          const isExternalDep = Object.keys(dependencies.external).includes(id)
           // 检查Vue相关依赖
           const isVueDep = ['vue', '@vue/runtime-core', '@vue/runtime-dom'].includes(id)
           // Node.js核心模块，标记为外部依赖
           const isNodeBuiltin = id.startsWith('node:')
             || ['path', 'fs', 'os', 'util', 'events', 'stream', 'buffer', 'crypto', 'zlib', 'http', 'https', 'url', 'querystring', 'child_process'].includes(id)
-          if (!useExternal) {
-            return isVueDep || isNodeBuiltin
-          }
+
           // 检查@/components路径
           if (id.startsWith('@/components/')) {
             const pathParts = id.split('/')
@@ -885,7 +885,9 @@ async function bundleComponentModule({
             const componentMatch = id.match(/@\/components\/([A-Z][a-zA-Z0-9]+)/)
             return !(componentMatch && componentMatch[1] === currentComponent)
           }
-
+          if (!useExternal) {
+            return isVueDep || isNodeBuiltin
+          }
           // 检查@moluoxixi/xxx路径（转换后的内部组件依赖）
           const isTransformedInternalComponent = id.startsWith(`@${LIB_NAMESPACE}/`)
 
@@ -951,6 +953,7 @@ async function getComponentConfig(comp: string) {
  * @param dependencies 依赖分析结果
  * @param dependencies.internal
  * @param dependencies.external
+ * @param dependencies.peerDependencies
  * @param shouldPublish 是否发布组件
  */
 async function buildComponent(
