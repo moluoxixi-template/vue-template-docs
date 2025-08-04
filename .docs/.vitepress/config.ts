@@ -1,178 +1,181 @@
-import { getComponents } from './utils/serverUtils.ts'
-import { buildBlogRSS } from './utils/rss.ts'
-
-// https://github.com/mingyuLi97/blog
-// https://vitepress.dev/reference/site-config
-import { getSidebar } from './utils/index.js'
-
-import { transformerTwoslash } from '@shikijs/vitepress-twoslash'
-import mathjax3 from 'markdown-it-mathjax3'
-
-import type { UserConfig } from 'vitepress'
-import { demoblockPlugin, demoblockVitePlugin } from 'vitepress-theme-demoblock'
-// vite vue插件
-import vueJsx from '@vitejs/plugin-vue-jsx'
-import { visualizer } from 'rollup-plugin-visualizer'
-
-// 其余vite插件
+import { defineConfig } from 'vitepress'
+import { mdPlugin } from './plugins/mdPlugin'
+import pkg from '../../package.json'
+// tailwind
 import autoprefixer from 'autoprefixer'
 import tailwindcss from '@tailwindcss/postcss'
+import type { Plugin } from 'postcss'
 
-import path from 'node:path'
-
-import { githubConfig } from './constants/index.js'
-
-async function config(): Promise<Awaited<UserConfig>> {
-  const componentPath = '/components'
-  const posts = await getComponents(componentPath)
-  const pageSize = 5
-  const postLength = posts.length
-
-  const components = await getSidebar('components')
-  const navs = await getSidebar('navs')
-
-  const { repo, owner } = githubConfig
-  console.log('repo', repo, owner)
-  return {
-    title: 'vueComponent',
-    description: '一个vue组件库',
-    base: `/${repo}/vitepress/`,
-    lang: 'zh-CN',
-    outDir: '../docs/vitepress',
-    vite: {
-      resolve: {
-        alias: {
-          '@': path.resolve(__dirname, '../../src'),
-        },
+// 生产环境判断
+const content = [
+  'vue 版本的 t-ui-plus',
+  'vue t-ui-plus',
+  't-ui-plus vue',
+  'TuiPlus',
+  't-ui-plus',
+  'element-plus',
+  'Page level components',
+  'component library',
+  'ui framework',
+  'ui',
+  '基础组件',
+  '二次封装',
+  'wocwin',
+  'vue',
+].toString()
+export default defineConfig({
+  title: 'TuiPlus基础组件文档',
+  description: content,
+  lang: 'cn-ZH',
+  base: '/t-ui-plus/',
+  head: [
+    ['meta', { name: 'author', content: 'wocwin' }],
+    [
+      'meta',
+      {
+        name: 'viewport',
+        content:
+          'width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no',
       },
-      plugins: [
-        demoblockVitePlugin() as any,
-        vueJsx(),
-        visualizer({
-          open: true,
-        }),
-      ],
-      // 添加 SSR 配置，解决 CSS 文件扩展名问题
-      ssr: {
-        noExternal: ['element-plus'],
+    ],
+    [
+      'meta',
+      {
+        name: 'description',
+        content,
       },
-      css: {
-        postcss: {
-          plugins: [
-            tailwindcss(),
-            // 自动添加厂商前缀
-            autoprefixer() as any,
+    ],
+    ['meta', { name: 'keywords', content }],
+    ['link', { rel: 'icon', href: '/logo.jpg' }],
+  ],
+  lastUpdated: true,
+  themeConfig: {
+    logo: '/favicon.ico',
+    siteTitle: 'TuiPlus基础组件文档',
+    outline: 3,
+    search: {
+      provider: 'local',
+    },
+    darkModeSwitchLabel: '主题',
+    sidebarMenuLabel: '菜单',
+    returnToTopLabel: '返回顶部',
+    outlineTitle: '本页导航',
+    lastUpdatedText: '上次更新时间',
+    docFooter: {
+      prev: '上一页',
+      next: '下一页',
+    },
+    socialLinks: [{ icon: 'github', link: 'https://github.com/wocwin/t-ui-plus' }],
+    nav: [
+      {
+        text: '安装指南',
+        link: '/guide/',
+      },
+      { text: '基础组件', link: '/components/TInput/base.md' },
+      {
+        text: 'GitHub地址',
+        link: 'https://github.com/wocwin/t-ui-plus',
+      },
+      {
+        text: 'Gitee码云地址',
+        link: 'https://gitee.com/wocwin/t-ui-plus',
+      },
+      {
+        text: `v${pkg.version}`,
+        link: 'https://github.com/wocwin/t-ui-plus/releases',
+      },
+      {
+        text: '演练场',
+        link: 'https://wocwin.github.io/wocwin-playground/',
+      },
+    ],
+    sidebar: {
+      '/guide/': [
+        {
+          text: '安装指南',
+          items: [
+            {
+              text: '简介',
+              link: '/guide/index',
+            },
+            {
+              text: '安装',
+              link: '/guide/installation',
+            },
+            {
+              text: '快速开始',
+              link: '/guide/quickstart',
+            },
+            {
+              text: 'Resolver按需引入',
+              link: '/guide/resolver',
+            },
           ],
         },
-        preprocessorOptions: {
-          scss: { api: 'modern-compiler' },
+      ],
+      '/components': [
+        {
+          text: '常用组件',
+          items: [
+            {
+              text: '输入框组件<el-tag type=\'danger\'>v1.4.12</el-tag> ',
+              link: '/components/TInput/base.md',
+            },
+            { text: '下拉选择组件', link: '/components/TSelect/base.md' },
+            { text: '详情组件', link: '/components/TDetail/base.md' },
+            { text: 'Button组件', link: '/components/TButton/base.md' },
+            { text: 'Radio组件', link: '/components/TRadio/base.md' },
+            { text: '多选框组组件', link: '/components/TCheckbox/base.md' },
+            { text: '日期组件', link: '/components/TDatePicker/base.md' },
+            { text: 'Tabs组件', link: '/components/TTabs/base.md' },
+            { text: '步骤组件', link: '/components/TStepWizard/base.md' },
+            {
+              text: '图标选择组件<el-tag type=\'danger\'>v1.4.12</el-tag> ',
+              link: '/components/TSelectIcon/base.md',
+            },
+          ],
         },
+        {
+          text: '复杂组件',
+          items: [
+            {
+              text: 'TAdaptivePage组件',
+              link: '/components/TAdaptivePage/base.md',
+            },
+            { text: 'Chart图表组件', link: '/components/TChart/base.md' },
+            {
+              text: '下拉选择表格组件',
+              link: '/components/TSelectTable/base.md',
+            },
+            {
+              text: 'Virtualized TSelectTable<el-tag type=\'danger\'>v1.4.13</el-tag>',
+              link: '/components/multipleVirtual/base.md',
+            },
+            {
+              text: '条件查询组件',
+              link: '/components/TQueryCondition/base.md',
+            },
+            { text: '表单组件', link: '/components/TForm/base.md' },
+            { text: '模块表单组件', link: '/components/TModuleForm/base.md' },
+            { text: 'table组件', link: '/components/TTable/base.md' },
+            {
+              text: 'Virtualized TTable<el-tag type=\'danger\'>v1.4.13</el-tag>',
+              link: '/components/TTableVirtual/base.md',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  markdown: {
+    lineNumbers: true,
+    config: (md: any) => mdPlugin(md),
+  },
+  vite: {
+    css: {
+      postcss: {
+        plugins: [tailwindcss() as Plugin, autoprefixer() as Plugin],
       },
     },
-    head: [
-      [
-        'link',
-        {
-          rel: 'icon',
-          type: 'image/svg',
-          href: `/${repo}/vitepress/horse.svg`,
-        },
-      ],
-      [
-        'meta',
-        {
-          name: 'author',
-          content: 'moluoxixi',
-        },
-      ],
-      [
-        'meta',
-        {
-          property: 'og:title',
-          content: 'Home',
-        },
-      ],
-      [
-        'meta',
-        {
-          property: 'og:description',
-          content: 'Home of moluoxixi',
-        },
-      ],
-    ],
-    lastUpdated: false,
-    markdown: {
-      theme: {
-        light: 'vitesse-light',
-        dark: 'vitesse-dark',
-      },
-      codeTransformers: [transformerTwoslash() as any],
-      config: (md: any) => {
-        md.use(mathjax3)
-        md.use(demoblockPlugin, {
-          customClass: 'demoblock-custom',
-        })
-      },
-    },
-    themeConfig: {
-      // https://vitepress.dev/reference/default-theme-config
-      avator: `/${repo}/vitepress/avator.png`,
-      // 标题
-      siteTitle: 'vueComponent',
-      // logo
-      logo: `https://vuejs.org/images/logo.png`,
-      logoLink: 'https://vuejs.org/',
-      aside: false,
-      // blogs page show firewokrs animation
-      showFireworksAnimation: false,
-
-      docsDir: '/.docs',
-      posts,
-      pageSize,
-      postLength,
-
-      buildEnd: buildBlogRSS,
-
-      // 导航栏
-      nav: [
-        {
-          text: '🏡Blogs',
-          link: '/',
-        },
-        {
-          text: 'storybook组件库',
-          link: 'https://componentproject.github.io/vue-component/storybook/',
-        },
-        ...navs,
-      ],
-
-      // 侧边栏,配置基本同导航栏
-      sidebar: {
-        '/components/': components,
-      },
-      socialLinks: [
-        {
-          icon: 'github',
-          link: `https://${owner}.github.io/${repo}/storybook`,
-        },
-      ],
-      // 搜索配置
-      search: {
-        // local or algolia
-        // provider: 'local'
-        //#region algolia
-        // algolia有两种方式,使用Crawler爬虫,或者github的DocSearch Scraper Action
-        // 参考https://juejin.cn/post/7157340749065895944
-        provider: 'algolia',
-        options: {
-          appId: 'DDD3D6CGWQ',
-          apiKey: '3b7df1c9bcf3d1c31fa74e9707936af5',
-          indexName: 'vueTemplateDoc',
-        },
-        //#endregion
-      },
-    },
-  }
-}
-
-export default config()
+  },
+})

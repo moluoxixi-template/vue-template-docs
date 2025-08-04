@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitAny": false,
+    "skipLibCheck": true,
+    "lib": [
+      "DOM"
+    ],
+    "paths": {},
+    "jsx": "preserve",
+    "types": [
+      "element-plus/global",
+      "vite/client",
+      "../typings/index.d.ts",
+      "../global.d.ts",
+    ]
+  },
+  "include": [
+    "**/*",
+    ".vitepress/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

@@ -1,38 +1,43 @@
-import Theme from 'vitepress/theme'
-import Archives from './components/Archives.vue'
-import Tags from './components/Tags.vue'
-import Layout from './components/layout/index.vue'
-import TwoslashFloatingVue from '@shikijs/vitepress-twoslash/client'
-import '@shikijs/vitepress-twoslash/style.css'
-import type { EnhanceAppContext } from 'vitepress'
-
-// import "./custom.css";
-import './assets/main.css'
-
-// 导入 Element Plus 样式
-import ElemntPlus from 'element-plus'
+import DefaultTheme from 'vitepress/theme'
+import type { App } from 'vue'
+import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+import 'element-plus/theme-chalk/dark/css-vars.css'
+import locale from 'element-plus/es/locale/lang/zh-cn'
+// 图标并进行全局注册
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import * as echarts from 'echarts'
+import 'highlight.js/lib/common'
+import hljsVuePlugin from '@highlightjs/vue-plugin/dist/highlightjs-vue.esm.min.js' // 引入echarts
 
-import 'vitepress-theme-demoblock/dist/theme/styles/index.css'
-import Demo from 'vitepress-theme-demoblock/dist/client/components/Demo.vue'
-import DemoBlock from 'vitepress-theme-demoblock/dist/client/components/DemoBlock.vue'
+import TVHtml from '../components/TVHtml.vue'
+import TIcon from '../components/TIcon.vue'
+import TTip from '../components/TTip.vue'
+import DocsCodeDemo from './components/docs-code-demo.vue'
+import MyLayout from './components/layout.vue'
 
-import Components from './components'
+import directive from './directives'
+import './styles/index.scss'
 
 export default {
-  extends: Theme,
-  Layout,
-  enhanceApp({ app }: EnhanceAppContext) {
-    app.use(ElemntPlus)
-
-    app.component('Archives', Archives)
-    app.component('Tags', Tags)
-    app.use(TwoslashFloatingVue as any)
-
-    app.component('Demo', Demo)
-    app.component('DemoBlock', DemoBlock)
-    Object.entries(Components).forEach(([name, component]) => {
-      app.component(name, component)
+  extends: DefaultTheme,
+  Layout: MyLayout,
+  enhanceApp({ app }: { app: App }) {
+    app.config.globalProperties.$echarts = echarts // 全局使用
+    // 注册ElementPlus
+    app.use(ElementPlus, {
+      locale, // 语言设置
     })
+    // 注册所有图标
+    for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+      app.component(key, component)
+    }
+
+    app.component('highlightjs', hljsVuePlugin.component) // 注册代码高亮组件
+    app.component('DocsCodeDemo', DocsCodeDemo)
+    app.component('TVHtml', TVHtml)
+    app.component('TIcon', TIcon)
+    app.component('TTip', TTip)
+    directive(app)
   },
 }
