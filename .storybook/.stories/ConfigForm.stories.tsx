@@ -1,8 +1,8 @@
 // noinspection JSUnusedGlobalSymbols
 
-import ConfigForm from '@/components/ConfigForm/index.ts'
+import ConfigForm from '@moluoxixi/components/ConfigForm/index.ts'
 import type { Meta, StoryFn } from '@storybook/vue3'
-// import type { ConfigFormProps } from '@/components/ConfigForm/types'
+// import type { ConfigFormProps } from '@moluoxixi/components/ConfigForm/types'
 
 /**
  * 基于element-plus的配置化表单,目前只支持el-row布局,未来准备支持flex,grid布局,分别用 layout flex grid区分

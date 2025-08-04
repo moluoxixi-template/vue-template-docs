@@ -1,4 +1,4 @@
-import createViteConfig, { wrapperEnv } from './src/components/ViteConfig/index.ts'
+import createViteConfig, { wrapperEnv } from './packages/components/ViteConfig'
 import process from 'node:process'
 
 // sentry
@@ -39,9 +39,9 @@ export default createViteConfig(({ mode }) => {
         views: ['/src/views/**/index.vue', '!/src/views/**/components/*'],
         examples: '/src/examples/**/index.vue',
         componentExamples: {
-          glob: ['/src/components/**/Example.vue', '!/src/components/**/components/*'],
+          glob: ['/packages/components/**/Example.vue', '!/packages/components/**/components/*'],
           baseRoute: {
-            path: '/components',
+            path: '/packages/components',
             name: '组件示例',
           },
         },

@@ -4,7 +4,7 @@ export default antfu(
   {
     formatters: true,
     ignores: [
-      'src/components/ConfigForm/**',
+      'packages/components/ConfigForm/**',
       '.husky/**',
       '**/*.md',
     ],

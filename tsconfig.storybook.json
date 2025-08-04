@@ -9,11 +9,19 @@
       "DOM.Iterable"
     ],
     "skipLibCheck": true,
-    //Path Alias
     "baseUrl": ".",
     "paths": {
       "@/*": [
-        "./src/*"
+        "src/*"
+      ],
+      "~/*": [
+        "src/*"
+      ],
+      "@moluoxixi/components": [
+        "packages/components"
+      ],
+      "@moluoxixi/components/*": [
+        "packages/components/*"
       ]
     },
     /* Bundler mode */

@@ -17,7 +17,9 @@
     >
       <el-container class="w-full h-full">
         <el-header
-          v-if="!qiankunWindow.__POWERED_BY_QIANKUN__" class="headerbox" style="padding: 0"
+          v-if="!qiankunWindow.__POWERED_BY_QIANKUN__"
+          class="headerbox"
+          style="padding: 0"
           height="30"
         >
           <div class="w-full h-full bg-primary flex justify-center">
@@ -50,7 +52,7 @@ import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import { qiankunWindow } from 'vite-plugin-qiankun/dist/helper'
 import { computed, reactive } from 'vue'
 import { RouterView, useRouter } from 'vue-router'
-import subMenu from '@/components/subMenu.vue'
+import subMenu from '@moluoxixi/components/subMenu.vue'
 import { useSystemStore } from '@/stores/modules/system.ts'
 
 const router = useRouter()

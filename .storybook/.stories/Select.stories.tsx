@@ -1,7 +1,7 @@
 // noinspection JSUnusedGlobalSymbols
 
 import type { Meta, StoryFn, StoryObj } from '@storybook/vue3'
-import Select from '@/components/Select/index.ts'
+import Select from '@moluoxixi/components/Select/index.ts'
 import { ref } from 'vue'
 
 // 定义元数据

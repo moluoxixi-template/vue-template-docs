@@ -9,18 +9,24 @@
     "baseUrl": ".",
     "module": "ESNext",
     "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "types": [
+      "vite/client"
+    ],
     "paths": {
       "@/*": [
         "src/*"
       ],
       "~/*": [
         "src/*"
+      ],
+      "@moluoxixi/components": [
+        "packages/components"
+      ],
+      "@moluoxixi/components/*": [
+        "packages/components/*"
       ]
     },
-    "resolveJsonModule": true,
-    "types": [
-      "vite/client"
-    ],
     "allowJs": true,
     "strict": true,
     "strictNullChecks": true,
@@ -49,5 +55,5 @@
     ".storybook/**/*.tsx",
     ".docs/.vitepress/config.ts",
     "src/components/ViteConfig/**/*"
-  ],
+  ]
 }

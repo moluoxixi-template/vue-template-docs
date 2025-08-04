@@ -6,6 +6,20 @@
       "ESNext"
     ],
     "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "~/*": [
+        "src/*"
+      ],
+      "@moluoxixi/components": [
+        "packages/components"
+      ],
+      "@moluoxixi/components/*": [
+        "packages/components/*"
+      ]
+    },
     "module": "ESNext",
     "moduleResolution": "nodenext",
     "resolveJsonModule": true,

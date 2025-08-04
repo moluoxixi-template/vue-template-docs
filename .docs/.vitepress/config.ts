@@ -117,52 +117,12 @@ export default defineConfig({
         {
           text: '常用组件',
           items: [
-            {
-              text: '输入框组件<el-tag type=\'danger\'>v1.4.12</el-tag> ',
-              link: '/components/TInput/base.md',
-            },
-            { text: '下拉选择组件', link: '/components/TSelect/base.md' },
-            { text: '详情组件', link: '/components/TDetail/base.md' },
-            { text: 'Button组件', link: '/components/TButton/base.md' },
-            { text: 'Radio组件', link: '/components/TRadio/base.md' },
-            { text: '多选框组组件', link: '/components/TCheckbox/base.md' },
-            { text: '日期组件', link: '/components/TDatePicker/base.md' },
-            { text: 'Tabs组件', link: '/components/TTabs/base.md' },
-            { text: '步骤组件', link: '/components/TStepWizard/base.md' },
-            {
-              text: '图标选择组件<el-tag type=\'danger\'>v1.4.12</el-tag> ',
-              link: '/components/TSelectIcon/base.md',
-            },
+            { text: '日期范围选择器', link: '/guide/DateRangePicker' },
           ],
         },
         {
           text: '复杂组件',
-          items: [
-            {
-              text: 'TAdaptivePage组件',
-              link: '/components/TAdaptivePage/base.md',
-            },
-            { text: 'Chart图表组件', link: '/components/TChart/base.md' },
-            {
-              text: '下拉选择表格组件',
-              link: '/components/TSelectTable/base.md',
-            },
-            {
-              text: 'Virtualized TSelectTable<el-tag type=\'danger\'>v1.4.13</el-tag>',
-              link: '/components/multipleVirtual/base.md',
-            },
-            {
-              text: '条件查询组件',
-              link: '/components/TQueryCondition/base.md',
-            },
-            { text: '表单组件', link: '/components/TForm/base.md' },
-            { text: '模块表单组件', link: '/components/TModuleForm/base.md' },
-            { text: 'table组件', link: '/components/TTable/base.md' },
-            {
-              text: 'Virtualized TTable<el-tag type=\'danger\'>v1.4.13</el-tag>',
-              link: '/components/TTableVirtual/base.md',
-            },
-          ],
+          items: [],
         },
       ],
     },

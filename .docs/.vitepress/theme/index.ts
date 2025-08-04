@@ -10,6 +10,9 @@ import * as echarts from 'echarts'
 import 'highlight.js/lib/common'
 import hljsVuePlugin from '@highlightjs/vue-plugin/dist/highlightjs-vue.esm.min.js' // 引入echarts
 
+// 引入vue-component组件库
+import VueComponent from '@moluoxixi/components'
+
 import TVHtml from '../components/TVHtml.vue'
 import TIcon from '../components/TIcon.vue'
 import TTip from '../components/TTip.vue'
@@ -28,6 +31,8 @@ export default {
     app.use(ElementPlus, {
       locale, // 语言设置
     })
+    // 注册vue-component组件库
+    app.use(VueComponent)
     // 注册所有图标
     for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
       app.component(key, component)

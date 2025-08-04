@@ -5,9 +5,9 @@ export default {
     'stylelint-config-standard-less',
     'stylelint-config-standard-vue',
   ],
-  ignoreFiles: ['src/components/ConfigForm/**'],
+  ignoreFiles: ['packages/components/ConfigForm/**'],
   // 明确要检查的文件扩展名（会覆盖其他配置）
-  files: ['src/components/**/*.{css,scss,less,vue}'],
+  files: ['packages/components/**/*.{css,scss,less,vue}', 'src/**/*.{css,scss,less,vue}'],
   // 自定义的规则，覆盖默认的规则
   rules: {
     // 禁用 是否应该满足小驼峰 规则
@@ -19,6 +19,7 @@ export default {
     // 禁用 scss 的 扩展检测
     'scss/load-partial-extension': null,
     'no-descending-specificity': null,
+    'no-invalid-position-declaration': null,
     'scss/dollar-variable-pattern': null,
     // 使 deep 可用
     'selector-pseudo-class-no-unknown': [
