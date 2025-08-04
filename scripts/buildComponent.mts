@@ -7,7 +7,6 @@ import { build } from 'vite'
 import type { InlineConfig } from 'vite'
 import pluginVue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
-// import dts from 'unplugin-dts/vite'
 import dts from 'vite-plugin-dts'
 import autoprefixer from 'autoprefixer'
 import tailwindcss from '@tailwindcss/postcss'
@@ -24,6 +23,16 @@ import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 
 // === 组件库命名空间配置 ===
 const LIB_NAMESPACE = 'moluoxixi'
+// const entryBaseUrl = '/src/components'
+// const aliasComponentPath = 'src/components'
+/**
+ * 组件的入口文件路径
+ */
+const entryBaseUrl = '/packages/components'
+/**
+ * 别名或者外部包的路径
+ */
+const aliasComponentPath = '@moluoxixi/components'
 /**
  * 是否严格按照目录分组
  */
@@ -119,10 +128,10 @@ main().then((exitCode) => {
 
 // 获取组件列表（只分目录的组件）
 async function getComponentNames() {
-  const componentDirs = await glob(['src/components/*'], {
+  const componentDirs = await glob([`./${entryBaseUrl}/*`], {
     cwd: rootDir,
     onlyDirectories: true,
-    ignore: ['src/components/_*'],
+    ignore: [`${entryBaseUrl}/_*`],
   })
   return componentDirs.map(dir => dir.split('/').pop())
 }
@@ -168,13 +177,13 @@ function createBaseConfig(comp: string, internalDeps: string[]): InlineConfig {
           }),
         ],
         globs: [
-          'src/components/**/index.vue',
-          'src/components/**/index.ts',
-          '!src/components/**/base/**/*',
-          '!src/components/**/components/**/*',
-          '!src/components/**/src/**/*',
-          '!src/components/**/_utils/**/*',
-          '!src/components/**/_types/**/*',
+          `${entryBaseUrl}/**/index.vue`,
+          `${entryBaseUrl}/**/index.ts`,
+          `!${entryBaseUrl}/**/base/**/*`,
+          `!${entryBaseUrl}/**/components/**/*`,
+          `!${entryBaseUrl}/**/src/**/*`,
+          `!${entryBaseUrl}/**/_utils/**/*`,
+          `!${entryBaseUrl}/**/_types/**/*`,
         ],
         dts: path.resolve(rootDir, './src/typings/components.d.ts'),
       }),
@@ -190,7 +199,7 @@ function createBaseConfig(comp: string, internalDeps: string[]): InlineConfig {
       // 添加类型声明生成插件
       dts({
         root: rootDir,
-        entryRoot: `./src/components/${comp}`,
+        entryRoot: `./${entryBaseUrl}/${comp}`,
         tsconfigPath: './tsconfig.components.json',
         declarationOnly: false,
       }),
@@ -325,7 +334,7 @@ async function analyzeComponentDeps(comp: string) {
     const allComponents = await getComponentNames()
 
     // 组件目录和入口文件
-    const componentDir = resolve(rootDir, `src/components/${comp}`)
+    const componentDir = resolve(rootDir, `./${entryBaseUrl}/${comp}`)
     const entryPoint = fs.existsSync(resolve(componentDir, 'index.ts'))
       ? resolve(componentDir, 'index.ts')
       : resolve(componentDir, 'index.vue')
@@ -377,7 +386,7 @@ async function analyzeComponentDeps(comp: string) {
             const depPath = dep.resolved || dep.module
 
             // 1. 检查是否是内部组件依赖
-            const componentMatch = depPath.match(/components\/([A-Z][a-zA-Z0-9]+)/)
+            const componentMatch = depPath.match(new RegExp(`${aliasComponentPath.replace(/\//g, '\\/')}\\/([A-Z][a-zA-Z0-9]+)`))
             if (componentMatch && allComponents.includes(componentMatch[1]) && componentMatch[1] !== comp) {
               internalDeps.add(componentMatch[1])
               console.log(`✓ 发现内部组件依赖: ${componentMatch[1]}`)
@@ -428,16 +437,16 @@ async function analyzeComponentDeps(comp: string) {
         while ((match = importRegex.exec(content)) !== null) {
           const importPath = match[1]
 
-          // 1. 检查@/components引用
-          const componentMatch = importPath.match(/@\/components\/([A-Z][a-zA-Z0-9]+)/)
+          // 1. 检查${aliasComponentPath}引用
+          const componentMatch = importPath.match(new RegExp(`${aliasComponentPath.replace(/\//g, '\\/')}\\/([A-Z][a-zA-Z0-9]+)`))
           if (componentMatch && allComponents.includes(componentMatch[1]) && componentMatch[1] !== comp) {
             internalDeps.add(componentMatch[1])
           }
 
-          // 2. 检查@/components/_utils等共享模块的引用
-          if (importPath.startsWith('@/components/_utils')
-            || importPath.startsWith('@/components/_types')
-            || importPath.startsWith('@/components/')) {
+          // 2. 检查${aliasComponentPath}/_utils等共享模块的引用
+          if (importPath.startsWith(`${aliasComponentPath}/_utils`)
+            || importPath.startsWith(`${aliasComponentPath}/_types`)
+            || importPath.startsWith(`${aliasComponentPath}/`)) {
             try {
               // 解析@路径为实际路径
               const actualPath = importPath.replace('@/', 'src/')
@@ -479,8 +488,8 @@ async function analyzeComponentDeps(comp: string) {
               const currentFileDir = dirname(filePath)
               const targetPath = resolve(currentFileDir, importPath)
 
-              // 检查目标路径是否在 src/components/ 目录下
-              const componentsDir = resolve(rootDir, 'src/components')
+              // 检查目标路径是否在 entryBaseUrl 目录下
+              const componentsDir = resolve(rootDir, `./${entryBaseUrl}`)
               const relativeTocComponents = resolve(targetPath).replace(componentsDir, '').replace(/\\/g, '/')
 
               // 如果路径以 / 开头且不包含 .. 说明在 components 目录下
@@ -632,8 +641,8 @@ function createComponentReferencePlugin(internalDeps: string[], currentComponent
             const currentFileDir = dirname(id)
             const targetPath = resolve(currentFileDir, importPath)
 
-            // 检查目标路径是否在 src/components/ 目录下
-            const componentsDir = resolve(rootDir, 'src/components')
+            // 检查目标路径是否在 entryBaseUrl 目录下
+            const componentsDir = resolve(rootDir, `./${entryBaseUrl}`)
 
             // 使用 path.relative 来正确计算相对路径
             const relativeToComponents = path.relative(componentsDir, targetPath).replace(/\\/g, '/')
@@ -647,7 +656,7 @@ function createComponentReferencePlugin(internalDeps: string[], currentComponent
               // 检查是否是当前组件内部的自引用（包括类型文件）
               // 对于组件库模式（currentComponent为空），检查文件是否在当前组件目录下
               if (potentialComponentName === currentComponent
-                || (currentComponent === '' && id.includes(`/src/components/${potentialComponentName}/`))) {
+                || (currentComponent === '' && id.includes(`${entryBaseUrl}/${potentialComponentName}/`))) {
                 // 组件内部自引用，保持相对路径不变
                 console.log(`✓ 保持组件内部自引用: ${importPath} 在文件 ${id}`)
                 continue
@@ -655,10 +664,10 @@ function createComponentReferencePlugin(internalDeps: string[], currentComponent
 
               // 验证是否是内部依赖中的组件
               if (potentialComponentName && internalDeps.includes(potentialComponentName)) {
-                // 记录需要替换的内容 - 转换为@/components路径
+                // 记录需要替换的内容 - 转换为${aliasComponentPath}路径
                 replacements.push({
                   oldImport: match[0],
-                  newImport: match[0].replace(importPath, `@/components/${potentialComponentName}`),
+                  newImport: match[0].replace(importPath, `${aliasComponentPath}/${potentialComponentName}`),
                   componentName: potentialComponentName,
                 })
               }
@@ -670,10 +679,10 @@ function createComponentReferencePlugin(internalDeps: string[], currentComponent
           }
         }
 
-        // 处理 @/components 路径的自引用
-        if (importPath.startsWith(`@/components/${currentComponent}`)) {
+        // 处理 ${aliasComponentPath} 路径的自引用
+        if (importPath.startsWith(`${aliasComponentPath}/${currentComponent}`)) {
           // 1. 目标文件的绝对路径
-          const targetAbsPath = resolve(rootDir, 'src/components', importPath.replace('@/components/', ''))
+          const targetAbsPath = resolve(rootDir, `./${entryBaseUrl}`, importPath.replace(`${aliasComponentPath}/`, ''))
           // 2. 当前文件的绝对路径
           const currentFileDir = dirname(id)
           // 3. 计算相对路径
@@ -704,12 +713,12 @@ function createComponentReferencePlugin(internalDeps: string[], currentComponent
             console.log(`✓ 转换组件自引用: ${replacement.oldPath} -> ${replacement.newPath} (文件: ${id})`)
           }
           else {
-            console.log(`✓ 转换相对路径引用 ${replacement.componentName} 为 @/components/${replacement.componentName} 在文件 ${id}`)
+            console.log(`✓ 转换相对路径引用 ${replacement.componentName} 为 ${aliasComponentPath}/${replacement.componentName} 在文件 ${id}`)
           }
         }
       }
 
-      // 第二步：将 @/components/xxx 转换为 @/moluoxixi/xxx（仅对组件，不包括_utils、_types等）
+      // 第二步：将 ${aliasComponentPath}/xxx 转换为 @/moluoxixi/xxx（仅对组件，不包括_utils、_types等）
       const componentImportRegex = /import\s[^"']*from\s+['"]([^'"]+)['"]/g
       let componentMatch
       const componentReplacements = []
@@ -718,10 +727,10 @@ function createComponentReferencePlugin(internalDeps: string[], currentComponent
       while ((componentMatch = componentImportRegex.exec(transformedCode)) !== null) {
         const importPath = componentMatch[1]
 
-        // 检查是否是 @/components/xxx 路径
-        if (importPath.startsWith('@/components/')) {
+        // 检查是否是 ${aliasComponentPath}/xxx 路径
+        if (importPath.startsWith(`${aliasComponentPath}/`)) {
           const pathParts = importPath.split('/')
-          const componentName = pathParts[2] // @/components/ComponentName/...
+          const componentName = pathParts[2] // ${aliasComponentPath}/ComponentName/...
 
           // 转换组件引用（排除_utils、_types等共享模块，它们应该被打包进来）
           if (componentName && !componentName.startsWith('_') && internalDeps.includes(componentName)) {
@@ -761,11 +770,10 @@ function createComponentReferencePlugin(internalDeps: string[], currentComponent
       const originalExternal = opts.external || (() => false)
 
       opts.external = (id: string, parentId?: string, isResolved?: boolean) => {
-        console.log('id', id)
-        // 检查是否是@/components路径引用
-        if (id.startsWith('@/components/')) {
+        // 检查是否是${aliasComponentPath}路径引用
+        if (id.startsWith(`${aliasComponentPath}/`)) {
           const pathParts = id.split('/')
-          const componentName = pathParts[2] // @/components/ComponentName/...
+          const componentName = pathParts[2] // ${aliasComponentPath}/ComponentName
 
           // 如果是共享模块（_utils、_types等），不标记为外部依赖，让它们被打包进来
           if (componentName && componentName.startsWith('_')) {
@@ -773,7 +781,7 @@ function createComponentReferencePlugin(internalDeps: string[], currentComponent
           }
 
           // 检查是否是组件引用（排除当前组件的自引用）
-          const componentMatch = id.match(/@\/components\/([A-Z][a-zA-Z0-9]+)/)
+          const componentMatch = id.match(new RegExp(`${aliasComponentPath.replace(/\//g, '\\/')}\\/([A-Z][a-zA-Z0-9]+)`))
           return !(componentMatch && componentMatch[1] === currentComponent)
           // 标记为外部依赖
         }
@@ -864,7 +872,6 @@ async function bundleComponentModule({
           useObfuscator && obfuscator(),
         ],
         external: (id: string) => {
-          console.log('did', id)
           // 检查外部依赖
           const isExternalDep = Object.keys(dependencies.external).includes(id)
           // 检查Vue相关依赖
@@ -874,9 +881,9 @@ async function bundleComponentModule({
             || ['path', 'fs', 'os', 'util', 'events', 'stream', 'buffer', 'crypto', 'zlib', 'http', 'https', 'url', 'querystring', 'child_process'].includes(id)
 
           // 检查@/components路径
-          if (id.startsWith('@/components/')) {
+          if (id.startsWith(`${aliasComponentPath}/`)) {
             const pathParts = id.split('/')
-            const componentName = pathParts[2] // @/components/ComponentName/...
+            const componentName = pathParts[2] // ${aliasComponentPath}/ComponentName/...
 
             // 如果是共享模块（_utils、_types等），不标记为外部依赖，让它们被打包进来
             if (componentName && componentName.startsWith('_')) {
@@ -884,7 +891,7 @@ async function bundleComponentModule({
             }
 
             // 检查是否是组件引用（排除当前组件的自引用）
-            const componentMatch = id.match(/@\/components\/([A-Z][a-zA-Z0-9]+)/)
+            const componentMatch = id.match(new RegExp(`${aliasComponentPath.replace(/\//g, '\\/')}\\/([A-Z][a-zA-Z0-9]+)`))
             return !(componentMatch && componentMatch[1] === currentComponent)
           }
           const isExternal = useExternal || requireExternalComponents.includes(comp)
@@ -898,7 +905,7 @@ async function bundleComponentModule({
         },
         output: {
           preserveModules,
-          preserveModulesRoot: resolve(rootDir, `src/components/${comp}`),
+          preserveModulesRoot: resolve(rootDir, `./${entryBaseUrl}/${comp}`),
           entryFileNames,
           chunkFileNames,
           globals: Object.assign(globals, presetGlobals),
@@ -920,11 +927,11 @@ async function getComponentConfig(comp: string) {
 
   // 获取入口文件
   let entry = null
-  if (fs.existsSync(resolve(rootDir, `src/components${componentName}/index.ts`))) {
-    entry = resolve(rootDir, `src/components${componentName}/index.ts`)
+  if (fs.existsSync(resolve(rootDir, `./${entryBaseUrl}${componentName}/index.ts`))) {
+    entry = resolve(rootDir, `./${entryBaseUrl}${componentName}/index.ts`)
   }
-  else if (fs.existsSync(resolve(rootDir, `src/components${componentName}/index.vue`))) {
-    entry = resolve(rootDir, `src/components${componentName}/index.vue`)
+  else if (fs.existsSync(resolve(rootDir, `./${entryBaseUrl}${componentName}/index.vue`))) {
+    entry = resolve(rootDir, `./${entryBaseUrl}${componentName}/index.vue`)
   }
   else {
     throw new Error(`组件 ${comp} 没有找到入口文件`)
@@ -999,7 +1006,7 @@ async function buildComponent(
     for (const compName of deps.internal) {
       // 排除当前组件的自引用
       if (compName !== comp) {
-        globals[`@/components/${compName}`] = `@${LIB_NAMESPACE}/${compName.toLowerCase()}`
+        globals[`${aliasComponentPath}/${compName}`] = `@${LIB_NAMESPACE}/${compName.toLowerCase()}`
       }
     }
 
@@ -1036,7 +1043,7 @@ async function buildComponent(
 
     // 复制README.md
     const componentName = `\\${comp}`
-    const readmeSrc = resolve(rootDir, `src/components${componentName}/README.md`)
+    const readmeSrc = resolve(rootDir, `./${entryBaseUrl}${componentName}/README.md`)
     const readmeDest = resolve(outputDir, 'README.md')
     if (fs.existsSync(readmeSrc)) {
       await fsp.copyFile(readmeSrc, readmeDest)
