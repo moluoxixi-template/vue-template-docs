@@ -1,0 +1,111 @@
+:root {
+  // Layout
+  --vp-layout-max-width: 1440px;
+  --vp-layout-top-height: 64px;
+  --vp-sidebar-width: 272px;
+
+  // Colors
+  --vp-c-brand: #646cff;
+  --vp-c-brand-dark: #535bf2;
+  --vp-c-brand-light: #747bff;
+  --vp-c-brand-lighter: #9499ff;
+  --vp-c-brand-darker: #454ce1;
+  --vp-c-brand-soft: rgba(100, 108, 255, 0.14);
+
+  --vp-c-text-1: rgba(60, 60, 67);
+  --vp-c-text-2: rgba(60, 60, 67, 0.78);
+  --vp-c-text-3: rgba(60, 60, 67, 0.56);
+  --vp-c-text-code: #476582;
+
+  --vp-c-divider: rgba(60, 60, 67, 0.12);
+  --vp-c-divider-light: rgba(60, 60, 67, 0.08);
+
+  --vp-c-black: #000000;
+  --vp-c-black-pure: #000000;
+  --vp-c-white: #ffffff;
+  --vp-c-white-pure: #ffffff;
+
+  --vp-c-bg: #ffffff;
+  --vp-c-bg-soft: #f9f9f9;
+  --vp-c-bg-mute: #f1f1f1;
+  --vp-c-bg-alt: #fafafa;
+
+  --vp-c-gray: #8e8e93;
+  --vp-c-gray-light-1: #aeaeae;
+  --vp-c-gray-light-2: #c7c7cc;
+  --vp-c-gray-light-3: #d1d1d6;
+  --vp-c-gray-light-4: #e5e5ea;
+  --vp-c-gray-light-5: #f2f2f7;
+
+  --vp-c-gray-dark-1: #636366;
+  --vp-c-gray-dark-2: #48484a;
+  --vp-c-gray-dark-3: #3a3a3c;
+  --vp-c-gray-dark-4: #2c2c2e;
+  --vp-c-gray-dark-5: #1c1c1e;
+}
+
+.dark {
+  --vp-c-text-1: rgba(255, 255, 255, 0.87);
+  --vp-c-text-2: rgba(235, 235, 235, 0.6);
+  --vp-c-text-3: rgba(235, 235, 235, 0.38);
+  --vp-c-text-code: #c9def1;
+
+  --vp-c-divider: rgba(84, 84, 88, 0.48);
+  --vp-c-divider-light: rgba(84, 84, 88, 0.24);
+
+  --vp-c-bg: #1a1a1a;
+  --vp-c-bg-soft: #242424;
+  --vp-c-bg-mute: #2f2f2f;
+  --vp-c-bg-alt: #161616;
+
+  --vp-c-gray: #8e8e93;
+  --vp-c-gray-light-1: #636366;
+  --vp-c-gray-light-2: #48484a;
+  --vp-c-gray-light-3: #3a3a3c;
+  --vp-c-gray-light-4: #2c2c2e;
+  --vp-c-gray-light-5: #1c1c1e;
+
+  --vp-c-gray-dark-1: #aeaeae;
+  --vp-c-gray-dark-2: #c7c7cc;
+  --vp-c-gray-dark-3: #d1d1d6;
+  --vp-c-gray-dark-4: #e5e5ea;
+  --vp-c-gray-dark-5: #f2f2f7;
+}
+
+// Global styles
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--vp-c-text-1);
+  background-color: var(--vp-c-bg);
+  transition: background-color 0.5s ease;
+}
+
+// Utility classes
+.vp-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.vp-container {
+  max-width: var(--vp-layout-max-width);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+@media (max-width: 640px) {
+  .vp-container {
+    padding: 0 16px;
+  }
+}

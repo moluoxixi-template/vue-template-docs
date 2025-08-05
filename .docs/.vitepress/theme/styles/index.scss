@@ -1,4 +1,4 @@
-@import './code';
+@use './code';
 
 $primaryColor: #646cff;
 
@@ -8,14 +8,12 @@ $primaryColor: #646cff;
   --vp-c-green-light: #535bf2;
   ;
   --vp-c-green-lighter: #3e93fb;
-
   --vp-c-green-dark: #046ae7;
   --vp-c-green-darker: #0362d7;
   --vp-layout-max-width: 90%;
   --vp-sidebar-bg-color: #fff;
   --vp-sidebar-width: 240px;
   --prism-block-padding-y: 1.2em;
-
   --vp-c-indigo-1: #{$primaryColor};
   --vp-c-indigo-3: #{$primaryColor};
   --vp-c-bg-alt: var(--el-fill-color-light);
@@ -52,7 +50,6 @@ $primaryColor: #646cff;
 }
 
 .vp-doc {
-
   .el-pager li {
     margin: 0;
   }
@@ -71,9 +68,6 @@ $primaryColor: #646cff;
 
   .el-link {
     color: var(--el-link-text-color);
-  }
-
-  .el-link {
     text-decoration: none;
   }
 
