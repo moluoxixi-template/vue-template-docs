@@ -55,7 +55,7 @@
   "author": "1983531544@qq.com",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/moluoxixi-template/vue-template.git"
+    "url": "git+https://github.com/componentProject/vue-component.git"
   },
   "keywords": [
     "element-plus",

@@ -9,8 +9,7 @@ import locale from 'element-plus/es/locale/lang/zh-cn'
 // 图标并进行全局注册
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
-import Layout from './components/Layout/index.vue'
-import './components/Layout/index.scss'
+import Layout from './components/layout.vue'
 
 // 引入vue-component组件库
 import VueComponent from '@moluoxixi/components'

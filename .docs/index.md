@@ -1,56 +1,107 @@
 ---
 layout: home
 
-title: T-ui-plus
-# titleTemplate: 选项卡描述
+title: Moluoxixi Vue组件库
+titleTemplate: 基于Vue3 + TypeScript + Element Plus的现代化组件库
 editLink: true
 lastUpdated: true
+
 hero:
-  name: T-ui-plus
-  text: vue3基础组件
-  tagline: Vue3 中基于Element-plus二次封装基础组件文档
+  name: Moluoxixi
+  text: Vue3组件库
+  tagline: 基于Vue3 + TypeScript + Element Plus的现代化组件库，提供丰富的业务组件和工具函数
   image:
-    src: /img/hero.jpg
-    alt: t-ui-plus
+    src: /favicon.ico
+    alt: Moluoxixi Vue组件库
   actions:
     - theme: brand
-      text: 安装指南
-      link: /guide/
-    - theme: brand
-      text: 组件预览
-      link: /components/TInput/base.md
+      text: 快速开始
+      link: /guide/quickstart
+    - theme: alt
+      text: 组件文档
+      link: /components/
+    - theme: alt
+      text: GitHub
+      link: https://github.com/componentProject/vue-component
+
 features:
-  # - icon: 🔨
-  #   title: 实际项目
-  #   details: 实际项目中碰到的疑点、难点，致力于更优的自我。。
-  - icon: 🧩
-    title: 基础组件
-    details: 基于Element-plus二次封装；使用组件 Demo 快速体验交互细节。。
-  - icon: ✈️
-    title: Vue驱动。
-    details: 享受 Vue3 + vite3 的开发体验，在 Markdown 中使用 Vue 组件，同时可以使用 Vue 来开发自定义主题。
+  - icon: 🚀
+    title: 现代化技术栈
+    details: 基于Vue3 + TypeScript + Vite4 + Element Plus，使用最新的前端技术栈开发
+  - icon: 📦
+    title: 开箱即用
+    details: 提供完整的组件库解决方案，支持按需引入，可快速构建企业级应用
+  - icon: 🛠️
+    title: 业务组件
+    details: 包含表格、表单、配置等多种业务组件，覆盖常见的开发场景
+  - icon: 📖
+    title: TypeScript支持
+    details: 完整的TypeScript类型定义，提供良好的开发体验和代码提示
+  - icon: 🎨
+    title: 主题定制
+    details: 基于Element Plus主题系统，支持深度自定义样式和主题
+  - icon: ⚡
+    title: 高性能
+    details: 优化的组件实现，支持Tree Shaking，确保应用的最佳性能
 ---
 
-<p style="display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;">
-  <a href="https://github.com/vuejs/vue" target="_blank">
-    <img src="https://img.shields.io/badge/vue-3.2.36-brightgreen.svg" alt="vue3">
+<p style="display: flex; justify-content: center; align-items: center; margin-top: 20px; gap: 10px;">
+  <a href="https://github.com/componentProject/vue-component" target="_blank">
+    <img src="https://img.shields.io/badge/vue-3.5.13-brightgreen.svg" alt="vue3">
   </a>
-  <a href="https://gitee.com/wocwin/t-ui-plus/stargazers" target="_blank">
-    <img src="https://gitee.com/wocwin/t-ui-plus/badge/star.svg?theme=dark" alt="t-ui-plus">
+  <a href="https://github.com/componentProject/vue-component" target="_blank">
+    <img src="https://img.shields.io/github/stars/componentProject/vue-component.svg" alt="github stars">
   </a>
-  <a href="https://github.com/wocwin/t-ui-plus/stargazers" target="_blank">
-    <img src="https://img.shields.io/github/stars/wocwin/t-ui-plus.svg" alt="t-ui-plus">
+  <a href="https://www.npmjs.com/package/@moluoxixi/components" target="_blank">
+    <img alt="npm" src="https://img.shields.io/npm/v/@moluoxixi/components.svg" />
   </a>
-   <a href="https://www.npmjs.com/package/@wocwin/t-ui-plus" target="_blank">
-      <img alt="npm" src="https://img.shields.io/npm/v/@wocwin/t-ui-plus.svg" />
-    </a>
+  <a href="https://github.com/componentProject/vue-component/blob/main/LICENSE" target="_blank">
+    <img src="https://img.shields.io/github/license/componentProject/vue-component.svg" alt="license">
+  </a>
 </p>
-<h1 style="text-align: center;">Thanks to all the contributors!</h1>
-<p style="display: flex;justify-content: center;align-items: center;margin-top: 10px;">
-  <a href="https://github.com/wocwin/t-ui-plus/graphs/contributors">
-    <img src="https://contrib.rocks/image?repo=wocwin/t-ui-plus" alt="contributors" />
+
+## ✨ 特性
+
+- 🔥 **最新技术栈**：Vue3 + TypeScript + Vite4 + Element Plus
+- 📦 **开箱即用**：丰富的业务组件，覆盖大部分使用场景
+- 🛠️ **按需引入**：支持tree-shaking，按需加载，减小包体积
+- 🎨 **主题定制**：支持主题定制，满足个性化需求
+- 📖 **TypeScript**：完整的类型定义文件
+- 📱 **响应式**：支持响应式设计
+- ⚡ **高性能**：优化组件性能，提升用户体验
+
+## 📦 安装
+
+```bash
+# npm
+npm install @moluoxixi/components
+
+# yarn  
+yarn add @moluoxixi/components
+
+# pnpm
+pnpm add @moluoxixi/components
+```
+
+## 🔨 使用
+
+```ts
+// main.ts
+import { createApp } from 'vue'
+import MoluoxixiComponents from '@moluoxixi/components'
+import App from './App.vue'
+
+const app = createApp(App)
+app.use(MoluoxixiComponents)
+app.mount('#app')
+```
+
+## 🤝 贡献
+
+欢迎提交 Issue 和 Pull Request 来完善这个项目。
+
+<p style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
+  <a href="https://github.com/componentProject/vue-component/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=componentProject/vue-component" alt="contributors" />
   </a>
 </p>

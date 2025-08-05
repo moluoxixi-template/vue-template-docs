@@ -83,4 +83,4 @@
 
 ---
 
-#### [Vue2 基础组件 GitHub 地址](https://github.com/wocwin/t-ui)
+#### [Vue2 基础组件 GitHub 地址](https://github.com/componentProject/vue-component)

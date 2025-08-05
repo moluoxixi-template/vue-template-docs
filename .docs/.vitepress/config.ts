@@ -1,35 +1,52 @@
 import { defineConfig } from 'vitepress'
 import { mdPlugin } from './plugins/mdPlugin'
+import { generateComponentNav, generateSidebar } from './utils/generateSidebar'
+import { getRepoInfoWithFallback } from './utils/getRepoInfo'
+import { updateComponentDocs, updateGuidePages, updateIndexPage } from './scripts/updateIndexPage'
+
 import pkg from '../../package.json'
+import path from 'node:path'
 // tailwind
 import autoprefixer from 'autoprefixer'
 import tailwindcss from '@tailwindcss/postcss'
 import type { Plugin } from 'postcss'
 
-// 生产环境判断
+// 获取仓库信息
+const repoInfo = getRepoInfoWithFallback()
+
+// 启动时更新页面内容
+try {
+  updateIndexPage()
+  updateGuidePages()
+  updateComponentDocs()
+}
+catch (error) {
+  console.warn('⚠️ 更新页面内容失败:', error)
+}
+
+// SEO关键词
 const content = [
-  'vue 版本的 t-ui-plus',
-  'vue t-ui-plus',
-  't-ui-plus vue',
-  'TuiPlus',
-  't-ui-plus',
+  'vue3组件库',
+  'moluoxixi组件库',
+  'vue3',
   'element-plus',
-  'Page level components',
+  'typescript',
+  'vite',
   'component library',
   'ui framework',
-  'ui',
+  'ui组件',
   '基础组件',
-  '二次封装',
-  'wocwin',
-  'vue',
+  '业务组件',
+  '前端组件库',
+  'vue组件',
 ].toString()
 export default defineConfig({
-  title: 'TuiPlus基础组件文档',
-  description: content,
-  lang: 'cn-ZH',
-  base: '/t-ui-plus/',
+  title: 'Moluoxixi Vue组件库',
+  description: '基于Vue3 + TypeScript + Element Plus的现代化组件库',
+  lang: 'zh-CN',
+  base: '/vue-component/',
   head: [
-    ['meta', { name: 'author', content: 'wocwin' }],
+    ['meta', { name: 'author', content: 'moluoxixi' }],
     [
       'meta',
       {
@@ -42,16 +59,17 @@ export default defineConfig({
       'meta',
       {
         name: 'description',
-        content,
+        content: '基于Vue3 + TypeScript + Element Plus的现代化组件库，提供丰富的业务组件和工具函数',
       },
     ],
     ['meta', { name: 'keywords', content }],
-    ['link', { rel: 'icon', href: '/logo.jpg' }],
+    ['link', { rel: 'icon', href: '/favicon.ico' }],
+    ['link', { rel: 'apple-touch-icon', href: '/favicon.ico' }],
   ],
   lastUpdated: true,
   themeConfig: {
     logo: '/favicon.ico',
-    siteTitle: 'TuiPlus基础组件文档',
+    siteTitle: 'Moluoxixi Vue组件库',
     outline: 3,
     search: {
       provider: 'local',
@@ -65,38 +83,34 @@ export default defineConfig({
       prev: '上一页',
       next: '下一页',
     },
-    socialLinks: [{ icon: 'github', link: 'https://github.com/wocwin/t-ui-plus' }],
+    socialLinks: [{ icon: 'github', link: repoInfo.url }],
     nav: [
       {
-        text: '安装指南',
+        text: '指南',
         link: '/guide/',
       },
-      { text: '基础组件', link: '/components/TInput/base.md' },
+      generateComponentNav(),
       {
-        text: 'GitHub地址',
-        link: 'https://github.com/wocwin/t-ui-plus',
+        text: '更新日志',
+        link: '/guide/changelog',
       },
       {
-        text: 'Gitee码云地址',
-        link: 'https://gitee.com/wocwin/t-ui-plus',
+        text: 'GitHub',
+        link: repoInfo.url,
       },
       {
         text: `v${pkg.version}`,
-        link: 'https://github.com/wocwin/t-ui-plus/releases',
-      },
-      {
-        text: '演练场',
-        link: 'https://wocwin.github.io/wocwin-playground/',
+        link: repoInfo.releasesUrl,
       },
     ],
     sidebar: {
       '/guide/': [
         {
-          text: '安装指南',
+          text: '开始',
           items: [
             {
               text: '简介',
-              link: '/guide/index',
+              link: '/guide/',
             },
             {
               text: '安装',
@@ -107,24 +121,17 @@ export default defineConfig({
               link: '/guide/quickstart',
             },
             {
-              text: 'Resolver按需引入',
+              text: '按需引入',
               link: '/guide/resolver',
+            },
+            {
+              text: '更新日志',
+              link: '/guide/changelog',
             },
           ],
         },
       ],
-      '/components': [
-        {
-          text: '常用组件',
-          items: [
-            { text: '日期范围选择器', link: '/guide/DateRangePicker' },
-          ],
-        },
-        {
-          text: '复杂组件',
-          items: [],
-        },
-      ],
+      '/components/': generateSidebar(),
     },
   },
   markdown: {
@@ -132,6 +139,11 @@ export default defineConfig({
     config: (md: any) => mdPlugin(md),
   },
   vite: {
+    resolve: {
+      alias: {
+        '@moluoxixi/components': path.resolve(__dirname, '../../packages/components'),
+      },
+    },
     css: {
       postcss: {
         plugins: [tailwindcss() as Plugin, autoprefixer() as Plugin],
