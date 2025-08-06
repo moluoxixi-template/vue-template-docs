@@ -10,7 +10,13 @@ import path from 'node:path'
 import autoprefixer from 'autoprefixer'
 import tailwindcss from '@tailwindcss/postcss'
 import type { Plugin } from 'postcss'
-
+import vueJsx from '@vitejs/plugin-vue-jsx'
+import AutoImport from 'unplugin-auto-import/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import Components from 'unplugin-vue-components/vite'
+import viteCompression from 'vite-plugin-compression'
+import viteImagemin from 'vite-plugin-imagemin'
+import { docsPath } from '../contants'
 // 获取仓库信息
 const repoInfo = getRepoInfoWithFallback()
 
@@ -40,6 +46,52 @@ const content = [
   '前端组件库',
   'vue组件',
 ].toString()
+const vuePlugins = [
+  vueJsx(),
+  // 自动引入
+  AutoImport({
+    imports: ['vue'],
+    resolvers: [ElementPlusResolver()],
+    dts: path.resolve(docsPath, './typings/auto-imports.d.ts'),
+  }),
+  // 与自定义element组件冲突
+  Components({
+    resolvers: [
+      ElementPlusResolver(),
+    ],
+    globs: [
+      'src/components/**/index.vue',
+      'src/components/**/index.ts',
+      '!src/components/**/base/**/*',
+      '!src/components/**/components/**/*',
+      '!src/components/**/src/**/*',
+      '!src/components/**/_utils/**/*',
+      '!src/components/**/_types/**/*',
+    ],
+    dts: path.resolve(docsPath, './typings/components.d.ts'),
+  }),
+].filter(i => !!i)
+const performancePlugins = [
+  // 代码压缩
+  viteCompression({
+    algorithm: 'gzip',
+    verbose: true,
+    disable: false,
+    ext: '.gz',
+    threshold: 10240,
+    deleteOriginFile: false,
+  }),
+  // 图片压缩
+  viteImagemin({
+    gifsicle: { optimizationLevel: 7, interlaced: false },
+    optipng: { optimizationLevel: 7 },
+    mozjpeg: { quality: 20 },
+    pngquant: { quality: [0.8, 0.9], speed: 4 },
+    svgo: {
+      plugins: [{ name: 'removeViewBox' }, { name: 'removeEmptyAttrs', active: false }],
+    },
+  }),
+].filter(i => !!i)
 export default defineConfig({
   title: 'Moluoxixi Vue组件库',
   outDir: '../docs/vitepress',
@@ -140,6 +192,10 @@ export default defineConfig({
     config: (md: any) => mdPlugin(md),
   },
   vite: {
+    plugins: [
+      ...vuePlugins,
+      ...performancePlugins,
+    ],
     resolve: {
       alias: {
         '@moluoxixi/components': path.resolve(__dirname, '../../packages/components'),

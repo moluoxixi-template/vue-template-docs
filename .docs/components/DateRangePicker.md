@@ -4,79 +4,9 @@
 
 ## 基础用法
 
-```vue
-<template>
-  <div>
-    <DateRangePicker 
-      v-model="dateRange"
-      placeholder="请选择日期范围"
-      @change="handleDateChange"
-    />
-  </div>
-</template>
-
-<script setup lang="ts">
-import { ref } from 'vue'
-import { DateRangePicker } from '@moluoxixi/components'
-
-const dateRange = ref<[Date, Date] | null>(null)
-
-const handleDateChange = (dates: [Date, Date] | null) => {
-  console.log('选择的日期范围:', dates)
-}
-</script>
-```
-
-## 带快捷选项
-
-```vue
-<template>
-  <div>
-    <DateRangePicker 
-      v-model="dateRange"
-      :shortcuts="shortcuts"
-      placeholder="请选择日期范围"
-    />
-  </div>
-</template>
-
-<script setup lang="ts">
-import { ref } from 'vue'
-import { DateRangePicker } from '@moluoxixi/components'
-
-const dateRange = ref<[Date, Date] | null>(null)
-
-const shortcuts = [
-  {
-    text: '最近一周',
-    value: () => {
-      const end = new Date()
-      const start = new Date()
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-      return [start, end]
-    }
-  },
-  {
-    text: '最近一个月',
-    value: () => {
-      const end = new Date()
-      const start = new Date()
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-      return [start, end]
-    }
-  },
-  {
-    text: '最近三个月',
-    value: () => {
-      const end = new Date()
-      const start = new Date()
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-      return [start, end]
-    }
-  }
-]
-</script>
-```
+:::demo
+DateRangePicker/base
+:::
 
 ## API
 
@@ -116,4 +46,4 @@ const shortcuts = [
 
 ## 源码
 
-查看组件源码：[DateRangePicker](https://github.com/componentProject/vue-component/tree/main/packages/components/DateRangePicker)
+查看组件源码：[DateRangePicker](https://github.com/componentProject/vue-component/tree/vueComponent/packages/components/DateRangePicker)

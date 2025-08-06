@@ -25,6 +25,9 @@ import type {
   noSelectValueParams,
 } from '@moluoxixi/components/EnterNextTable/src/_types'
 
+defineOptions({
+  name: 'EnterNextTable',
+})
 const props = defineProps({
   data: {
     type: Array,

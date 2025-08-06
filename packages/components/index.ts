@@ -12,7 +12,6 @@ import KeepAllAlive from '@moluoxixi/components/KeepAllAlive'
 import PopoverTableSelect from '@moluoxixi/components/PopoverTableSelect'
 import Select from '@moluoxixi/components/Select'
 import Tabs from '@moluoxixi/components/Tabs'
-import { store } from '@moluoxixi/components/_stores'
 
 export {
   ConfigForm,
@@ -29,15 +28,19 @@ export {
   Tabs,
 }
 
-const componentFiles = import.meta.glob(['./**/index.vue', '!./**/components/*'], {
+const componentFiles = import.meta.glob([
+  './**/index.vue',
+  '!./**/components/**',
+  '!./**/base/**',
+  '!./**/_*/**',
+], {
   eager: true,
   import: 'default',
 })
 
 const components = Object.keys(componentFiles).reduce((modules = {}, modulePath) => {
   const nameArr: string[] = modulePath.split('/')
-  const name: string | undefined
-    = nameArr.at(-1) === 'index.vue' ? nameArr.at(-2) : nameArr.at(-1)?.slice(0, -4)
+  const name: string | undefined = nameArr.at(1)
   const component: Component = componentFiles[modulePath] as Component
   if (!component)
     return modules
@@ -50,9 +53,10 @@ const components = Object.keys(componentFiles).reduce((modules = {}, modulePath)
 export default {
   install(app: App) {
     const componentNames = Object.keys(components)
+    console.log('🚀 扫描到组件:', componentNames)
     componentNames.forEach((name) => {
+      console.log('🚀 注册组件:', name)
       app.component(name, components[name])
     })
-    app.use(store)
   },
 }

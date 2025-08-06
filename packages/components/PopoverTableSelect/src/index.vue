@@ -28,6 +28,9 @@ import { computed, watch } from 'vue'
 import PopoverTableSelect from '@moluoxixi/components/PopoverTableSelect/src/base/index.vue'
 import type { slotsType } from '@moluoxixi/components/_types'
 
+defineOptions({
+  name: 'PopoverTableSelect',
+})
 const props = defineProps({
   debounce: {
     type: Number,

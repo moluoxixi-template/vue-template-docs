@@ -57,7 +57,7 @@ import DraggableTable from '@moluoxixi/components/DraggableTable'
 import type { slotsType } from '@moluoxixi/components/_types'
 
 defineOptions({
-  name: 'PopoverTableSelect',
+  name: 'PopoverTableSelectBase',
 })
 const props = defineProps({
   //#region 透传给popover

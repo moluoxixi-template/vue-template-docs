@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full inline-block flex-1 overflow-hidden">
+  <div class="w-full inline-block flex-1 overflow-hidden date-range-picker">
     <ElDatePicker
       ref="datePicker"
       v-bind="$attrs"
@@ -532,4 +532,6 @@ defineExpose({
 })
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+@forward '@moluoxixi/components/_assets/styles/tailwind.scss';
+</style>
