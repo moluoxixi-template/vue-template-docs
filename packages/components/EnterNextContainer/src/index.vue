@@ -67,11 +67,16 @@ function collectInputElements(type: string = '') {
     nextTick(() => {
       setTimeout(() => {
         if (typeof props.focusNum === 'number') {
+          const activeElement = elements[props.focusNum - 1]
           if (props.autoNext) {
-            enabledElements[props.focusNum - 1]?.focus()
+            activeElement?.focus()
           }
           else {
-            elements[props.focusNum - 1]?.focus()
+            activeElement?.focus()
+          }
+          const hasAriaActive = attributeExistsWithNoValue(activeElement, 'aria-expanded', 'false')
+          if (hasAriaActive) {
+            activeElement.click()
           }
         }
       })
