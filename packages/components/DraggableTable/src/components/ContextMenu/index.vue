@@ -35,9 +35,9 @@
 <script setup lang="ts">
 import type { ComponentPublicInstance, PropType } from 'vue'
 import type { ColumnType, types } from '@moluoxixi/components/DraggableTable/src/_types'
-import { ElCheckbox, ElPopover } from 'element-plus'
+import { ElCheckbox, ElMessage, ElPopover } from 'element-plus'
 import { cloneDeep } from 'lodash'
-import { ref, useTemplateRef } from 'vue'
+import { nextTick, onUnmounted, ref, useTemplateRef, watch } from 'vue'
 import { getTypeName } from '@moluoxixi/components/DraggableTable/src/_utils'
 
 const props = defineProps({
