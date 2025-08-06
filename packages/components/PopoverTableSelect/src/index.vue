@@ -24,7 +24,7 @@ import type { ComponentInternalInstance, ComponentPublicInstance, PropType } fro
 import { ElInput } from 'element-plus'
 import { debounce as _debounce, throttle as _throttle } from 'lodash'
 import type { DebounceSettingsLeading, ThrottleSettingsLeading } from 'lodash'
-import { computed, watch } from 'vue'
+import { computed, ref, useTemplateRef, watch } from 'vue'
 import PopoverTableSelect from '@moluoxixi/components/PopoverTableSelect/src/base/index.vue'
 import type { slotsType } from '@moluoxixi/components/_types'
 
@@ -151,4 +151,6 @@ const computedInput = computed(() => {
 })
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+@forward '@moluoxixi/components/_assets/styles/tailwind.scss';
+</style>

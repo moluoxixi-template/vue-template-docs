@@ -251,11 +251,11 @@ const cellTypeList = ref([
   },
 ])
 
-function changeCellType(type) {
+function changeCellType(type: string) {
   const item = columns.value.at(-2)
   columns.value[columns.value.length - 2] = {
     ...item,
-    ...type,
+    type,
   }
 }
 
@@ -277,6 +277,7 @@ function addRow() {
     id: newId,
     name: `新用户${newId}`,
     age: Math.floor(Math.random() * 40) + 20,
+    sex: '1',
     address: '待填写',
     phone: '13800000000',
     email: `user${newId}@example.com`,
@@ -290,7 +291,7 @@ function addRow() {
 
 // 编辑行
 function handleValidate() {
-  draggableTableRef.value.getTable().validate()
+  draggableTableRef.value?.getTable()?.validate()
 }
 </script>
 
