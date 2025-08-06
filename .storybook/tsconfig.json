@@ -11,17 +11,11 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "src/*"
-      ],
-      "~/*": [
-        "src/*"
-      ],
       "@moluoxixi/components": [
-        "packages/components"
+        "../packages/components"
       ],
       "@moluoxixi/components/*": [
-        "packages/components/*"
+        "../packages/components/*"
       ]
     },
     /* Bundler mode */
@@ -41,10 +35,7 @@
     "allowSyntheticDefaultImports": true
   },
   "include": [
-    ".storybook/**/*",
-    ".storybook/**/*.tsx"
-  ],
-  "exclude": [
-    ".storybook/main.ts"
+    "./**/*",
+    "./**/*.tsx"
   ]
 }

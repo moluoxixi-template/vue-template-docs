@@ -1,7 +1,7 @@
 // noinspection JSUnusedGlobalSymbols
 
 import type { Meta, StoryFn, StoryObj } from '@storybook/vue3'
-import DraggableTable from '@moluoxixi/components/DraggableTable/index.ts'
+import DraggableTable from '@moluoxixi/components/DraggableTable'
 import { ref } from 'vue'
 import type { TableRowData } from '@moluoxixi/components/DraggableTable/src/_types'
 
