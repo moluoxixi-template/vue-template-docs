@@ -1,19 +1,8 @@
 import { defineConfig } from 'vitepress'
-import { updateComponentDocs, updateGuidePages, updateIndexPage } from '../scripts/updateIndexPage'
 import head from './head'
 import themeConfig from './theme'
 import markdown from './markdown'
 import vite from './vite'
-
-// 启动时更新页面内容
-try {
-  updateIndexPage()
-  updateGuidePages()
-  updateComponentDocs()
-}
-catch (error) {
-  console.warn('⚠️ 更新页面内容失败:', error)
-}
 
 /**
  * VitePress 主配置

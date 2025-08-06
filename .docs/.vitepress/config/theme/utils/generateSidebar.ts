@@ -1,6 +1,6 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import { rootPath } from '../../contants'
+import { rootPath } from '../../../../contants'
 
 interface ComponentInfo {
   name: string
