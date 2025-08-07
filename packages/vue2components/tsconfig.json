@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "target": "ES2016",
+    "jsx": "preserve",
+    "lib": [
+      "DOM",
+      "ES2016"
+    ],
+    "baseUrl": ".",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "types": [
+      "vite/client",
+      "vue2"
+    ],
+    "paths": {
+      "@moluoxixi/vue2components": [
+        "./"
+      ],
+      "@moluoxixi/vue2components/*": [
+        "./*"
+      ]
+    },
+    "allowJs": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "./**/*"
+  ],
+  "exclude": [
+    "./node_modules/**/*"
+  ]
+}

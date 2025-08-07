@@ -20,6 +20,9 @@
     "component:build&publish": "pnpm run -C packages/components build",
     "component:build": "pnpm run -C packages/components build:only",
     "component:publish": "pnpm run -C packages/components build:publish",
+    "build:vue2component": "tsx scripts/buildVue2Component.mts",
+    "build:vue2components": "tsx scripts/buildVue2Component.mts build --all",
+    "build:vue2components:only": "tsx scripts/buildVue2Component.mts build --all --only",
     "type-check": "vue-tsc --build",
     "lint-check": "eslint --inspect-config",
     "lint:eslint": "eslint . --fix",
@@ -29,9 +32,6 @@
     "commit": "git-cz"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,vue}": [
-      "eslint --fix --no-warn-ignored"
-    ],
     "*.{css,scss,less,vue}": [
       "stylelint --fix"
     ]

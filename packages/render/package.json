@@ -28,9 +28,6 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,vue}": [
-      "eslint --fix --no-warn-ignored"
-    ],
     "*.{css,scss,less,vue}": [
       "stylelint --fix"
     ]
