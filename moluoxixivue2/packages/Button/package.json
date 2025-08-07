@@ -1,0 +1,44 @@
+{
+  "name": "@moluoxixivue2/button",
+  "version": "0.0.2",
+  "description": "Button 组件",
+  "main": "lib/index.cjs",
+  "module": "es/index.mjs",
+  "types": "es/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./es/index.d.ts",
+        "default": "./es/index.mjs"
+      },
+      "require": {
+        "types": "./lib/index.d.ts",
+        "default": "./lib/index.cjs"
+      }
+    },
+    "./es": {
+      "import": {
+        "types": "./es/index.d.ts",
+        "default": "./es/index.mjs"
+      }
+    },
+    "./lib": {
+      "require": {
+        "types": "./lib/index.d.ts",
+        "default": "./lib/index.cjs"
+      }
+    }
+  },
+  "sideEffects": [
+    "*.css",
+    "*.scss"
+  ],
+  "peerDependencies": {
+    "vue": "^2.7.16"
+  },
+  "dependencies": {},
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT"
+}

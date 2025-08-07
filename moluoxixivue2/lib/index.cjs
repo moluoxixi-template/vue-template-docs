@@ -1,0 +1,1 @@
+"use strict";Object.defineProperties(exports,{__esModule:{value:!0},[Symbol.toStringTag]:{value:"Module"}});const t=require("@moluoxixivue2/button"),o={install(e){e.component("MButton",t)}};exports.Button=t;exports.default=o;
