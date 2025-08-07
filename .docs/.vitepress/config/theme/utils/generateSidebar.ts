@@ -1,166 +1,117 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import { rootPath } from '../../../../contants'
+import { docsPath } from '../../../../contants'
+import type { DefaultTheme } from 'vitepress'
 
-interface ComponentInfo {
-  name: string
-  path: string
-  category: string
+interface SidebarItem {
+  text: string
+  link: string
+}
+
+interface SidebarGroup {
+  text: string
+  items: SidebarItem[]
 }
 /**
- * 扫描packages/components目录，自动生成组件列表
+ * 扫描指定文件夹，生成侧边栏配置
+ * @param folderName 文件夹名称，如 'guide' 或 'components'
  */
-export function scanComponents(): ComponentInfo[] {
-  const componentsDir = path.resolve(rootPath, './packages/components')
+export function scanFolder(folderName: string): SidebarGroup[] {
+  console.log(`🚀 开始扫描 ${folderName} 文件夹...`)
+  const targetDir = path.resolve(docsPath, folderName)
 
-  if (!componentsDir) {
-    console.warn('❌ packages/components 目录不存在，尝试的路径:', componentsDir)
+  if (!fs.existsSync(targetDir)) {
+    console.warn(`❌ ${folderName} 目录不存在，路径:`, targetDir)
     return []
   }
 
-  const components: ComponentInfo[] = []
-
   try {
-    const items = fs.readdirSync(componentsDir, { withFileTypes: true })
-    console.log(`📁 扫描到 ${items.length} 个项目:`, items.map(item => `${item.name}(${item.isDirectory() ? 'dir' : 'file'})`))
+    const items = fs.readdirSync(targetDir, { withFileTypes: true })
+    console.log(`📁 在 ${folderName} 中扫描到 ${items.length} 个项目`)
+
+    const sidebarGroups: SidebarGroup[] = []
+    const files: SidebarItem[] = []
+    const directories: SidebarGroup[] = []
 
     for (const item of items) {
-      // 跳过非目录项和以下划线开头的目录（工具目录）
-      if (!item.isDirectory() || item.name.startsWith('_') || item.name === 'node_modules') {
+      // 跳过隐藏文件和 node_modules
+      if (item.name.startsWith('.') || item.name === 'node_modules') {
         console.log(`⏩ 跳过: ${item.name}`)
         continue
       }
 
-      const componentPath = path.join(componentsDir, item.name)
-      const indexTs = path.join(componentPath, 'index.ts')
-      const indexVue = path.join(componentPath, 'index.vue')
+      if (item.isDirectory()) {
+        // 处理子目录
+        const subDir = path.join(targetDir, item.name)
+        const subItems = fs.readdirSync(subDir, { withFileTypes: true })
+        const subFiles: SidebarItem[] = []
 
-      // 检查是否有入口文件
-      if (fs.existsSync(indexTs) || fs.existsSync(indexVue)) {
-        const component = {
-          name: item.name,
-          path: `/components/${item.name}`,
-          category: categorizeComponent(item.name),
+        for (const subItem of subItems) {
+          if (subItem.isFile() && subItem.name.endsWith('.md') && subItem.name !== 'index.md') {
+            const fileName = subItem.name.replace('.md', '')
+            subFiles.push({
+              text: fileName,
+              link: `/${folderName}/${item.name}/${fileName}`,
+            })
+          }
         }
-        components.push(component)
-        console.log(`✅ 添加组件: ${item.name} -> ${component.category}`)
+
+        if (subFiles.length > 0) {
+          directories.push({
+            text: item.name,
+            items: subFiles.sort((a, b) => a.text.localeCompare(b.text)),
+          })
+        }
       }
-      else {
-        console.log(`❌ 无入口文件: ${item.name}`)
+      else if (item.isFile() && item.name.endsWith('.md') && item.name !== 'index.md') {
+        // 处理 markdown 文件，排除 index.md
+        const fileName = item.name.replace('.md', '')
+        files.push({
+          text: fileName,
+          link: `/${folderName}/${fileName}`,
+        })
       }
     }
 
-    console.log(`🎯 最终扫描到 ${components.length} 个有效组件`)
-    return components.sort((a, b) => a.name.localeCompare(b.name))
+    // 先添加文件，再添加目录
+    if (files.length > 0) {
+      sidebarGroups.push({
+        text: folderName,
+        items: files.sort((a, b) => a.text.localeCompare(b.text)),
+      })
+    }
+
+    sidebarGroups.push(...directories)
+
+    console.log(`✅ ${folderName} 扫描完成，生成 ${sidebarGroups.length} 个分组`)
+    return sidebarGroups
   }
   catch (error) {
-    console.error('❌ 扫描组件目录失败:', error)
-    console.log('🔄 使用静态备用组件列表')
-    return getStaticComponentList()
+    console.error(`❌ 扫描 ${folderName} 目录失败:`, error)
+    return []
   }
-}
-
-/**
- * 静态备用组件列表（当动态扫描失败时使用）
- */
-function getStaticComponentList(): ComponentInfo[] {
-  const staticComponents = [
-    'ApiDialog',
-    'Calendar',
-    'ConfigForm',
-    'ConfigProvider',
-    'ConfigTable',
-    'DateRangePicker',
-    'DraggableTable',
-    'EnterNextContainer',
-    'EnterNextDragTable',
-    'EnterNextTable',
-    'EslintConfig',
-    'ExportExcel',
-    'Icon',
-    'KeepAllAlive',
-    'MarkdownEditor',
-    'PopoverTableSelect',
-    'Select',
-    'Splitter',
-    'Tabs',
-    'ViteConfig',
-    'Watermark',
-  ]
-
-  return staticComponents.map(name => ({
-    name,
-    path: `/components/${name}`,
-    category: categorizeComponent(name),
-  })).sort((a, b) => a.name.localeCompare(b.name))
-}
-
-/**
- * 根据组件名称分类
- */
-function categorizeComponent(name: string): string {
-  const basicComponents = ['Icon', 'Watermark', 'Splitter']
-  const formComponents = ['Select', 'DateRangePicker', 'ConfigForm']
-  const tableComponents = ['ConfigTable', 'DraggableTable', 'EnterNextTable', 'EnterNextDragTable', 'PopoverTableSelect']
-  const layoutComponents = ['Tabs', 'EnterNextContainer', 'KeepAllAlive']
-  const utilComponents = ['Calendar', 'MarkdownEditor', 'ExportExcel', 'ApiDialog']
-  const configComponents = ['ConfigProvider', 'ViteConfig', 'EslintConfig']
-
-  if (basicComponents.includes(name))
-    return '基础组件'
-  if (formComponents.includes(name))
-    return '表单组件'
-  if (tableComponents.includes(name))
-    return '表格组件'
-  if (layoutComponents.includes(name))
-    return '布局组件'
-  if (utilComponents.includes(name))
-    return '工具组件'
-  if (configComponents.includes(name))
-    return '配置组件'
-
-  return '其他组件'
 }
 
 /**
  * 生成VitePress侧边栏配置
+ * @param folderNames 文件夹名称数组，如 ['guide', 'components']
  */
-export function generateSidebar() {
-  console.log('🚀 开始生成侧边栏配置...')
-  const components = scanComponents()
+export function generateSidebar(folderNames: string[]): DefaultTheme.Sidebar {
+  console.log(`🚀 开始生成侧边栏配置，文件夹: [${folderNames.join(', ')}]`)
 
-  console.log(`📊 扫描结果: ${components.length} 个组件`)
+  const sidebarConfig: Record<string, SidebarGroup[]> = {}
 
-  if (components.length === 0) {
-    console.warn('⚠️ 没有扫描到组件，返回空侧边栏')
-    return []
+  for (const folderName of folderNames) {
+    console.log(`📁 正在处理文件夹: ${folderName}`)
+
+    // 统一使用文件夹扫描逻辑，不再区分 components
+    const folderSidebar = scanFolder(folderName)
+    sidebarConfig[`/${folderName}/`] = folderSidebar
+    console.log(`✅ ${folderName} 处理完成，生成 ${folderSidebar.length} 个分组`)
   }
 
-  // 按分类分组
-  const categories = new Map<string, ComponentInfo[]>()
-
-  for (const component of components) {
-    if (!categories.has(component.category)) {
-      categories.set(component.category, [])
-    }
-    categories.get(component.category)!.push(component)
-  }
-
-  // 转换为VitePress侧边栏格式
-  const sidebar = Array.from(categories.entries()).map(([category, items]) => ({
-    text: category,
-    items: items.map(item => ({
-      text: item.name,
-      link: item.path,
-    })),
-  }))
-
-  console.log('✅ 侧边栏生成完成，分类数:', sidebar.length)
-  sidebar.forEach((group) => {
-    console.log(`  📂 ${group.text}: ${group.items.length} 个组件`)
-  })
-
-  return sidebar
+  console.log('🎯 所有文件夹处理完成，生成的路径:', Object.keys(sidebarConfig))
+  return sidebarConfig
 }
 
 /**
@@ -168,10 +119,17 @@ export function generateSidebar() {
  */
 export function generateComponentNav() {
   console.log('🧭 生成组件导航...')
-  const components = scanComponents()
+
+  // 扫描 components 文件夹获取组件数量
+  const componentsSidebar = scanFolder('components')
+  let componentCount = 0
+
+  for (const group of componentsSidebar) {
+    componentCount += group.items.length
+  }
 
   const nav = {
-    text: `组件 (${components.length})`,
+    text: `组件 (${componentCount})`,
     link: '/components/',
   }
 
