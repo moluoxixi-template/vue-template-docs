@@ -162,6 +162,7 @@ function handleEditPlayground() {
     }
   }
   .docs-example-showcase {
+    padding: 8px;
     background-color: var(--el-bg-color-page);
     .t_module_form_demo {
       background-color: var(--el-bg-color-page);

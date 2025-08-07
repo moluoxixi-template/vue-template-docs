@@ -1,5 +1,6 @@
 <template>
   <EnterNextTable
+    border
     :data="tableData"
     :columns="columns"
     height="300"
@@ -38,7 +39,7 @@ const columns = ref([
   { prop: 'name', label: '姓名', width: 120, editable: true, type: 'input' },
   { prop: 'age', label: '年龄', width: 100, editable: true, type: 'input' },
   { prop: 'email', label: '邮箱', width: 180, editable: true, type: 'input' },
-  { prop: 'department', label: '部门', width: 120, editable: true, type: 'input' },
+  { prop: 'department', label: '部门', editable: true, type: 'input' },
 ])
 
 const message = ref('')

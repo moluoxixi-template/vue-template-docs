@@ -188,9 +188,9 @@ export default function createViteConfig(Config: ViteConfigType) {
                 name: '组件示例',
               },
             },
+            ...config.autoRoutes?.routeConfig,
           },
-          dts: path.resolve(rootPath, './src/typings/auto-routes.d.ts'),
-          ...config.autoRoutes,
+          dts: config.autoRoutes?.dts || path.resolve(rootPath, './src/typings/auto-routes.d.ts'),
         }),
       ],
       esbuild: {
