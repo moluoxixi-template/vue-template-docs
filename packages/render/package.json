@@ -1,5 +1,5 @@
 {
-  "name": "vue-template",
+  "name": "@moluoxixi/render",
   "type": "module",
   "version": "0.0.0",
   "private": true,

@@ -11,7 +11,7 @@
     "build": "tsx scripts/buildComponent.mts",
     "build:only": "tsx _scripts/buildComponent.mts build",
     "build:publish": "tsx _scripts/buildComponent.mts publish",
-    "prepare": "node .husky/install.mjs",
+    "prepare": "node ../../.husky/install.mjs",
     "type-check": "vue-tsc --build",
     "lint-check": "eslint --inspect-config",
     "lint:eslint": "eslint . --fix",
