@@ -1,4 +1,8 @@
+:root{
+  --vp-layout-max-width: 100% !important;
+}
 .vp-doc{
+  //兼容vxe-table，el-table
   table{
     &.vxe-table--header,
     &.el-table{

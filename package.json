@@ -71,6 +71,7 @@
   ],
   "dependencies": {
     "@moluoxixi/components": "workspace:*",
+    "@moluoxixi/vue2components": "workspace:*",
     "@moluoxixi/render": "workspace:*",
     "@moluoxixi/docs": "workspace:*",
     "@moluoxixi/storybook": "workspace:*"
