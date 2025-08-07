@@ -19,38 +19,12 @@
     "build:component--only": "tsx scripts/buildComponent.mts build",
     "build:publish--only": "tsx scripts/buildComponent.mts publish",
     "preview": "vite preview",
-    "storybook:dev": "storybook dev -p 6006",
-    "storybook:build": "storybook build -o docs/storybook",
-    "pages:build": "vite build --mode github",
-    "vitepress:dev": "vitepress dev .docs",
-    "vitepress:build": "vitepress build .docs",
-    "vitepress:preview": "vitepress preview .docs",
-    "type-check": "vue-tsc --build",
-    "lint-check": "eslint --inspect-config",
-    "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore",
-    "lint:eslint": "eslint . --fix",
-    "lint": "run-s lint:*",
-    "prepare": "node ../../.husky/install.mjs",
-    "lint-staged": "lint-staged",
-    "commit": "git-cz"
+    "pages:build": "vite build --mode github"
   },
   "postcss": {
     "plugins": {
       "@tailwindcss/postcss": {},
       "autoprefixer": {}
-    }
-  },
-  "lint-staged": {
-    "*.{css,scss,less,vue}": [
-      "stylelint --fix"
-    ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-customizable"
-    },
-    "cz-customizable": {
-      "config": ".cz-config.cjs"
     }
   },
   "license": "MIT",

@@ -12,7 +12,7 @@
     "CICD": "node ./scripts/CICD.mjs",
     "build": "vite build --mode production & node ./scripts/build.mjs",
     "pages:build": "vite build --mode github",
-    "preview": "vite preview",
+    "preview": "vite preview"
   },
   "postcss": {
     "plugins": {
