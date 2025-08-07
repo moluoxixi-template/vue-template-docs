@@ -13,30 +13,11 @@
     "build": "vite build --mode production & node ./scripts/build.mjs",
     "pages:build": "vite build --mode github",
     "preview": "vite preview",
-    "type-check": "vue-tsc --noEmit",
-    "lint-check": "eslint --inspect-config",
-    "lint:eslint": "eslint . --fix",
-    "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore",
-    "lint-staged": "lint-staged",
-    "commit": "git-cz"
   },
   "postcss": {
     "plugins": {
       "tailwindcss": {},
       "autoprefixer": {}
-    }
-  },
-  "lint-staged": {
-    "*.{css,scss,less,vue}": [
-      "stylelint --fix"
-    ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-customizable"
-    },
-    "cz-customizable": {
-      "config": ".cz-config.cjs"
     }
   },
   "dependencies": {
