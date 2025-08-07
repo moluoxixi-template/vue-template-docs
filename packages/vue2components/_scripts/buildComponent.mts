@@ -26,7 +26,7 @@ const LIB_NAMESPACE = 'moluoxixivue2'
 /**
  * 组件的入口文件路径
  */
-const entryBaseUrl = '/packages/vue2components'
+const entryBaseUrl = '/'
 /**
  * 别名或者外部包的路径
  */
@@ -126,27 +126,15 @@ main().then((exitCode) => {
 
 // 获取组件列表（只分目录的组件）
 async function getComponentNames() {
-  // 只匹配直接子目录，不匹配嵌套目录
-  const componentDirs = await glob([`./${entryBaseUrl}/*`], {
+  const componentDirs = await glob([`./${entryBaseUrl}/*`, `!./${entryBaseUrl}/_*`], {
     cwd: rootDir,
     onlyDirectories: true,
+    ignore: [`${entryBaseUrl}/_*`],
   })
-
-  // 手动过滤不符合条件的目录
+  const excludeDirs = ['node_modules', 'moluoxixivue2', 'src']
   return componentDirs
     .map(dir => dir.split('/').pop())
-    .filter((dirName) => {
-      // 排除以 _ 开头的目录
-      if (dirName?.startsWith('_')) {
-        return false
-      }
-      // 排除 node_modules、package 和 packages 目录
-      if (dirName === 'node_modules' || dirName === 'package' || dirName === 'packages') {
-        return false
-      }
-      // 只保留符合组件命名规范的目录（首字母大写）
-      return /^[A-Z]/.test(dirName || '')
-    })
+    .filter(dirName => !excludeDirs.includes(dirName))
 }
 
 /**

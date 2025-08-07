@@ -4,8 +4,8 @@
   "description": "all components are settled here",
   "main": "index.ts",
   "module": "index.ts",
-  "peerDependencies": {
-    "vue": "^3.5.17"
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
     "build": "tsx scripts/buildComponent.mts",

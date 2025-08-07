@@ -128,12 +128,15 @@ main().then((exitCode) => {
 
 // 获取组件列表（只分目录的组件）
 async function getComponentNames() {
-  const componentDirs = await glob([`./${entryBaseUrl}/*`], {
+  const componentDirs = await glob([`./${entryBaseUrl}/*`, `!./${entryBaseUrl}/_*`], {
     cwd: rootDir,
     onlyDirectories: true,
     ignore: [`${entryBaseUrl}/_*`],
   })
-  return componentDirs.map(dir => dir.split('/').pop())
+  const excludeDirs = ['node_modules', 'moluoxixi']
+  return componentDirs
+    .map(dir => dir.split('/').pop())
+    .filter(dirName => !excludeDirs.includes(dirName))
 }
 
 /**

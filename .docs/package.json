@@ -28,7 +28,6 @@
   "author": "wocwin",
   "license": "MIT",
   "devDependencies": {
-    "vue": "^3.5.13",
     "@highlightjs/vue-plugin": "^2.1.0",
     "@types/js-cookie": "^3.0.3",
     "@types/markdown-it": "^12.2.3",
