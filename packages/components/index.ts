@@ -53,7 +53,6 @@ const components = Object.keys(componentFiles).reduce((modules = {}, modulePath)
 export default {
   install(app: App) {
     const componentNames = Object.keys(components)
-    console.log('🚀 扫描到组件:', componentNames)
     componentNames.forEach((name) => {
       console.log('🚀 注册组件:', name)
       app.component(name, components[name])
