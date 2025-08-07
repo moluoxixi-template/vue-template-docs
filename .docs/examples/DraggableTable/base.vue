@@ -1,17 +1,8 @@
 <template>
-  <div class="space-y-4">
-    <div>
-      <h3 class="text-lg font-medium mb-2">
-        基础表格
-      </h3>
-      <div style="height: 300px">
-        <DraggableTable
-          v-model="tableData"
-          :columns="columns"
-        />
-      </div>
-    </div>
-  </div>
+  <DraggableTable
+    v-model="tableData"
+    :columns="columns"
+  />
 </template>
 
 <script setup lang="ts">
@@ -29,6 +20,6 @@ const columns = ref([
   { field: 'name', title: '姓名', width: 120 },
   { field: 'age', title: '年龄', width: 100 },
   { field: 'department', title: '部门', width: 120 },
-  { field: 'status', title: '状态', width: 100 },
+  { field: 'status', title: '状态' },
 ])
 </script>

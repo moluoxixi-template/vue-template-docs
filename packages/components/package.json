@@ -10,12 +10,7 @@
   "scripts": {
     "build": "tsx scripts/buildComponent.mts",
     "build:only": "tsx _scripts/buildComponent.mts build",
-    "build:publish": "tsx _scripts/buildComponent.mts publish",
-    "prepare": "node ../../.husky/install.mjs",
-    "type-check": "vue-tsc --build",
-    "lint-check": "eslint --inspect-config",
-    "lint:eslint": "eslint . --fix",
-    "lint": "run-s lint:*"
+    "build:publish": "tsx _scripts/buildComponent.mts publish"
   },
   "dependencies": {
     "@codemirror/view": "^6.36.5",
@@ -56,18 +51,5 @@
     "vite-plugin-imagemin": "^0.6.1",
     "vite-plugin-qiankun": "^1.0.15",
     "vite-plugin-vue-devtools": "^7.7.2"
-  },
-  "lint-staged": {
-    "*.{css,scss,less,vue}": [
-      "stylelint --fix"
-    ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-customizable"
-    },
-    "cz-customizable": {
-      "config": ".cz-config.cjs"
-    }
   }
 }

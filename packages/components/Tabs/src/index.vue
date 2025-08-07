@@ -24,6 +24,8 @@
 
 <script setup lang="ts">
 import { ElTabPane, ElTabs } from 'element-plus'
+import 'element-plus/es/components/tabs/style/css.mjs'
+import 'element-plus/es/components/tab-pane/style/css.mjs'
 
 defineOptions({
   name: 'Tabs',

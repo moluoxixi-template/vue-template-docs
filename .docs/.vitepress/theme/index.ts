@@ -14,10 +14,12 @@ import DocsCodeDemo from './components/DocsCodeDemo/index.vue'
 
 import directive from './directives'
 import type { Theme } from 'vitepress'
+import DefaultTheme from 'vitepress/theme'
 
 const define = <T>(value: T): T => value
 
 export default define<Theme>({
+  extends: DefaultTheme,
   Layout,
   enhanceApp({ app }: { app: VueApp }) {
     // 注册vue-component组件库

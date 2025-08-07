@@ -1,15 +1,10 @@
 <template>
-  <div>
-    <DateRangePicker
-      v-model="dateValue"
-      type="daterange"
-      placeholder="请选择日期范围"
-      @change="handleDateChange"
-    />
-    <div class="mt-2">
-      选择的日期: {{ dateValue }}
-    </div>
-  </div>
+  <DateRangePicker
+    v-model="dateValue"
+    type="daterange"
+    placeholder="请选择日期范围"
+    @change="handleDateChange"
+  />
 </template>
 
 <script setup lang="ts">

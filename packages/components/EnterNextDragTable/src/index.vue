@@ -31,6 +31,9 @@ import DraggableTable from '@moluoxixi/components/DraggableTable/index.ts'
 import EnterNextContainer from '@moluoxixi/components/EnterNextContainer/index.ts'
 import type { slotsType } from '@moluoxixi/components/_types'
 
+defineOptions({
+  name: 'EnterNextDragTable',
+})
 const props = withDefaults(defineProps<EnterNextDragTableProps>(), {
   allowSelectNextInEmpty: false,
   containerType: 'row',

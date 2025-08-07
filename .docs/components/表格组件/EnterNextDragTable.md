@@ -12,20 +12,9 @@ EnterNextDragTable/base
 
 ### Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| tableData | 表格数据 | Array | [] |
-| columns | 表格列配置 | Array | [] |
-| height | 表格高度 | String/Number | null |
-| border | 是否显示边框 | Boolean | true |
-| stripe | 是否显示斑马纹 | Boolean | true |
-| loading | 是否显示加载状态 | Boolean | false |
-| showHeader | 是否显示表头 | Boolean | true |
-| rowdragable | 是否启用行拖拽 | Boolean | false |
-| columndragable | 是否启用列拖拽 | Boolean | false |
-| editable | 是否启用单元格编辑功能 | Boolean | false |
-| filterable | 是否启用列筛选功能 | Boolean | false |
-| allowNextWhenNoAriaActive | 当为true时，即使元素的aria-activedescendant没有值，也允许跳转到下一个元素 | Boolean | false |
+| 参数 | 说明      | 类型               | 默认值 |
+| --- |---------|------------------|-----|
+| containerType | 作为容器的类型 | row\| column | row |
 
 ### Events
 
@@ -41,9 +30,10 @@ EnterNextDragTable/base
 
 ### Expose
 
-| 名称 | 说明 | 类型 |
-| --- | --- | --- |
-| getTable | 获取VXE-Grid实例 | Function |
+| 名称          | 说明                            | 类型       |
+| ----------- | ----------------------------- | -------- |
+| getTableRef | 获取 DraggableTable 实例          | Function |
+| refreshRows | 刷新表格，重新收集元素，用于监视失败，无法回车下一个时调用 | Function |
 
 ## 源码
 

@@ -65,7 +65,7 @@ import type {
   VxeTablePropTypes,
 } from 'vxe-table'
 import type { ColumnType, types } from '@moluoxixi/components/DraggableTable/src/_types'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElPagination } from 'element-plus'
 import { cloneDeep, groupBy } from 'lodash'
 import { diff, isEmpty } from 'radash'
 import Sortable from 'sortablejs'
