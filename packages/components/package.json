@@ -56,5 +56,21 @@
     "vite-plugin-imagemin": "^0.6.1",
     "vite-plugin-qiankun": "^1.0.15",
     "vite-plugin-vue-devtools": "^7.7.2"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,vue}": [
+      "eslint --fix --no-warn-ignored"
+    ],
+    "*.{css,scss,less,vue}": [
+      "stylelint --fix"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-customizable"
+    },
+    "cz-customizable": {
+      "config": ".cz-config.cjs"
+    }
   }
 }
