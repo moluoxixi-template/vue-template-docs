@@ -94,5 +94,11 @@
     "stylelint-config-standard-vue": "^1.0.0",
     "tsx": "^4.20.3",
     "typescript": "~5.8.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "@moluoxixi/vue2components>vue": "2.6.14",
+      "@moluoxixi/vue2components>vue-template-compiler": "2.6.14"
+    }
   }
 }

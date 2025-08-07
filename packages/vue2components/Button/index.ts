@@ -1,10 +1,9 @@
 import Button from './src/index.vue'
-import type { App } from 'vue'
 
 // 导出组件
 export default Button
 
 // 用于Vue插件形式注册
-export function install(app: App) {
-  app.component('MButton', Button)
+export function install(Vue) {
+  Vue.component('MButton', Button)
 }
