@@ -44,6 +44,7 @@
     }
   },
   "dependencies": {
+    "@moluoxixi/components": "workspace:*",
     "@element-plus/icons-vue": "^2.3.1",
     "@sentry/vite-plugin": "^3.5.0",
     "@sentry/vue": "^9.27.0",
