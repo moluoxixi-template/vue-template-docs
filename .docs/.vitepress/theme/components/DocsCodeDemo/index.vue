@@ -113,19 +113,62 @@ function handleEditPlayground() {
   border-radius: var(--el-border-radius-base);
   margin-top: 10px;
 
+  :deep(.docs-example-language-vue) {
+    &.language-vue {
+      margin: 0;
+      border-radius: 0;
+      overflow-y: hidden;
+      padding-top: 10px;
+
+      pre {
+        font-family: monospace, monospace;
+        font-size: 1em;
+        overflow: unset;
+        line-height: 1.4;
+        padding: 0;
+      }
+
+      code {
+        padding: 0 10px 20px;
+        line-height: 1.4;
+        font-size: 14px;
+        color: var(--el-text-color-primary);
+        background-color: var(--vp-code-block-bg);
+      }
+
+      .hljs-keyword {
+        color: #c792ea;
+      }
+
+      .hljs-attr,
+      .hljs-tag {
+        color: #717c11;
+      }
+
+      /* number boolean */
+      .hljs-number,
+      .hljs-literal {
+        color: #c25205;
+      }
+
+      .hljs-string {
+        color: #0b8235;
+      }
+
+      .hljs-variable {
+        color: var(--el-text-color-primary);
+      }
+    }
+  }
   .docs-example-showcase {
     background-color: var(--el-bg-color-page);
-
     .t_module_form_demo {
       background-color: var(--el-bg-color-page);
-
       :deep(.t_layout_page_item) {
         padding: 0;
-
         .t_module_form {
           overflow: hidden;
           margin: 0 !important;
-
           .handle_wrap {
             position: inherit;
           }
@@ -133,11 +176,9 @@ function handleEditPlayground() {
       }
     }
   }
-
   .m-0 {
     margin: 0;
   }
-
   .docs-example-btns {
     padding: 0.5rem;
     display: flex;
@@ -167,7 +208,6 @@ function handleEditPlayground() {
       }
     }
   }
-
   &-float-control {
     display: flex;
     align-items: center;
@@ -186,7 +226,6 @@ function handleEditPlayground() {
     right: 0;
     bottom: 0;
     z-index: 10;
-
     span {
       font-size: 14px;
       margin-left: 10px;
@@ -196,7 +235,6 @@ function handleEditPlayground() {
       color: var(--el-color-primary);
     }
   }
-
   .content {
     padding-left: 32px;
   }
@@ -206,7 +244,6 @@ function handleEditPlayground() {
     line-height: 1.4;
     padding-top: 11px;
     user-select: none;
-
     .line-number {
       color: #aaa;
       line-height: 1.4;

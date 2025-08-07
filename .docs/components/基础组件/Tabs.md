@@ -8,18 +8,6 @@
 Tabs/base
 :::
 
-## 可关闭标签页
-
-:::demo
-Tabs/closable
-:::
-
-## 动态增减标签页
-
-:::demo
-Tabs/dynamic
-:::
-
 ## API
 
 ### Props
