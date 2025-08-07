@@ -1,43 +1,30 @@
 <template>
-  <div class="space-y-4">
-    <div>
-      <h3 class="text-lg font-medium mb-2">
-        基础表格
-      </h3>
-      <div class="mb-2 text-sm text-gray-600">
-        基于Element Plus表格，支持回车键在可编辑单元格之间跳转
-      </div>
-      <EnterNextTable
-        :data="tableData"
-        :columns="columns"
-        height="300"
-        @no-next-input="handleNoNextInput"
-      >
-        <ElTableColumn
-          v-for="column in columns"
-          :key="column.prop"
-          :label="column.label"
-          :width="column.width"
-        >
-          <template #default="scope">
-            <el-input
-              v-if="column.type === 'input'"
-              v-model="scope.row[column.prop]"
-            />
-            <span v-else>{{ scope.row[column.prop] }}</span>
-          </template>
-        </ElTableColumn>
-      </EnterNextTable>
-      <div v-if="message" class="mt-2 p-2 bg-blue-100 rounded text-sm text-blue-600">
-        {{ message }}
-      </div>
-    </div>
-  </div>
+  <EnterNextTable
+    :data="tableData"
+    :columns="columns"
+    height="300"
+    @no-next-input="handleNoNextInput"
+  >
+    <ElTableColumn
+      v-for="column in columns"
+      :key="column.prop"
+      :label="column.label"
+      :width="column.width"
+    >
+      <template #default="scope">
+        <ElInput
+          v-if="column.type === 'input'"
+          v-model="scope.row[column.prop]"
+        />
+        <span v-else>{{ scope.row[column.prop] }}</span>
+      </template>
+    </ElTableColumn>
+  </EnterNextTable>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { ElTableColumn } from 'element-plus'
+import { ElInput, ElTableColumn } from 'element-plus'
 
 const tableData = ref([
   { id: 1, name: '张三', age: 25, email: 'zhangsan@example.com', department: '技术部' },

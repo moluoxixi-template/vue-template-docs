@@ -4,8 +4,7 @@
 .vp-doc{
   //兼容vxe-table，el-table
   table{
-    &.vxe-table--header,
-    &.el-table{
+    &[class*=vxe-],&[class*=el-]{
       display: table;
       margin: 0 !important;
     }
