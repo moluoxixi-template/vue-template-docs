@@ -2,6 +2,7 @@ import type { VxeGlobalRendererHandles, VxeTableDefines } from 'vxe-table'
 import type { objType } from '@moluoxixi/components/_types'
 import { ElButton, ElCheckbox, ElInput } from 'element-plus'
 import { groupBy } from 'lodash'
+import type { PropType } from 'vue'
 import { computed, defineComponent, ref, watch } from 'vue'
 import { getTypeDefault } from '@moluoxixi/components/_utils'
 

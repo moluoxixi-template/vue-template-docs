@@ -48,8 +48,8 @@
 
 <script lang="ts" setup>
 import type { InputInstance } from 'element-plus'
-import type { ComponentInternalInstance, ComponentPublicInstance } from 'vue'
-import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
+import type { ComponentInternalInstance, ComponentPublicInstance, PropType } from 'vue'
+import { computed, nextTick, onUnmounted, ref, useTemplateRef, watch } from 'vue'
 import type { VxeTableDefines, VxeTablePropTypes } from 'vxe-table'
 import type { ColumnType } from '@moluoxixi/components/DraggableTable/src/_types'
 import { ElPopover } from 'element-plus'

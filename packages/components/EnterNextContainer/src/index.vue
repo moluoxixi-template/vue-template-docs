@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import type { ComponentInternalInstance, ComponentPublicInstance } from 'vue'
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 
 interface Props {
   virtualRef?: ComponentPublicInstance | ComponentInternalInstance | HTMLElement | null
@@ -14,6 +14,14 @@ interface Props {
    * 是否允许在select没有选中值时跳转
    */
   allowSelectNextInEmpty?: boolean
+  /**
+   * 默认聚焦第几个元素
+   */
+  focusNum?: number | undefined
+  /**
+   * 禁用是否下一个
+   */
+  autoNext?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -38,7 +46,7 @@ const elementToObserve = computed(() => {
 })
 
 // 获取容器内所有input和select元素，并为它们添加事件监听器
-function collectInputElements() {
+function collectInputElements(type: string = '') {
   const container = elementToObserve.value
   if (!container)
     return
@@ -53,8 +61,27 @@ function collectInputElements() {
 
   // 过滤掉有 disabled 属性的元素
   const enabledElements = elements.filter(el => !el.hasAttribute('disabled'))
-  inputElements.value = enabledElements
 
+  inputElements.value = enabledElements
+  if (type === 'mounted') {
+    nextTick(() => {
+      setTimeout(() => {
+        if (typeof props.focusNum === 'number') {
+          const activeElement = elements[props.focusNum - 1]
+          if (props.autoNext) {
+            activeElement?.focus()
+          }
+          else {
+            activeElement?.focus()
+          }
+          const hasAriaActive = attributeExistsWithNoValue(activeElement, 'aria-expanded', 'false')
+          if (hasAriaActive) {
+            activeElement.click()
+          }
+        }
+      })
+    })
+  }
   // 为每个元素添加keyup事件监听
   enabledElements.forEach((el) => {
     el.addEventListener('keyup', handleInputKeyUp)
@@ -163,9 +190,30 @@ watch(
 )
 
 let cleanup: (() => void) | undefined
-
+const divObserver = ref()
+function setupDivObserver() {
+  divObserver.value = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        // console.log('✅ 元素进入视口', entry.target)
+        collectInputElements('mounted')
+      }
+      else {
+        // console.log('❌ 元素离开视口', entry.target)
+      }
+    })
+  }, {
+    root: null,
+    threshold: 0.1,
+    rootMargin: '0px',
+  })
+  divObserver.value.observe(elementToObserve.value)
+}
+function clearDivObserver() {
+  divObserver.value.disconnect()
+}
 onMounted(() => {
-  collectInputElements()
+  setupDivObserver()
   cleanup = setupMutationObserver()
 })
 
@@ -177,11 +225,14 @@ onUnmounted(() => {
 
   // 断开MutationObserver
   cleanup?.()
+  clearDivObserver()
 })
 </script>
 
 <style scoped>
 .enter-next-container {
-  display: contents;
+  border: 0;
+  padding: 0;
+  margin: 0;
 }
 </style>

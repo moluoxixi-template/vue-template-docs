@@ -68,7 +68,7 @@
 
 <script lang="tsx" setup>
 import { ElInput } from 'element-plus'
-import { ref } from 'vue'
+import { ref, useTemplateRef } from 'vue'
 import PopoverTableSelect from './index.vue'
 
 const columns = [

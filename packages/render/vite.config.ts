@@ -1,4 +1,4 @@
-import createViteConfig, { wrapperEnv } from './packages/components/ViteConfig'
+import createViteConfig, { wrapperEnv } from '../../packages/components/ViteConfig'
 import process from 'node:process'
 
 // sentry
@@ -17,7 +17,7 @@ export default createViteConfig(({ mode }) => {
         VITE_GLOB_APP_CODE: 'test',
         VITE_DEVTOOLS: false,
         VITE_PURE_CONSOLE_AND_DEBUGGER: false,
-        VITE_PORT: 3300,
+        VITE_PORT: 3355,
         VITE_OPEN: true,
         VITE_USE_QIANKUN: false,
         VITE_QIANKUN_DEV: false,

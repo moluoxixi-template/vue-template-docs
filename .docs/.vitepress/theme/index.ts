@@ -15,7 +15,7 @@ import * as echarts from 'echarts'
 import 'highlight.js/lib/common'
 import hljsVuePlugin from '@highlightjs/vue-plugin/dist/highlightjs-vue.esm.min.js' // 引入echarts
 
-import DocsCodeDemo from './components/docs-code-demo.vue'
+import DocsCodeDemo from './components/DocsCodeDemo/index.vue'
 
 import directive from './directives'
 import type { Theme } from 'vitepress'

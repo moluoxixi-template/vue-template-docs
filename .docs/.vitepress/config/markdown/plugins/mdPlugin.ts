@@ -4,9 +4,9 @@ import MarkdownIt from 'markdown-it'
 import mdContainer from 'markdown-it-container'
 import type Token from 'markdown-it/lib/token'
 import type Renderer from 'markdown-it/lib/renderer'
+import { docsPath } from '../../../../contants'
 
 const localMd = MarkdownIt()
-const docRoot = path.resolve(__dirname, '../../')
 interface ContainerOpts {
   marker?: string | undefined
   validate?: (params: string) => boolean
@@ -26,9 +26,8 @@ export function mdPlugin(md: MarkdownIt) {
         const sourceFileToken = tokens[idx + 2]
         let source = ''
         const sourceFile = sourceFileToken.children?.[0].content ?? ''
-
         if (sourceFileToken.type === 'inline') {
-          source = fs.readFileSync(path.resolve(docRoot, 'examples', `${sourceFile}.vue`), 'utf-8')
+          source = fs.readFileSync(path.resolve(docsPath, 'examples', `${sourceFile}.vue`), 'utf-8')
         }
         if (!source)
           throw new Error(`Incorrect source file: ${sourceFile}`)

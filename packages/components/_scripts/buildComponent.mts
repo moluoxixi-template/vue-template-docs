@@ -28,7 +28,7 @@ const LIB_NAMESPACE = 'moluoxixi'
 /**
  * 组件的入口文件路径
  */
-const entryBaseUrl = '/packages/components'
+const entryBaseUrl = '/'
 /**
  * 别名或者外部包的路径
  */
@@ -165,7 +165,7 @@ function createBaseConfig(comp: string, internalDeps: string[]): InlineConfig {
       AutoImport({
         imports: ['vue'],
         resolvers: [ElementPlusResolver()],
-        dts: path.resolve(rootDir, './src/typings/auto-imports.d.ts'),
+        dts: path.resolve(rootDir, './typings/auto-imports.d.ts'),
       }),
       // 与自定义element组件冲突
       Components({
@@ -185,7 +185,7 @@ function createBaseConfig(comp: string, internalDeps: string[]): InlineConfig {
           `!${entryBaseUrl}/**/_utils/**/*`,
           `!${entryBaseUrl}/**/_types/**/*`,
         ],
-        dts: path.resolve(rootDir, './src/typings/components.d.ts'),
+        dts: path.resolve(rootDir, './typings/components.d.ts'),
       }),
       viteImagemin({
         gifsicle: { optimizationLevel: 7, interlaced: false },
@@ -449,7 +449,7 @@ async function analyzeComponentDeps(comp: string) {
             || importPath.startsWith(`${aliasComponentPath}/`)) {
             try {
               // 解析@路径为实际路径
-              const actualPath = importPath.replace('@/', 'src/')
+              const actualPath = importPath.replace('@/', './')
               const sharedModulePath = resolve(rootDir, actualPath)
 
               // 如果是文件，直接扫描；如果是目录，尝试找index文件
