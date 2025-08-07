@@ -5,11 +5,11 @@
       <div class="docs-example-showcase">
         <AppAsyncComponent />
       </div>
-      <el-divider class="m-0" />
+      <ElDivider class="m-0" />
 
       <div class="docs-example-btns">
-        <el-tooltip content="在 Playground 中编辑">
-          <el-icon :size="size" class="op-btn" @click="handleEditPlayground">
+        <ElTooltip content="在 Playground 中编辑">
+          <ElIcon :size="size" class="op-btn" @click="handleEditPlayground">
             <svg
               preserveAspectRatio="xMidYMid meet"
               viewBox="0 0 24 24"
@@ -21,18 +21,18 @@
                 d="M16 2v2h-1v3.243c0 1.158.251 2.301.736 3.352l4.282 9.276A1.5 1.5 0 0 1 18.656 22H5.344a1.5 1.5 0 0 1-1.362-2.129l4.282-9.276A7.994 7.994 0 0 0 9 7.243V4H8V2h8zm-2.612 8.001h-2.776c-.104.363-.23.721-.374 1.071l-.158.361L6.125 20h11.749l-3.954-8.567a9.978 9.978 0 0 1-.532-1.432zM11 7.243c0 .253-.01.506-.029.758h2.058a8.777 8.777 0 0 1-.021-.364L13 7.243V4h-2v3.243z"
               />
             </svg>
-          </el-icon>
-        </el-tooltip>
-        <el-tooltip content="复制代码">
-          <el-icon :size="size" class="op-btn">
+          </ElIcon>
+        </ElTooltip>
+        <ElTooltip content="复制代码">
+          <ElIcon :size="size" class="op-btn">
             <CopyDocument v-copy="content" />
-          </el-icon>
-        </el-tooltip>
-        <el-tooltip :content="show ? '收起源代码' : '查看源代码'">
-          <el-icon :size="size" class="op-btn" @click="handleToggle">
+          </ElIcon>
+        </ElTooltip>
+        <ElTooltip :content="show ? '收起源代码' : '查看源代码'">
+          <ElIcon :size="size" class="op-btn" @click="handleToggle">
             <View />
-          </el-icon>
-        </el-tooltip>
+          </ElIcon>
+        </ElTooltip>
       </div>
       <ElCollapseTransition>
         <div v-show="show" class="docs-example-language-vue language-vue">
@@ -64,6 +64,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { CaretTop, CopyDocument, View } from '@element-plus/icons-vue'
+import { ElCollapseTransition, ElDivider, ElIcon, ElTooltip } from 'element-plus'
 import { getComponent } from './utils/getComponent'
 import { getPlaygroundEncoded } from './utils'
 

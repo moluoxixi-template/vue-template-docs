@@ -5,6 +5,7 @@ src/typings
 docs
 moluoxixi
 src/ViteConfig
+.docs/.obsidian
 .docs/.vitepress/cache
 .docs/.vitepress/dist
 .docs/typings
