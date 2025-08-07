@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "vue3 组件的视图层，用于测试",
   "scripts": {
-    "dev": "vite ./"
+    "dev": "vite ./",
+    "build": "vite build --mode production & node ./scripts/build.mjs",
+    "CICD": "node ./scripts/CICD.mjs",
+    "pages:build": "vite build --mode github"
   },
   "repository": {
     "type": "git",
