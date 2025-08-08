@@ -2,10 +2,21 @@
 
 回车自动跳转容器组件，让用户可以通过按回车键在表单输入框之间快速跳转。
 
-## 基础用法
+## 组件示例
+
+### 基础用法
+
+示例：容器内按 Enter 键顺序聚焦下一个输入/选择控件
 
 :::demo
 EnterNextContainer/base
+:::
+
+### Props
+
+示例：通过 `virtualRef` 监听外部容器而非自身
+:::demo
+EnterNextContainer/virtualRef
 :::
 
 ## API

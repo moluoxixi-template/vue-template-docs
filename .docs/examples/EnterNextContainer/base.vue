@@ -1,31 +1,33 @@
 <template>
-  <EnterNextContainer @no-next-input="handleNoNextInput">
-    <ElRow>
-      <ElCol><ElInput v-model="form.name" placeholder="请输入姓名" /></ElCol>
-      <ElCol><ElInput v-model="form.phone" placeholder="请输入手机号" /></ElCol>
-      <ElCol><ElInput v-model="form.email" placeholder="请输入邮箱" /></ElCol>
-      <ElCol><ElInput v-model="form.address" placeholder="请输入地址" /></ElCol>
-    </ElRow>
-  </EnterNextContainer>
+  <div class="container">
+    <EnterNextContainer @no-next-input="handleNoNextInput">
+      <ElInput v-model="form.name" class="ipt" placeholder="请输入姓名" />
+      <ElInput v-model="form.phone" class="ipt" placeholder="请输入手机号" />
+      <ElInput v-model="form.email" class="ipt" placeholder="请输入邮箱" />
+      <ElInput v-model="form.address" class="ipt" placeholder="请输入地址" />
+    </EnterNextContainer>
+    <div class="msg">{{ noNextMessage }}</div>
+  </div>
+
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { ElCol, ElInput, ElRow } from 'element-plus'
+import { ElInput } from 'element-plus'
 
-const form = ref({
-  name: '',
-  phone: '',
-  email: '',
-  address: '',
-})
-
+const form = ref({ name: '', phone: '', email: '', address: '' })
 const noNextMessage = ref('')
 
 function handleNoNextInput() {
   noNextMessage.value = '已到达最后一个输入框，可以进行下一步操作'
   setTimeout(() => {
     noNextMessage.value = ''
-  }, 3000)
+  }, 1500)
 }
 </script>
+
+<style scoped>
+.container { padding: 8px; }
+.ipt { display: block; margin-bottom: 8px; }
+.msg { margin-top: 6px; font-size: 12px; color: #555; }
+</style>
