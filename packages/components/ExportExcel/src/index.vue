@@ -11,7 +11,7 @@
 
 <script setup>
 import { ElMessage } from 'element-plus'
-import { saveAs } from 'file-saver'
+import fileSaver from 'file-saver'
 import { computed } from 'vue'
 import * as XLSX from 'xlsx'
 import { getTypeDefault } from '@moluoxixi/components/_utils/index.ts'
@@ -248,7 +248,7 @@ function exportExcel(data, header, fileName, keys = null) {
   const timestamp = new Date().getTime()
   const fullFileName = `${fileName}_${timestamp}.${fileType}`
 
-  saveAs(blob, fullFileName)
+  fileSaver.saveAs(blob, fullFileName)
 
   // 导出成功提示
   ElMessage.success('导出成功')
