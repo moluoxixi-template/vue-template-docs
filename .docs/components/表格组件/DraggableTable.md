@@ -2,10 +2,126 @@
 
 可拖拽表格组件，基于VXE-Grid封装，支持行列拖拽、编辑、过滤等功能。
 
-## 基础用法
+## 组件示例
 
+
+### 编辑（editable / editAutoFocus / editRules / editConfig）
+
+示例：开启编辑（editable=true）
 :::demo
-DraggableTable/base
+DraggableTable/edit/editable
+:::
+
+示例：关闭编辑模式自动聚焦（editAutoFocus=false）
+:::demo
+DraggableTable/edit/editAutoFocus
+:::
+
+### 过滤（filterable / filterType / filterLayout / filterConfig）
+
+示例：开启过滤（filterable=true）
+:::demo
+DraggableTable/filter/filterable
+:::
+
+示例：过滤类型（filterType='full'）
+:::demo
+DraggableTable/filter/filterType
+:::
+
+示例：过滤布局（filterLayout=['input','checkbox','select']）
+:::demo
+DraggableTable/filter/filterLayout
+:::
+
+### 拖拽（dragType / dragable / rowdragable / columndragable / rowDisabledClass / rowDragDisabledMethod / columnDragDisabledMethod）
+
+示例：VXE 拖拽模式（dragType='vxe'，启用行列拖拽）
+:::demo
+DraggableTable/drag/dragType-vxe
+:::
+
+示例：原生拖拽模式（dragType='draggable'，dragable=true）
+:::demo
+DraggableTable/drag/dragType-draggable
+:::
+
+示例：禁用指定行拖拽（rowDisabledClass）
+:::demo
+DraggableTable/drag/rowDisabledClass
+:::
+
+示例：通过回调禁用某些行拖拽（rowDragDisabledMethod）
+:::demo
+DraggableTable/drag/rowDragDisabledMethod
+:::
+
+示例：通过回调拦截列拖拽（columnDragDisabledMethod）
+:::demo
+DraggableTable/drag/columnDragDisabledMethod
+:::
+
+### 排序（sortable / sortConfig）
+
+示例：启用全局排序（sortable=true）
+:::demo
+DraggableTable/sort/sortable
+:::
+
+### 插槽（动态命名插槽与内置前缀插槽）
+
+示例：默认（字段）插槽
+:::demo
+DraggableTable/slots/defaultSlot
+:::
+
+示例：表头插槽（header-name）
+:::demo
+DraggableTable/slots/headerSlot
+:::
+
+示例：编辑插槽（edit-name）
+:::demo
+DraggableTable/slots/editSlot
+:::
+
+示例：过滤插槽（filter-name）
+:::demo
+DraggableTable/slots/filterSlot
+:::
+
+### 事件
+
+示例：行拖拽完成（rowDragend）
+:::demo
+DraggableTable/events/rowDragend
+:::
+
+示例：列拖拽完成（columnDragend）
+:::demo
+DraggableTable/events/columnDragend
+:::
+
+示例：列宽变化（resizableChange）
+:::demo
+DraggableTable/events/resizableChange
+:::
+
+示例：复选框（checkboxChange / checkboxAll）
+:::demo
+DraggableTable/events/checkbox
+:::
+
+示例：表头菜单与右键（headerCellMenu / headerContextMenu）
+:::demo
+DraggableTable/events/headerMenu
+:::
+
+### 暴露方法（getTable）
+
+示例：通过 ref 获取 VXE 表格实例
+:::demo
+DraggableTable/expose/getTable
 :::
 
 ## API
