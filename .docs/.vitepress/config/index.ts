@@ -12,7 +12,7 @@ export default defineConfig({
   outDir: '../docs/vitepress',
   description: '基于Vue3 + TypeScript + Element Plus的现代化组件库',
   lang: 'zh-CN',
-  base: '/vueComponent/',
+  base: '/vueComponents/',
   head,
   lastUpdated: true,
   themeConfig,
