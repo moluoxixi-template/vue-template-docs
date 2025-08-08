@@ -37,7 +37,7 @@ Tabs/base
 
 | 插槽名 | 说明 |
 | --- | --- |
-| [slot\|label] | 标签页内容，插槽名称为tabList中item的slot属性或label属性 |
+| [slot\|label] | 标签页内容，插槽名称为tabList中item的slot属性或label属性（当 `slot` 未设置时使用 `label` 作为插槽名） |
 
 ### Expose
 

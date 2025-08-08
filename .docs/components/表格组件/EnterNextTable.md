@@ -37,6 +37,7 @@ EnterNextTable/base
 | 名称 | 说明 | 类型 |
 | --- | --- | --- |
 | refreshRows | 手动刷新行元素收集 | Function |
+| - | 该组件未暴露其它方法 | - |
 
 ## 源码
 

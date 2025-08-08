@@ -12,28 +12,32 @@ EnterNextDragTable/base
 
 ### Props
 
-| 参数 | 说明      | 类型               | 默认值 |
-| --- |---------|------------------|-----|
-| containerType | 作为容器的类型 | row\| column | row |
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| v-model | 表格数据 | Array | [] |
+| allowSelectNextInEmpty | 是否允许在select没有选中值时跳转 | Boolean | false |
+| containerType | 容器类型，用于确定 EnterNextContainer 的作用范围 | 'row' \| 'table' | 'row' |
 
 ### Events
 
 | 事件名 | 说明 | 回调参数 |
 | --- | --- | --- |
-| update:tableData | 表格数据更新事件 | (newData: Array) |
-| update:columns | 列配置更新事件 | (newColumns: Array) |
-| row-dragend | 行拖拽完成事件 | ({ oldIndex, newIndex, row }) |
-| column-dragend | 列拖拽完成事件 | ({ oldIndex, newIndex, column }) |
-| cell-change | 单元格值改变事件 | (params) |
-| noNextInput | 当没有下一个输入元素时触发 | (element: HTMLElement) |
-| noSelectValue | 当select下拉框没有选中值时但按了回车触发 | (data: Object) |
+| noNextInput | 当没有下一个输入元素时触发 | ({ row, rowIndex, colIndex }) |
+| noSelectValue | 当select下拉框没有选中值时但按了回车触发 | ({ row, rowIndex, colIndex }) |
+| toggleTreeExpand | 树形表格行展开/收起时触发 | (params: VxeTableDefines.ToggleRowExpandEventParams) |
+
+### Slots
+
+| 插槽名 | 说明 |
+| --- | --- |
+| [动态插槽] | 透传给内部 `DraggableTable` 的所有插槽，使用方式与 [DraggableTable 的 Slots](./DraggableTable.md#slots) 一致 |
 
 ### Expose
 
-| 名称          | 说明                            | 类型       |
-| ----------- | ----------------------------- | -------- |
-| getTableRef | 获取 DraggableTable 实例          | Function |
-| refreshRows | 刷新表格，重新收集元素，用于监视失败，无法回车下一个时调用 | Function |
+| 名称          | 说明                            | 类型                                         |
+| ----------- | ----------------------------- |--------------------------------------------|
+| refreshRows | 手动刷新行元素收集 | Function                                   |
+| getTableRef | 获取内部 DraggableTable 引用 | () => InstanceType\<typeof DraggableTable\> |
 
 ## 源码
 

@@ -1037,7 +1037,7 @@ async function buildComponent(
       baseConfig,
       entryFileNames: `[name].cjs`,
       chunkFileNames: `[name].cjs`,
-      exportsType: 'default',
+      exportsType: 'named',
     })
 
     // 复制README.md
@@ -1090,7 +1090,7 @@ async function buildComponent(
       publishConfig: {
         access: 'public',
       },
-      license: 'MIT',
+      license: 'MIT'
     }
 
     // 分类依赖到 peerDependencies 和 dependencies
