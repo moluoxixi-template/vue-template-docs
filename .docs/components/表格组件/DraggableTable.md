@@ -14,11 +14,12 @@ DraggableTable/base
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
+| v-model | 表格数据 | Array | [] |
 | id | 表格唯一ID，用于本地存储识别 | String | - |
 | border | 是否显示表格边框 | Boolean | true |
-| showOverflow | 表格内容溢出隐藏并显示tooltip | Boolean/String | true |
-| showHeaderOverflow | 头部溢出隐藏并显示tooltip | Boolean/String | true |
-| showFooterOverflow | 底部溢出隐藏并显示tooltip | Boolean/String | true |
+| showOverflow | 表格内容溢出隐藏并显示 tooltip | Boolean\|String | true |
+| showHeaderOverflow | 头部溢出隐藏并显示 tooltip | Boolean\|String | true |
+| showFooterOverflow | 底部溢出隐藏并显示 tooltip | Boolean\|String | true |
 | resizable | 是否允许列宽拖拽 | Boolean | true |
 | autoResize | 是否自动调整列宽 | Boolean | true |
 | resizableConfig | 列宽拖拽配置 | Object | {} |
@@ -28,12 +29,12 @@ DraggableTable/base
 | editConfig | 编辑配置 | Object | {} |
 | filterable | 是否启用过滤功能 | Boolean | false |
 | filterType | 过滤类型 | String | 'filter' |
-| filterLayout | 筛选器布局配置，支持 input, checkbox, select | Array | ['input', 'checkbox'] |
+| filterLayout | 筛选器布局配置，支持 input、checkbox、select | Array | ['input','checkbox'] |
 | filterConfig | 过滤配置 | Object | {} |
 | dragable | 是否启用拖拽（行列都启用） | Boolean | false |
 | rowdragable | 是否启用行拖拽 | Boolean | false |
 | columndragable | 是否启用列拖拽 | Boolean | false |
-| dragType | 拖拽模式，vxe模式下表格数据变化时会重新渲染 | String | 'vxe' |
+| dragType | 拖拽模式（'vxe'\|'draggable'） | String | 'vxe' |
 | rowDisabledClass | 需要禁用拖拽的行class | String | '' |
 | rowDragDisabledMethod | 行拖拽禁用方法 | Function | - |
 | rowDragEndMethod | 行拖拽结束回调方法 | Function | - |
@@ -43,7 +44,7 @@ DraggableTable/base
 | columnDragConfig | 列拖拽配置对象 | Object | {} |
 | rowId | 行的唯一标识字段 | String | '_X_ROW_KEY' |
 | rowConfig | 行配置对象 | Object | {} |
-| columns | 列配置数组 | Array | [] |
+| columns | 列配置数组 | Array\<ColumnType\> | [] |
 | columnConfig | 列配置对象 | Object | {} |
 | virtualXConfig | 列虚拟滚动配置 | Object | {} |
 | virtualYConfig | 行虚拟滚动配置 | Object | {} |
@@ -87,22 +88,22 @@ DraggableTable/base
 
 ### Slots
 
-| 插槽名 | 说明 | 参数 |
-| --- | --- | --- |
-| loading | 自定义加载状态内容 | params |
-| pager | 自定义分页器内容 | - |
-| `${field}` | 列默认插槽，field为列字段名 | slotParams |
-| `header-${field}` | 列表头插槽，field为列字段名 | slotParams |
-| `footer-${field}` | 列底部插槽，field为列字段名 | slotParams |
-| `title-${field}` | 列标题插槽（checkbox/radio类型），field为列字段名 | slotParams |
-| `checkbox-${field}` | 复选框插槽（checkbox类型），field为列字段名 | slotParams |
-| `radio-${field}` | 单选框插槽（radio类型），field为列字段名 | slotParams |
-| `content-${field}` | 展开内容插槽（expand类型），field为列字段名 | slotParams |
-| `filter-${field}` | 筛选器插槽，field为列字段名 | slotParams |
-| `edit-${field}` | 编辑器插槽，field为列字段名 | slotParams |
-| `valid-${field}` | 验证插槽，field为列字段名 | slotParams |
-
 > 组件支持动态插槽，会自动根据列配置和插槽名称进行匹配。插槽名称遵循 `${type}-${field}` 的命名规则。
+
+| 插槽名                 | 说明                | 参数         |
+| ------------------- | ----------------- | ---------- |
+| loading             | 自定义加载状态内容         | params     |
+| pager               | 自定义分页器内容          | -          |
+| `${field}`          | 列默认插槽，field为列字段名  | slotParams |
+| `header-${field}`   | 列表头插槽，field为列字段名  | slotParams |
+| `footer-${field}`   | 列底部插槽，field为列字段名  | slotParams |
+| `title-${field}`    | 列标题插槽，field为列字段名  | slotParams |
+| `checkbox-${field}` | 复选框插槽，field为列字段名  | slotParams |
+| `radio-${field}`    | 单选框插槽，field为列字段名  | slotParams |
+| `content-${field}`  | 展开内容插槽，field为列字段名 | slotParams |
+| `filter-${field}`   | 筛选器插槽，field为列字段名  | slotParams |
+| `edit-${field}`     | 编辑器插槽，field为列字段名  | slotParams |
+| `valid-${field}`    | 验证插槽，field为列字段名   | slotParams |
 
 ### Expose
 
