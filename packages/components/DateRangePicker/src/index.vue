@@ -135,7 +135,7 @@ const props = defineProps({
     default: null,
   },
   /**
-   * datetime的时分秒禁用规则
+   * 当类型为datetime/datetimerange时，如果存在min/maxDate/disabledDateRange时的时分秒禁用规则
    */
   datetimeDisableTypes: {
     type: Array,
