@@ -11,22 +11,26 @@ DateRangePicker/base
 :::
 
 ### 类型（type）
-- date：单日期；change 返回单个字符串，v-model 始终为字符串数组
-- datetime：单日期时间；同date
-- daterange：日期范围；change 返回字符串数组
-- datetimerange：日期时间范围；同daterange
+date：单日期；change 返回单个字符串，v-model 始终为字符串数组
+
 
 :::demo
 DateRangePicker/type/type-date
 :::
 
+datetime：单日期时间；同date
+
 :::demo
 DateRangePicker/type/type-datetime
 :::
 
+daterange：日期范围；change 返回字符串数组，v-model 始终为字符串数组
+
 :::demo
 DateRangePicker/type/type-daterange
 :::
+
+datetimerange：日期时间范围；同daterange
 
 :::demo
 DateRangePicker/type/type-datetimerange
