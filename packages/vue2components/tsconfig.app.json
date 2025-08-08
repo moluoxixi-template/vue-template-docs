@@ -2,7 +2,6 @@
   "compilerOptions": {
     "target": "ESNext",
     "jsx": "preserve",
-    "jsxImportSource": "vue",
     "lib": [
       "DOM",
       "ESNext"
@@ -32,5 +31,23 @@
     "isolatedModules": true,
     "skipLibCheck": true,
     "allowImportingTsExtensions": true
-  }
+  },
+  "vueCompilerOptions": {
+    "plugins": [
+      "@vue-macros/volar/define-models",
+      "@vue-macros/volar/define-slots",
+      "@vue-macros/volar/define-props",
+      "@vue-macros/volar/define-emits"
+    ]
+  },
+  "exclude": [
+    "dist",
+    "node_modules",
+    "cypress",
+    "vite.config.ts",
+    ".storybook/**/*",
+    ".storybook/**/*.tsx",
+    ".docs/.vitepress/config.ts",
+    "src/components/ViteConfig/**/*"
+  ],
 }
