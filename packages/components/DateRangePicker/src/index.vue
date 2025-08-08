@@ -1,6 +1,6 @@
 <template>
   <div class="w-full inline-block flex-1 overflow-hidden date-range-picker">
-    <DateRangePicker
+    <ElDatePicker
       ref="datePicker"
       v-bind="$attrs"
       v-model="localDateValue"
@@ -23,7 +23,8 @@
 </template>
 
 <script lang="ts" setup>
-import type { DatePickerProps, ElDatePicker } from 'element-plus'
+import type { DatePickerProps } from 'element-plus'
+import { ElDatePicker } from 'element-plus'
 import type { Moment, unitOfTime } from 'moment'
 import type { PropType } from 'vue'
 import moment from 'moment'
