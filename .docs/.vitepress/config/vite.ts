@@ -60,6 +60,9 @@ export const performancePlugins = [
  * Vite 配置
  */
 const viteConfig = {
+  ssr: {
+    noExternal: ['element-plus'],
+  },
   plugins: [
     ...vuePlugins,
     ...performancePlugins,
@@ -68,9 +71,13 @@ const viteConfig = {
     alias: {
       '@moluoxixi/components': path.resolve(rootPath, './packages/components'),
     },
-    extensions: ['.js', '.ts', '.jsx', '.tsx', '.vue', '.json'],
   },
   css: {
+    preprocessorOptions: {
+      scss: {
+        silenceDeprecations: ['legacy-js-api'],
+      },
+    },
     postcss: {
       plugins: [tailwindcss() as Plugin, autoprefixer() as Plugin],
     },
