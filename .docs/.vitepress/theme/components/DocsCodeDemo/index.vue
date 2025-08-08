@@ -8,8 +8,9 @@
       <ElDivider class="m-0" />
 
       <div class="docs-example-btns">
+        <!-- 代码实验场 -->
         <ElTooltip content="在 Playground 中编辑">
-          <ElIcon :size="size" class="op-btn" @click="handleEditPlayground">
+          <ElIcon v-if="false" :size="size" class="op-btn" @click="handleEditPlayground">
             <svg
               preserveAspectRatio="xMidYMid meet"
               viewBox="0 0 24 24"

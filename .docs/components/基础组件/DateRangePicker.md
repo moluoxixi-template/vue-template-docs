@@ -1,11 +1,35 @@
 # DateRangePicker
 
-日期范围选择器组件，支持选择日期范围，提供多种快捷选项。
+## 组件示例
 
-## 基础用法
+日期范围选择器组件，支持选择日期/日期范围，统一格式化与默认值处理，提供快捷选项与禁用规则。
+
+### 基础用法
 
 :::demo
 DateRangePicker/base
+:::
+
+### 类型（type）
+- date：单日期；change 返回单个字符串，v-model 始终为字符串数组
+- datetime：单日期时间；同date
+- daterange：日期范围；change 返回字符串数组
+- datetimerange：日期时间范围；同daterange
+
+:::demo
+DateRangePicker/type/type-date
+:::
+
+:::demo
+DateRangePicker/type/type-datetime
+:::
+
+:::demo
+DateRangePicker/type/type-daterange
+:::
+
+:::demo
+DateRangePicker/type/type-datetimerange
 :::
 
 ## API
@@ -37,8 +61,8 @@ DateRangePicker/base
 
 | 事件名 | 说明 | 回调参数 |
 | --- | --- | --- |
-| update:modelValue | 绑定值更新 | (value: string[] | string) |
-| change | 用户确认选定的值时触发 | (value: string[] | string) |
+| update:modelValue | 绑定值更新 | (value: string[] \| string) |
+| change | 用户确认选定的值时触发 | (value: string[] \| string) |
 
 ### Slots
 
@@ -51,6 +75,6 @@ DateRangePicker/base
 | focus | 使 input 获取焦点 | Function |
 | blur | 使 input 失去焦点 | Function |
 
-## 源码
+### 源码
 
 查看组件源码：[DateRangePicker](https://github.com/componentProject/vue-component/tree/vueComponent/packages/components/DateRangePicker)
