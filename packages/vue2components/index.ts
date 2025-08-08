@@ -1,3 +1,5 @@
+import type { App } from 'vue'
+
 // 导入组件
 import Button from './Button'
 
@@ -8,8 +10,8 @@ export {
 
 // 导出默认对象，用于Vue插件形式注册
 export default {
-  install(VueConstructor) {
+  install(app: App) {
     // 注册组件
-    VueConstructor.component('MButton', Button)
+    app.component('MButton', Button)
   }
 }

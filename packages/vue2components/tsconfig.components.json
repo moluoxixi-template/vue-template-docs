@@ -8,22 +8,16 @@
       "ESNext"
     ],
     "baseUrl": ".",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "paths": {
       "@/*": [
         "src/*"
       ],
       "~/*": [
         "src/*"
-      ],
-      "@moluoxixi/components": [
-        "packages/components"
-      ],
-      "@moluoxixi/components/*": [
-        "packages/components/*"
       ]
     },
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "types": [
       "vite/client"
