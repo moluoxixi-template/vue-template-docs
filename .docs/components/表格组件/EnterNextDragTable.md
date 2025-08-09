@@ -1,0 +1,44 @@
+# EnterNextDragTable
+
+支持回车跳转和拖拽的表格组件，结合了EnterNextContainer和DraggableTable的功能。
+
+## 基础用法
+
+:::demo
+EnterNextDragTable/base
+:::
+
+## API
+
+### Props
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| v-model | 表格数据 | Array | [] |
+| allowSelectNextInEmpty | 是否允许在select没有选中值时跳转 | Boolean | false |
+| containerType | 容器类型，用于确定 EnterNextContainer 的作用范围 | 'row' \| 'table' | 'row' |
+
+### Events
+
+| 事件名 | 说明 | 回调参数 |
+| --- | --- | --- |
+| noNextInput | 当没有下一个输入元素时触发 | ({ row, rowIndex, colIndex }) |
+| noSelectValue | 当select下拉框没有选中值时但按了回车触发 | ({ row, rowIndex, colIndex }) |
+| toggleTreeExpand | 树形表格行展开/收起时触发 | (params: VxeTableDefines.ToggleRowExpandEventParams) |
+
+### Slots
+
+| 插槽名 | 说明 |
+| --- | --- |
+| [动态插槽] | 透传给内部 `DraggableTable` 的所有插槽，使用方式与 [DraggableTable 的 Slots](./DraggableTable.md#slots) 一致 |
+
+### Expose
+
+| 名称          | 说明                            | 类型                                         |
+| ----------- | ----------------------------- |--------------------------------------------|
+| refreshRows | 手动刷新行元素收集 | Function                                   |
+| getTableRef | 获取内部 DraggableTable 引用 | () => InstanceType\<typeof DraggableTable\> |
+
+## 源码
+
+查看组件源码：[EnterNextDragTable](https://github.com/componentProject/vue-component/tree/vueComponent/packages/components/EnterNextDragTable)

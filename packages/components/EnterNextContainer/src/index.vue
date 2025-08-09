@@ -1,5 +1,5 @@
 <template>
-  <div ref="containerRef" class="enter-next-container">
+  <div v-if="!props.virtualRef" ref="containerRef" class="w-full">
     <slot />
   </div>
 </template>
@@ -7,6 +7,20 @@
 <script setup lang="ts">
 import type { ComponentInternalInstance, ComponentPublicInstance } from 'vue'
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+
+defineOptions({
+  name: 'EnterNextContainer',
+})
+const props = withDefaults(defineProps<Props>(), {
+  virtualRef: null,
+  allowSelectNextInEmpty: false,
+})
+
+// 定义可以发出的事件
+const emit = defineEmits<{
+  (e: 'noNextInput', element: HTMLElement): void // 当找不到下一个输入元素时触发
+  (e: 'noSelectValue', element: HTMLElement): void // 当select为空时触发
+}>()
 
 interface Props {
   virtualRef?: ComponentPublicInstance | ComponentInternalInstance | HTMLElement | null
@@ -23,17 +37,6 @@ interface Props {
    */
   autoNext?: boolean
 }
-
-const props = withDefaults(defineProps<Props>(), {
-  virtualRef: null,
-  allowSelectNextInEmpty: false,
-})
-
-// 定义可以发出的事件
-const emit = defineEmits<{
-  (e: 'noNextInput', element: HTMLElement): void // 当找不到下一个输入元素时触发
-  (e: 'noSelectValue', element: HTMLElement): void // 当select为空时触发
-}>()
 
 const containerRef = ref<HTMLElement | null>(null)
 const inputElements = ref<HTMLElement[]>([])
@@ -229,10 +232,4 @@ onUnmounted(() => {
 })
 </script>
 
-<style scoped>
-.enter-next-container {
-  border: 0;
-  padding: 0;
-  margin: 0;
-}
-</style>
+<style scoped></style>

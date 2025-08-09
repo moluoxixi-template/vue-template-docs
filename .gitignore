@@ -4,10 +4,13 @@ test.zip
 src/typings
 docs
 moluoxixi
+moluoxixivue2
 src/ViteConfig
+.docs/.obsidian
 .docs/.vitepress/cache
 .docs/.vitepress/dist
-.docs/.vitepress/typings
+.docs/typings
+packages/components/typings
 stats.html
 
 pnpm-lock.yaml

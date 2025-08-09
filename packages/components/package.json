@@ -4,8 +4,13 @@
   "description": "all components are settled here",
   "main": "index.ts",
   "module": "index.ts",
-  "peerDependencies": {
-    "vue": "^3.5.17"
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "scripts": {
+    "build": "tsx scripts/buildComponent.mts",
+    "build:only": "tsx _scripts/buildComponent.mts build",
+    "build:publish": "tsx _scripts/buildComponent.mts publish"
   },
   "dependencies": {
     "@codemirror/view": "^6.36.5",
@@ -13,7 +18,7 @@
     "dayjs": "^1.11.13",
     "element-plus": "^2.10.1",
     "file-saver": "^2.0.5",
-    "lodash": "^4.17.21",
+    "lodash": "npm:lodash-es@4.17.21",
     "markdown-it-anchor": "^9.2.0",
     "md-editor-v3": "^5.4.5",
     "moment": "^2.30.1",
@@ -29,7 +34,7 @@
     "@sentry/vite-plugin": "^3.5.0",
     "@tailwindcss/postcss": "^4.1.5",
     "@types/file-saver": "^2.0.7",
-    "@vitejs/plugin-vue": "^5.2.3",
+    "@vitejs/plugin-vue": "^5.0.4",
     "@vitejs/plugin-vue-jsx": "^4.1.2",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.3",
@@ -45,6 +50,12 @@
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-imagemin": "^0.6.1",
     "vite-plugin-qiankun": "^1.0.15",
-    "vite-plugin-vue-devtools": "^7.7.2"
+    "vite-plugin-vue-devtools": "^7.7.2",
+    "fast-glob": "^3.3.2",
+    "vite": "^5.4.9",
+    "dependency-cruiser": "^15.3.0",
+    "rollup-obfuscator": "^4.1.0",
+    "vite-plugin-css-injected-by-js": "^3.5.1",
+    "vue": "^3.5.17"
   }
 }

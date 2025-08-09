@@ -1,13 +1,13 @@
 <template>
   <div class="height-100">
-    <el-tabs
+    <ElTabs
       v-model="activeName"
       type="border-card"
       class="tabs-card"
       @tab-change="handleTabChange"
     >
       <template v-for="item in props.tabList">
-        <el-tab-pane
+        <ElTabPane
           v-if="item.show ? item.show(item) : true"
           :key="item.id"
           style="height: 100%"
@@ -16,13 +16,20 @@
           :lazy="item.lazy"
         >
           <slot :name="item.slot || item.label" />
-        </el-tab-pane>
+        </ElTabPane>
       </template>
-    </el-tabs>
+    </ElTabs>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ElTabPane, ElTabs } from 'element-plus'
+import 'element-plus/es/components/tabs/style/css.mjs'
+import 'element-plus/es/components/tab-pane/style/css.mjs'
+
+defineOptions({
+  name: 'Tabs',
+})
 const props = defineProps({
   tabList: {
     type: Array<{

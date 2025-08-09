@@ -24,9 +24,9 @@
 
 <script lang="ts" setup>
 import type { DatePickerProps } from 'element-plus'
+import { ElDatePicker } from 'element-plus'
 import type { Moment, unitOfTime } from 'moment'
 import type { PropType } from 'vue'
-import { ElDatePicker } from 'element-plus'
 import moment from 'moment'
 import { isEmpty } from 'radash'
 import { computed, ref, useTemplateRef, watch } from 'vue'
@@ -135,7 +135,7 @@ const props = defineProps({
     default: null,
   },
   /**
-   * datetime的时分秒禁用规则
+   * 当类型为datetime/datetimerange时，如果存在min/maxDate/disabledDateRange时的时分秒禁用规则
    */
   datetimeDisableTypes: {
     type: Array,
