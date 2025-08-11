@@ -4,7 +4,7 @@ import MarkdownIt from 'markdown-it'
 import mdContainer from 'markdown-it-container'
 import type Token from 'markdown-it/lib/token'
 import type Renderer from 'markdown-it/lib/renderer'
-import { docsPath } from '../../../../contants'
+import { docsPath } from '../../../../contants/index.ts'
 
 const localMd = MarkdownIt()
 interface ContainerOpts {

@@ -1,4 +1,5 @@
 import type { HeadConfig } from 'vitepress'
+import { baseUrl } from '../../contants/web.ts'
 /**
  * SEO关键词配置
  */
@@ -39,7 +40,7 @@ const head: HeadConfig[] = [
     },
   ],
   ['meta', { name: 'keywords', content }],
-  ['link', { rel: 'icon', href: '/vueComponents/avator.png' }],
+  ['link', { rel: 'icon', href: `${baseUrl}/avator.png` }],
   ['link', { rel: 'apple-touch-icon', href: '/vueComponents/avator.png' }],
 ]
 export default head

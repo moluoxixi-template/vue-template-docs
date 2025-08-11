@@ -1,8 +1,9 @@
 import { defineConfig } from 'vitepress'
-import head from './head'
-import themeConfig from './theme'
-import markdown from './markdown'
-import vite from './vite'
+import head from './head.ts'
+import themeConfig from './theme/index.ts'
+import markdown from './markdown/index.ts'
+import vite from './vite.ts'
+import { baseUrl } from '../../contants/web.ts'
 
 /**
  * VitePress 主配置
@@ -12,7 +13,7 @@ export default defineConfig({
   outDir: '../../docsOut/vitepress',
   description: '基于Vue3 + TypeScript + Element Plus的现代化组件库',
   lang: 'zh-CN',
-  base: '/vueComponents/',
+  base: baseUrl,
   head,
   lastUpdated: true,
   themeConfig,

@@ -6,13 +6,13 @@ import Layout from './components/layout.vue'
 // 引入vue-component组件库
 import VueComponent from '@moluoxixi/components'
 
-import * as echarts from 'echarts'
 import 'highlight.js/lib/common'
-import hljsVuePlugin from '@highlightjs/vue-plugin/dist/highlightjs-vue.esm.min.js' // 引入echarts
+import hljsVuePlugin from '@highlightjs/vue-plugin'
 
 import DocsCodeDemo from './components/DocsCodeDemo/index.vue'
+import Overview from './components/Overview.vue'
 
-import directive from './directives'
+import directive from './directives/index.ts'
 import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 
@@ -24,9 +24,9 @@ export default define<Theme>({
   enhanceApp({ app }: { app: VueApp }) {
     // 注册vue-component组件库
     app.use(VueComponent)
-    app.config.globalProperties.$echarts = echarts // 全局使用
     app.component('highlightjs', hljsVuePlugin.component) // 注册代码高亮组件
     app.component('DocsCodeDemo', DocsCodeDemo)
+    app.component('Overview', Overview)
     directive(app)
   },
 })

@@ -1,7 +1,7 @@
 import type { DefaultTheme } from 'vitepress'
-import { generateComponentNav } from './utils/generateSidebar'
-import { getRepoInfoWithFallback } from './utils/getRepoInfo'
-import { docsPath } from '../../../contants'
+import { generateComponentNav } from './utils/generateSidebar.ts'
+import { getRepoInfoWithFallback } from './utils/getRepoInfo.ts'
+import { docsPath } from '../../../contants/index.ts'
 import path from 'node:path'
 import fs from 'node:fs'
 

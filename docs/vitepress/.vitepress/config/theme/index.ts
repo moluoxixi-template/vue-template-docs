@@ -1,13 +1,14 @@
 import type { DefaultTheme } from 'vitepress'
-import { sidebar } from './sidebar'
-import { nav } from './nav'
-import { socialLinks } from './socialLinks'
+import { sidebar } from './sidebar.ts'
+import { nav } from './nav.ts'
+import { socialLinks } from './socialLinks.ts'
+import { baseUrl } from '../../../contants.ts'
 
 /**
  * 主题配置
  */
 const themeConfig: DefaultTheme.Config = {
-  logo: '/vueComponents/avator.png',
+  logo: `${baseUrl}/avator.png`,
   siteTitle: 'Moluoxixi Vue组件库',
   outline: 3,
   search: {

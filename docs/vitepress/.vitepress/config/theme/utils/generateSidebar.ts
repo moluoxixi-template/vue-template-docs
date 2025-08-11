@@ -1,6 +1,6 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import { docsPath } from '../../../../contants'
+import { docsPath } from '../../../../contants/index.ts'
 import type { DefaultTheme } from 'vitepress'
 
 interface SidebarItem {
