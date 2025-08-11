@@ -7,7 +7,7 @@ import { socialLinks } from './socialLinks'
  * 主题配置
  */
 const themeConfig: DefaultTheme.Config = {
-  logo: '/favicon.ico',
+  logo: '/vueComponents/avator.png',
   siteTitle: 'Moluoxixi Vue组件库',
   outline: 3,
   search: {

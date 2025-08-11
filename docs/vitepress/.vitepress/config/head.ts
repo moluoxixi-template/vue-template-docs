@@ -39,7 +39,7 @@ const head: HeadConfig[] = [
     },
   ],
   ['meta', { name: 'keywords', content }],
-  ['link', { rel: 'icon', href: '/favicon.ico' }],
-  ['link', { rel: 'apple-touch-icon', href: '/favicon.ico' }],
+  ['link', { rel: 'icon', href: '/vueComponents/avator.png' }],
+  ['link', { rel: 'apple-touch-icon', href: '/vueComponents/avator.png' }],
 ]
 export default head
