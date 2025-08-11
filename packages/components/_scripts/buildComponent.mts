@@ -63,7 +63,7 @@ const peerDepList = Object.keys(presetGlobals)
 console.log('peerDepList', peerDepList)
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
-const rootDir = resolve(__dirname, '..')
+const rootDir = resolve(__dirname, '../..')
 
 // 主函数
 async function main() {
