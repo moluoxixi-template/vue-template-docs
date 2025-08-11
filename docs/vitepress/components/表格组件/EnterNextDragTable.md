@@ -65,6 +65,8 @@ EnterNextDragTable/events/noSelectValue
 | refreshRows | 手动刷新行元素收集 | Function                                   |
 | getTableRef | 获取内部 DraggableTable 引用 | () => InstanceType\<typeof DraggableTable\> |
 
-## 源码
+### 源码
 
-查看组件源码：[EnterNextDragTable](https://github.com/componentProject/vue-component/tree/vueComponent/packages/components/EnterNextDragTable)
+:::repository
+EnterNextDragTable
+:::

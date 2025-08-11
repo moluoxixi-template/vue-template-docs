@@ -113,6 +113,8 @@ PopoverTableSelect/slots/default
 
 该组件没有暴露任何方法或属性。
 
-## 源码
+### 源码
 
-查看组件源码：[PopoverTableSelect](https://github.com/componentProject/vue-component/tree/vueComponent/packages/components/PopoverTableSelect)
+:::repository
+PopoverTableSelect
+:::

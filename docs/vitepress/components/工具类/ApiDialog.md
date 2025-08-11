@@ -55,4 +55,6 @@ showMy({ props: { title: '自定义' } })
 
 ### 源码
 
-查看源码：[ApiDialog](https://github.com/componentProject/vue-component/tree/vueComponent/packages/components/ApiDialog)
+:::repository
+ApiDialog
+:::

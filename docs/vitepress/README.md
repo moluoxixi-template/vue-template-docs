@@ -134,7 +134,7 @@ function categorizeComponent(name: string): string {
 ### Slots
 ### Expose
 
-## 源码
+### 源码
 
 源码链接
 ```

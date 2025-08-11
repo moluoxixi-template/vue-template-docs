@@ -199,6 +199,8 @@ DraggableTable/expose/getTable
 | --- | --- | --- |
 | getTable | 获取VXE-Grid实例，可调用VXE-Grid的所有方法 | () => VxeGridInstance |
 
-## 源码
+### 源码
 
-查看组件源码：[DraggableTable](https://github.com/componentProject/vue-component/tree/vueComponent/packages/components/DraggableTable)
+:::repository
+DraggableTable
+:::

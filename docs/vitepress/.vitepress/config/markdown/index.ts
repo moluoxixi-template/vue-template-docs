@@ -1,4 +1,4 @@
-import { mdPlugin } from './plugins/mdPlugin.ts'
+import mdPlugin from './plugins/mdPlugin/index.ts'
 
 /**
  * Markdown 配置

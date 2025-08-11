@@ -25,4 +25,6 @@ export default createEslintConfig({
 
 ### 源码
 
-查看源码：[EslintConfig](https://github.com/componentProject/vue-component/tree/vueComponent/packages/components/EslintConfig)
+:::repository
+EslintConfig
+:::
