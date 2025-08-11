@@ -1,9 +1,11 @@
-import createViteConfig, { wrapperEnv } from './ViteConfig/index.ts'
 import process from 'node:process'
 
 // sentry
 import { sentryVitePlugin } from '@sentry/vite-plugin'
 import { loadEnv } from 'vite'
+// 从正确的路径导入createViteConfig和wrapperEnv
+import createViteConfig from './src/components/ViteConfig/src/index'
+import { wrapperEnv } from './src/components/ViteConfig/src/_utils/getEnv'
 
 export default createViteConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd())
