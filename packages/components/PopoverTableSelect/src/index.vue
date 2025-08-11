@@ -49,6 +49,9 @@ const props = defineProps({
     type: Object as PropType<DebounceSettingsLeading | ThrottleSettingsLeading>,
     default: () => ({}),
   },
+  /**
+   * 当类型为input时，默认显示输入框
+   */
   popType: {
     type: String as PropType<'default' | 'input'>,
     default: 'default',
@@ -75,8 +78,12 @@ const props = defineProps({
     default: null,
     required: false,
   },
+  /**
+   * 再次聚焦的触发方式(会打开弹窗）
+   * @values 'enter' | 'input'
+   */
   successiveShowType: {
-    type: String as PropType<'enter' | 'select' | 'input'>,
+    type: String as PropType<'enter' | 'input'>,
     default: '',
   },
 })

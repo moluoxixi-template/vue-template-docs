@@ -207,7 +207,7 @@ export default function createViteConfig(Config: ViteConfigType) {
       build: {
         sourcemap: isDev,
         // outDir: `${systemCode}`,
-        outDir: useDoc ? './docs/pages' : `${systemCode}`,
+        outDir: useDoc ? '../componentsOut/pages' : `../componentsOut/${systemCode}`,
         cssCodeSplit: true,
         chunkSizeWarningLimit: 1500,
         minify: 'esbuild',

@@ -2,10 +2,37 @@
 
 增强的标签页组件，基于Element Plus Tabs封装，支持更多功能特性。
 
-## 基础用法
+## 组件示例
 
+### 基础用法
+
+示例：最小配置，基于 `tabList` 动态生成面板
 :::demo
 Tabs/base
+:::
+
+### Props
+
+示例：懒加载（lazy=true，仅首次切换时渲染）
+:::demo
+Tabs/props/lazy
+:::
+
+示例：通过 show(item) 动态控制某个标签是否展示
+:::demo
+Tabs/props/showFn
+:::
+
+示例：自定义插槽名（使用 item.slot；若未设置则回退为 label）
+:::demo
+Tabs/props/slotName
+:::
+
+### Events
+
+示例：切换回调（tabChange）
+:::demo
+Tabs/events/tabChange
 :::
 
 ## API

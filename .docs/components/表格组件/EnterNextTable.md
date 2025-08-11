@@ -2,10 +2,39 @@
 
 支持回车跳转功能的表格组件，基于Element Plus表格封装，支持按回车键在可编辑单元格之间跳转。
 
-## 基础用法
+## 组件示例
 
+### 基础用法
+
+示例：Element Plus 表格中，按 Enter 顺序聚焦下一单元格，末项触发 noNextInput
 :::demo
 EnterNextTable/base
+:::
+
+### Props（containerType）
+
+示例：按行作为容器（containerType='row'）
+:::demo
+EnterNextTable/props/containerType-row
+:::
+
+示例：按整表作为容器（containerType='table'）
+:::demo
+EnterNextTable/props/containerType-table
+:::
+
+### Events
+
+示例：无下一个输入控件（noNextInput）
+:::demo
+EnterNextTable/events/noNextInput
+:::
+
+### Expose
+
+示例：手动刷新容器收集（refreshRows）
+:::demo
+EnterNextTable/expose/refreshRows
 :::
 
 ## API

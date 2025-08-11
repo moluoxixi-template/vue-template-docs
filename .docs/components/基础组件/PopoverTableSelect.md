@@ -2,10 +2,40 @@
 
 弹出表格选择器组件，支持在弹出层中显示表格数据进行选择。
 
-## 基础用法
+## 组件示例
 
+### 外观与触发（popType / trigger / placement / effect / showArrow）
+
+示例：外部输入框作为触发器（popType='default'，virtualRef 指向输入框）
 :::demo
-PopoverTableSelect/base
+PopoverTableSelect/props/popType-default
+:::
+
+示例：点击触发浮层（trigger='click'）
+:::demo
+PopoverTableSelect/props/trigger
+:::
+
+示例：在输入框下方展示（placement='bottom'）
+:::demo
+PopoverTableSelect/props/placement
+:::
+
+示例：浅色主题（effect='light')
+:::demo
+PopoverTableSelect/props/effect
+:::
+
+示例：隐藏箭头（showArrow=false）
+:::demo
+PopoverTableSelect/props/showArrow
+:::
+
+### 选择触发方式（selectTrigger）
+
+示例：单击选中即关闭并回调
+:::demo
+PopoverTableSelect/props/trigger-select
 :::
 
 ## API

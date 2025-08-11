@@ -1,13 +1,7 @@
 packages:
-  # Vue 2组件工作区
-  - 'packages/vue2components/**'
-  # Vue 3组件工作区
-  - 'packages/components/**'
-  # 渲染包
-  - 'packages/render/**'
-  # 共享工具和配置
-  - 'packages/shared/**'
-  # 文档和Storybook
+  - packages/*
+  - play/*
+  - docs/*
   - .docs
   - .storybook
   

@@ -2,10 +2,37 @@
 
 支持回车跳转和拖拽的表格组件，结合了EnterNextContainer和DraggableTable的功能。
 
-## 基础用法
+## 组件示例
 
+### 基础用法
+
+示例：可编辑表格内按 Enter 自动跳到下一输入控件，末项触发 noNextInput
 :::demo
 EnterNextDragTable/base
+:::
+
+### Props
+
+示例：容器类型为行（containerType='row'）
+:::demo
+EnterNextDragTable/props/containerType-row
+:::
+
+示例：容器类型为整表（containerType='table'）
+:::demo
+EnterNextDragTable/props/containerType-table
+:::
+
+### Events
+
+示例：无下一个输入控件（noNextInput）
+:::demo
+EnterNextDragTable/events/noNextInput
+:::
+
+示例：select 未选择值（noSelectValue）
+:::demo
+EnterNextDragTable/events/noSelectValue
 :::
 
 ## API

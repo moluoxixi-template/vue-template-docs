@@ -2,14 +2,15 @@
 test
 test.zip
 src/typings
-docs
 moluoxixi
 moluoxixivue2
-src/ViteConfig
-.docs/.obsidian
-.docs/.vitepress/cache
-.docs/.vitepress/dist
-.docs/typings
+# vue3文档
+docs/vitepress/.obsidian
+docs/vitepress/.vitepress/cache
+docs/vitepress/.vitepress/dist
+docs/vitepress/typings
+
+# vue3组件
 packages/components/typings
 stats.html
 
