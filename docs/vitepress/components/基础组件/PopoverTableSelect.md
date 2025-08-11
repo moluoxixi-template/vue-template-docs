@@ -28,6 +28,25 @@ PopoverTableSelect/props/trigger-select-click
 PopoverTableSelect/props/trigger-select-dblclick
 :::
 
+### 连续展示（successiveShowType）
+
+示例：按回车后继续展示（successiveShowType='enter')
+:::demo
+PopoverTableSelect/props/successiveShowType-enter
+:::
+
+示例：输入时实时展示（successiveShowType='input')
+:::demo
+PopoverTableSelect/props/successiveShowType-input
+:::
+
+### 插槽（slots）
+
+示例：默认插槽在表格上方自定义区域
+:::demo
+PopoverTableSelect/slots/default
+:::
+
 ## API
 
 ### Props
