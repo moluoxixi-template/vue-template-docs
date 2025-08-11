@@ -1,5 +1,5 @@
 import type { DefaultTheme } from 'vitepress'
-import { getRepoInfoWithFallback } from './utils/getRepoInfo'
+import { getRepoInfoWithFallback } from './utils/getRepoInfo.ts'
 
 // 获取仓库信息
 const repoInfo = getRepoInfoWithFallback()

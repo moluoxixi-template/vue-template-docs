@@ -1,5 +1,5 @@
 import type { DefaultTheme } from 'vitepress'
-import { generateSidebar } from './utils/generateSidebar'
+import { generateSidebar } from './utils/generateSidebar.ts'
 
 /**
  * 侧边栏配置

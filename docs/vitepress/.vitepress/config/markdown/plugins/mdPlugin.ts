@@ -2,8 +2,8 @@ import path from 'node:path'
 import fs from 'node:fs'
 import MarkdownIt from 'markdown-it'
 import mdContainer from 'markdown-it-container'
-import type Token from 'markdown-it/lib/token'
-import type Renderer from 'markdown-it/lib/renderer'
+import type Token from 'markdown-it/lib/token.d.ts'
+import type Renderer from 'markdown-it/lib/renderer.d.ts'
 import { docsPath } from '../../../../contants/index.ts'
 
 const localMd = MarkdownIt()

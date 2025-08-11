@@ -2,7 +2,7 @@ import type { DefaultTheme } from 'vitepress'
 import { sidebar } from './sidebar.ts'
 import { nav } from './nav.ts'
 import { socialLinks } from './socialLinks.ts'
-import { baseUrl } from '../../../contants.ts'
+import { baseUrl } from '../../../contants/web.ts'
 
 /**
  * 主题配置
