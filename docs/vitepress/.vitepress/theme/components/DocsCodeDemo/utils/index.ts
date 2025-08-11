@@ -1,4 +1,4 @@
-import { utoa } from './utils'
+import { utoa } from './utils.ts'
 
 const MAIN_FILE_NAME = 'App.vue'
 // 导出一个函数，用于获取编码后的playground
