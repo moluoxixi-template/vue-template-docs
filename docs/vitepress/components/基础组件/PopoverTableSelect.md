@@ -4,38 +4,28 @@
 
 ## 组件示例
 
-### 外观与触发（popType / trigger / placement / effect / showArrow）
+### 外观与触发（popType）
 
 示例：外部输入框作为触发器（popType='default'，virtualRef 指向输入框）
 :::demo
 PopoverTableSelect/props/popType-default
 :::
 
-示例：点击触发浮层（trigger='click'）
+示例：内置输入框作为触发器（popType='input'）
 :::demo
-PopoverTableSelect/props/trigger
+PopoverTableSelect/props/popType-input
 :::
 
-示例：在输入框下方展示（placement='bottom'）
+### 关闭弹窗的方式（selectTrigger）
+
+示例：单击选中关闭
 :::demo
-PopoverTableSelect/props/placement
+PopoverTableSelect/props/trigger-select-click
 :::
 
-示例：浅色主题（effect='light')
+示例：双击选中关闭
 :::demo
-PopoverTableSelect/props/effect
-:::
-
-示例：隐藏箭头（showArrow=false）
-:::demo
-PopoverTableSelect/props/showArrow
-:::
-
-### 选择触发方式（selectTrigger）
-
-示例：单击选中即关闭并回调
-:::demo
-PopoverTableSelect/props/trigger-select
+PopoverTableSelect/props/trigger-select-dblclick
 :::
 
 ## API
@@ -85,12 +75,13 @@ PopoverTableSelect/props/trigger-select
 
 ### Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
-| focus | 输入框获得焦点时触发 | - |
-| input | 输入框输入时触发 | (value: string) |
-| blur | 输入框失去焦点时触发 | - |
-| enter | 按下回车键或选择行时触发 | (selectedRow: any) |
+| 事件名    | 说明           | 回调参数 |
+|--------|--------------| --- |
+| focus  | 输入框获得焦点时触发   | - |
+| input  | 输入框输入时触发     | (value: string) |
+| blur   | 输入框失去焦点时触发   | - |
+| select | 选中指定行时触发        | (selectedRow: any) |
+| enter  | 按下回车键或选择行时触发 | (selectedRow: any) |
 
 ### Slots
 
