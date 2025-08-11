@@ -20,9 +20,9 @@ export const nav: DefaultTheme.NavItem[] = [
   },
   {
     text: '指南',
-    link: '/guide/指南',
+    link: '/guide/guide',
   },
-  generateComponentNav('/components/总览'),
+  generateComponentNav('/components/Overview'),
   {
     text: 'GitHub',
     link: repoInfo.url,

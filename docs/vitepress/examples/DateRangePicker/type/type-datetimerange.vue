@@ -11,5 +11,3 @@ import { ElConfigProvider } from 'element-plus'
 
 const val = ref<string[]>([])
 </script>
-
-

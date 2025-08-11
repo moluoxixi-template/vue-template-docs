@@ -8,7 +8,9 @@
         :min-date="min"
         :max-date="max"
       />
-      <div class="value">v-model：{{ val }}</div>
+      <div class="value">
+        v-model：{{ val }}
+      </div>
     </div>
   </ElConfigProvider>
 </template>
@@ -28,8 +30,11 @@ const max = `${yyyy}-${mm}-${dd} 10:30:50`
 </script>
 
 <style scoped>
-.container > * + * { margin-top: 12px; }
-.value { font-size: 12px; color: #555; }
+.container > * + * {
+  margin-top: 12px;
+}
+.value {
+  font-size: 12px;
+  color: #555;
+}
 </style>
-
-
