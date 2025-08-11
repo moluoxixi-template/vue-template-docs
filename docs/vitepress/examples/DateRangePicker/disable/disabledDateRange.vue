@@ -1,5 +1,5 @@
 <template>
-  <ElConfigProvider :locale="zhCn" :empty-values="[undefined]">
+  <ElConfigProvider :locale="zhCn" :empty-values="[undefined, [], '']">
     <div class="container">
       <DateRangePicker v-model="val" type="daterange" :disabled-date-range="[today, futureWeek]" />
       <div class="value">

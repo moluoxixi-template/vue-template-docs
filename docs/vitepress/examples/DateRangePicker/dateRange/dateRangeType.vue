@@ -1,5 +1,5 @@
 <template>
-  <ElConfigProvider :locale="zhCn" :empty-values="[undefined]">
+  <ElConfigProvider :locale="zhCn" :empty-values="[undefined, [], '']">
     <div class="container">
       <DateRangePicker v-model="val" type="daterange" :date-range="-1" date-range-type="week" />
       <div class="value">

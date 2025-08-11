@@ -1,5 +1,5 @@
 <template>
-  <ElConfigProvider :locale="zhCn" :empty-values="[undefined]">
+  <ElConfigProvider :locale="zhCn" :empty-values="[undefined, [], '']">
     <div class="container">
       <div>
         <ElButton size="small" type="primary" class="btn" @click="picker?.focus()">

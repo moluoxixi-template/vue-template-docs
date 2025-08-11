@@ -29,7 +29,7 @@ const copy = {
     el.addEventListener('click', el.handler)
   },
   // 当传进来的值更新的时候触发
-  beforeUpdate(el, { value }) {
+  beforeUpdate(el: any, { value }) {
     el.$value = value
   },
   // 指令与元素解绑的时候，移除事件绑定

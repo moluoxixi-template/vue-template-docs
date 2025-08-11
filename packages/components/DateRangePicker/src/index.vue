@@ -496,6 +496,7 @@ watch(
           'day',
           !computedDefaultDatetimeRange.value,
         )
+        localDateValue.value = getLocalDateValue(today)
         emit('update:modelValue', today)
       }
       else {
@@ -518,18 +519,13 @@ watch(
           'day',
           !computedDefaultDatetimeRange.value,
         )
+        localDateValue.value = getLocalDateValue(formattedDates)
         emit('update:modelValue', formattedDates)
       }
     }
   },
   { deep: true, immediate: true },
 )
-
-// 暴露组件方法
-defineExpose({
-  focus: () => datePicker.value?.focus(),
-  blur: () => datePicker.value?.blur(),
-})
 </script>
 
 <style lang="scss" scoped>

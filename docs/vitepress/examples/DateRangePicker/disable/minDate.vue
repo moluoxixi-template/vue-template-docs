@@ -1,5 +1,5 @@
 <template>
-  <ElConfigProvider :locale="zhCn" :empty-values="[undefined]">
+  <ElConfigProvider :locale="zhCn" :empty-values="[undefined, [], '']">
     <div class="container">
       <DateRangePicker v-model="val" type="daterange" :min-date="today" />
       <div class="value">
@@ -23,6 +23,7 @@ const today = moment().format('YYYY-MM-DD')
 .container > * + * {
   margin-top: 12px;
 }
+
 .value {
   font-size: 12px;
   color: #555;
