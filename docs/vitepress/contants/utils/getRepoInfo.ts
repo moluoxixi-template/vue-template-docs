@@ -1,6 +1,6 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import { docsPath } from '../../../../contants/index.ts'
+import { docsPath } from '../index.ts'
 
 export interface RepoInfo {
   owner: string

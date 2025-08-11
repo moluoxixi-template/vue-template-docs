@@ -1,5 +1,5 @@
 import path from 'node:path'
-import { getRepoInfoWithFallback } from '../.vitepress/config/theme/utils/getRepoInfo.ts'
+import { getRepoInfoWithFallback } from './utils/getRepoInfo.ts'
 // 获取仓库信息
 export const repoInfo = getRepoInfoWithFallback()
 

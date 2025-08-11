@@ -7,7 +7,7 @@ import Layout from './components/layout.vue'
 import VueComponent from '@moluoxixi/components'
 
 import 'highlight.js/lib/common'
-import hljsVuePlugin from '@highlightjs/vue-plugin'
+import hljsVuePlugin from '@highlightjs/vue-plugin/dist/highlightjs-vue.esm.min.js'
 
 import DocsCodeDemo from './components/DocsCodeDemo/index.vue'
 import Overview from './components/Overview.vue'
