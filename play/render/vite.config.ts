@@ -30,6 +30,9 @@ export default viteConfig(
         production: {},
       },
       viteConfig: {
+        build: {
+          outDir: '../../dist',
+        },
         plugins: [
           viteEnv.VITE_SENTRY
           && sentryVitePlugin({
