@@ -15,8 +15,8 @@
   "scripts": {
     "vue:dev": "pnpm run -C packages/render dev",
     "vue:build": "pnpm run -C packages/render build",
-    "docs:dev": "pnpm run -C .docs dev",
-    "docs:build": "pnpm run -C .docs build",
+    "docs:dev": "pnpm run -C docs/vitepress dev",
+    "docs:build": "pnpm run -C docs/vitepress build",
     "component:build&publish": "pnpm run -C packages/components build",
     "component:build": "pnpm run -C packages/components build:only",
     "component:publish": "pnpm run -C packages/components build:publish",
@@ -71,6 +71,7 @@
   "dependencies": {
     "@moluoxixi/components": "workspace:*",
     "@moluoxixi/docs": "workspace:*",
+    "@moluoxixi/storybook": "workspace:*",
     "@moluoxixi/render": "workspace:*",
     "@moluoxixivue2/vue2components": "workspace:*"
   },
