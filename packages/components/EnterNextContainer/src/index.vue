@@ -70,7 +70,7 @@ function collectInputElements(type: string = '') {
     nextTick(() => {
       setTimeout(() => {
         if (typeof props.focusNum === 'number') {
-          const activeElement = elements[props.focusNum - 1]
+          const activeElement = props.autoNext ? enabledElements[props.focusNum - 1] : elements[props.focusNum - 1]
           if (props.autoNext) {
             activeElement?.focus()
           }
@@ -198,11 +198,11 @@ function setupDivObserver() {
   divObserver.value = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        // console.log('✅ 元素进入视口', entry.target)
+        console.log('✅ 元素进入视口', entry.target)
         collectInputElements('mounted')
       }
       else {
-        // console.log('❌ 元素离开视口', entry.target)
+        console.log('❌ 元素离开视口', entry.target)
       }
     })
   }, {
