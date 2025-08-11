@@ -1,4 +1,4 @@
-import createViteConfig, { wrapperEnv } from './src/components/ViteConfig/index.ts'
+import createViteConfig, { wrapperEnv } from './ViteConfig/index.ts'
 import process from 'node:process'
 
 // sentry

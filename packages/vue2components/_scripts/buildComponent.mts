@@ -861,7 +861,7 @@ async function bundleComponentModule({
           const isVueDep = ['vue', '@vue/runtime-core', '@vue/runtime-dom'].includes(id)
           // Node.js核心模块，标记为外部依赖
           const isNodeBuiltin = id.startsWith('node:')
-            || ['path', 'fs', 'os', 'util', 'events', 'stream', 'buffer', 'crypto', 'zlib', 'http', 'https', 'url', 'querystring', 'child_process'].includes(id)
+            || ['path', 'fs', 'os', 'util', 'events', 'stream', 'buffer', 'crypto', 'zlib', 'http', 'https', 'url', 'querystring', 'child_process', 'fsevents'].includes(id)
           const isExternal = useExternal || requireExternalComponents.includes(comp)
           if (!isExternal) {
             return isVueDep || isNodeBuiltin
