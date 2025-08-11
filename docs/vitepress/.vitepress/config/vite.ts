@@ -8,7 +8,7 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
 import viteCompression from 'vite-plugin-compression'
 import viteImagemin from 'vite-plugin-imagemin'
-import { docsPath, rootPath } from '../../contants'
+import { docsPath, rootPath } from '../../contants.ts'
 
 /**
  * Vue 相关插件配置

@@ -3,30 +3,49 @@
     <EnterNextDragTable
       v-model="tableData"
       :columns="columns"
-      container-type="table"
+      container-type="row"
       height="300"
-      editable
-    />
+    >
+      <template #input="{ row, column }">
+        <ElInput v-model="row[column.field]" />
+      </template>
+    </EnterNextDragTable>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { ElInput } from 'element-plus'
 
 const tableData = ref([
-  { id: 1, a: 'A', b: 'B' },
-  { id: 2, a: 'C', b: 'D' },
+  { id: 1, name: '张三', age: 25 },
+  { id: 2, name: '李四', age: 30 },
+  { id: 3, name: '王五', age: 28 },
+  { id: 4, name: '赵六', age: 26 },
 ])
 
 const columns = ref([
-  { field: 'id', title: 'ID', width: 80 },
-  { field: 'a', title: 'A' },
-  { field: 'b', title: 'B', width: 120 },
+  {
+    field: 'name',
+    title: '姓名',
+    width: 120,
+    slots: {
+      default: 'input',
+    },
+  },
+  {
+    field: 'age',
+    title: '年龄',
+    slots: {
+      default: 'input',
+    },
+  },
+
 ])
 </script>
 
 <style scoped>
-.container { padding: 8px; }
+.container {
+  padding: 8px;
+}
 </style>
-
-

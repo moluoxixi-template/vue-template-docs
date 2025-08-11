@@ -133,9 +133,8 @@ function handleNoNextInput(element: HTMLElement) {
 // 当找不到下拉框输入元素值时的处理
 function handleNoSelectValue(element: HTMLElement) {
   // 查找当前行的索引
-  const row = element.closest('.vxe-body--row') as HTMLElement
+  const row = element.closest('tr')
   const rowIndex = row ? tableRows.value.indexOf(row) : -1
-
   // 获取当前元素最近的td祖先
   const td = element.closest('td')
   // 获取所有td元素
@@ -143,15 +142,13 @@ function handleNoSelectValue(element: HTMLElement) {
 
   // 计算td在所有td中的索引位置（从0开始）
   const colIndex = td ? tds.indexOf(td as HTMLTableCellElement) : -1
-
+  console.log(`当前元素位于第 ${colIndex + 1} 个td中`)
   // 向外传递事件，并包含更多信息
-  if (rowIndex !== -1 && tableData.value) {
-    emit('noSelectValue', {
-      row: tableData.value[rowIndex],
-      rowIndex,
-      colIndex,
-    })
-  }
+  emit('noSelectValue', {
+    row: tableData.value[rowIndex],
+    rowIndex,
+    colIndex,
+  })
 }
 
 // 当表格数据变化时，重新收集行元素

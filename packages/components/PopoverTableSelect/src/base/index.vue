@@ -23,25 +23,27 @@
     :title="props.title"
     :trigger="props.trigger"
   >
-    <div ref="popoverRef" @click.stop.prevent="handlePopoverClick">
+    <div ref="popoverRef">
       <slot name="default" />
-      <DraggableTable
-        :id="props.id"
-        v-bind="$attrs"
-        ref="gridRef"
-        :columns="columns"
-        :model-value="data"
-        :height="height"
-        @cell-click.stop="handleCellClick"
-        @cell-dblclick.stop="handleCellDblclick"
-        @resizable-change="handleColumnResizableChange"
-        @header-context-menu="handleHeaderContextMenu"
-      >
-        <!-- 使用插槽方式渲染自定义内容 -->
-        <template v-for="name in slotNames" #[name]="slotParams" :key="name">
-          <slot :name="name" v-bind="slotParams" />
-        </template>
-      </DraggableTable>
+      <div @click.stop.prevent="handlePopoverClick">
+        <DraggableTable
+          :id="props.id"
+          v-bind="$attrs"
+          ref="gridRef"
+          :columns="columns"
+          :model-value="data"
+          :height="height"
+          @cell-click.stop="handleCellClick"
+          @cell-dblclick.stop="handleCellDblclick"
+          @resizable-change="handleColumnResizableChange"
+          @header-context-menu="handleHeaderContextMenu"
+        >
+          <!-- 使用插槽方式渲染自定义内容 -->
+          <template v-for="name in slotNames" #[name]="slotParams" :key="name">
+            <slot :name="name" v-bind="slotParams" />
+          </template>
+        </DraggableTable>
+      </div>
     </div>
   </ElPopover>
 </template>

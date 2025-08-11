@@ -3,9 +3,9 @@
     <PopoverTableSelect
       v-model="visible"
       pop-type="input"
+      successive-show-type="input"
       :data="tableData"
       :columns="columns"
-      :debounce="300"
     />
   </div>
 </template>

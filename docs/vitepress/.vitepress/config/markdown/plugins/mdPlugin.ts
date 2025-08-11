@@ -14,12 +14,14 @@ interface ContainerOpts {
 }
 
 export function mdPlugin(md: MarkdownIt) {
-  md.use(mdContainer, 'demo', {
+  md.use(mdContainer as any, 'demo', {
     validate(params) {
+      // eslint-disable-next-line regexp/no-super-linear-backtracking
       return !!params.trim().match(/^demo\s*(.*)$/)
     },
 
     render(tokens, idx) {
+      // eslint-disable-next-line regexp/no-super-linear-backtracking
       const m = tokens[idx].info.trim().match(/^demo\s+(.*)$/)
       if (tokens[idx].nesting === 1 /* means the tag is opening */) {
         const description = m && m.length > 1 ? m[1] : ''

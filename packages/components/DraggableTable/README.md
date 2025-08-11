@@ -104,7 +104,6 @@ const columns = ref([
   {
     field: 'age',
     title: '年龄',
-    width: 100,
   },
   {
     field: 'birthday',

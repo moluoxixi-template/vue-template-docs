@@ -3,7 +3,7 @@
     <DraggableTable
       v-model="tableData"
       :columns="columns"
-      drag-type="draggable"
+      drag-type="vxe"
       :dragable="true"
       :column-drag-disabled-method="columnDragDisabledMethod"
     />
@@ -31,7 +31,7 @@ function columnDragDisabledMethod({ column }: any) {
 </script>
 
 <style scoped>
-.container { padding: 8px; }
+.container {
+  padding: 8px;
+}
 </style>
-
-

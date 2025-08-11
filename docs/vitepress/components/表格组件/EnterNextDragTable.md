@@ -42,7 +42,6 @@ EnterNextDragTable/events/noSelectValue
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | v-model | 表格数据 | Array | [] |
-| allowSelectNextInEmpty | 是否允许在select没有选中值时跳转 | Boolean | false |
 | containerType | 容器类型，用于确定 EnterNextContainer 的作用范围 | 'row' \| 'table' | 'row' |
 
 ### Events

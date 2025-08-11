@@ -4,10 +4,12 @@
       v-model="tableData"
       :columns="columns"
       drag-type="draggable"
-      :dragable="true"
+      :rowdragable="true"
       @row-dragend="last = $event"
     />
-    <div class="value">rowDragend: {{ last }}</div>
+    <div class="value">
+      rowDragend: {{ last }}
+    </div>
   </div>
 </template>
 
@@ -28,8 +30,12 @@ const columns = ref([
 </script>
 
 <style scoped>
-.container { padding: 8px; }
-.value { margin-top: 8px; font-size: 12px; color: #555; }
+.container {
+  padding: 8px;
+}
+.value {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #555;
+}
 </style>
-
-

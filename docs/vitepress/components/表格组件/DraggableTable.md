@@ -4,8 +4,7 @@
 
 ## 组件示例
 
-
-### 编辑（editable / editAutoFocus / editRules / editConfig）
+### 编辑（editable / editAutoFocus）
 
 示例：开启编辑（editable=true）
 :::demo
@@ -17,14 +16,16 @@ DraggableTable/edit/editable
 DraggableTable/edit/editAutoFocus
 :::
 
-### 过滤（filterable / filterType / filterLayout / filterConfig）
+### 过滤（filterable / filterType / filterLayout）
 
 示例：开启过滤（filterable=true）
 :::demo
 DraggableTable/filter/filterable
 :::
 
-示例：过滤类型（filterType='full'）
+示例：过滤类型（filterType='full'，匹配全量表格数据）
+filterType='full'，匹配全量表格数据
+filterType='filter'，匹配当前表格数据
 :::demo
 DraggableTable/filter/filterType
 :::
@@ -51,17 +52,17 @@ DraggableTable/drag/dragType-draggable
 DraggableTable/drag/rowDisabledClass
 :::
 
-示例：通过回调禁用某些行拖拽（rowDragDisabledMethod）
+示例：通过回调禁用某些行拖拽,仅vxe模式有效（rowDragDisabledMethod）
 :::demo
 DraggableTable/drag/rowDragDisabledMethod
 :::
 
-示例：通过回调拦截列拖拽（columnDragDisabledMethod）
+示例：通过回调拦截列拖拽,仅vxe模式有效（columnDragDisabledMethod）
 :::demo
 DraggableTable/drag/columnDragDisabledMethod
 :::
 
-### 排序（sortable / sortConfig）
+### 排序（sortable）
 
 示例：启用全局排序（sortable=true）
 :::demo
@@ -112,11 +113,6 @@ DraggableTable/events/resizableChange
 DraggableTable/events/checkbox
 :::
 
-示例：表头菜单与右键（headerCellMenu / headerContextMenu）
-:::demo
-DraggableTable/events/headerMenu
-:::
-
 ### 暴露方法（getTable）
 
 示例：通过 ref 获取 VXE 表格实例
@@ -132,61 +128,40 @@ DraggableTable/expose/getTable
 | --- | --- | --- | --- |
 | v-model | 表格数据 | Array | [] |
 | id | 表格唯一ID，用于本地存储识别 | String | - |
-| border | 是否显示表格边框 | Boolean | true |
-| showOverflow | 表格内容溢出隐藏并显示 tooltip | Boolean\|String | true |
-| showHeaderOverflow | 头部溢出隐藏并显示 tooltip | Boolean\|String | true |
-| showFooterOverflow | 底部溢出隐藏并显示 tooltip | Boolean\|String | true |
-| resizable | 是否允许列宽拖拽 | Boolean | true |
-| autoResize | 是否自动调整列宽 | Boolean | true |
-| resizableConfig | 列宽拖拽配置 | Object | {} |
-| editable | 是否允许编辑 | Boolean | false |
-| editAutoFocus | 触发编辑后是否自动聚焦 | Boolean | true |
-| editRules | 编辑规则 | Object | null |
-| editConfig | 编辑配置 | Object | {} |
-| filterable | 是否启用过滤功能 | Boolean | false |
-| filterType | 过滤类型 | String | 'filter' |
-| filterLayout | 筛选器布局配置，支持 input、checkbox、select | Array | ['input','checkbox'] |
-| filterConfig | 过滤配置 | Object | {} |
 | dragable | 是否启用拖拽（行列都启用） | Boolean | false |
+| resizable | 是否允许列宽拖拽 | Boolean | true |
+| editable | 是否允许编辑 | Boolean | false |
+| sortable | 是否启用排序 | Boolean | false |
 | rowdragable | 是否启用行拖拽 | Boolean | false |
-| columndragable | 是否启用列拖拽 | Boolean | false |
 | dragType | 拖拽模式（'vxe'\|'draggable'） | String | 'vxe' |
 | rowDisabledClass | 需要禁用拖拽的行class | String | '' |
 | rowDragDisabledMethod | 行拖拽禁用方法 | Function | - |
 | rowDragEndMethod | 行拖拽结束回调方法 | Function | - |
-| rowDragConfig | 行拖拽配置对象 | Object | {} |
+| columndragable | 是否启用列拖拽 | Boolean | false |
 | columnDragDisabledMethod | 列拖拽禁用方法 | Function | - |
 | columnDragEndMethod | 列拖拽结束回调方法 | Function | - |
-| columnDragConfig | 列拖拽配置对象 | Object | {} |
-| rowId | 行的唯一标识字段 | String | '_X_ROW_KEY' |
-| rowConfig | 行配置对象 | Object | {} |
 | columns | 列配置数组 | Array\<ColumnType\> | [] |
-| columnConfig | 列配置对象 | Object | {} |
-| virtualXConfig | 列虚拟滚动配置 | Object | {} |
-| virtualYConfig | 行虚拟滚动配置 | Object | {} |
-| menuConfigColumn | 头部右键菜单是否允许配置列隐藏显示 | Boolean | true |
-| menuConfig | 右键菜单配置 | Object | {} |
-| sortable | 是否启用排序 | Boolean | false |
-| sortConfig | 排序配置 | Object | {} |
-| customConfig | 自定义配置 | Object | { storage: true } |
-| mouseConfig | 鼠标配置 | Object | {} |
-| pageType | 分页类型 | String | 'el-pagination' |
-| pagerConfig | 分页配置 | Object | null |
+| border | 是否显示表格边框 | Boolean | true |
+| showOverflow | 表格内容溢出隐藏并显示 tooltip | Boolean\|String | true |
+| showHeaderOverflow | 头部溢出隐藏并显示 tooltip | Boolean\|String | true |
+| showFooterOverflow | 底部溢出隐藏并显示 tooltip | Boolean\|String | true |
+| editAutoFocus | 触发编辑后是否自动聚焦 | Boolean | true |
+| filterable | 是否启用过滤功能 | Boolean | false |
+| filterType | 过滤类型 | String | 'filter' |
+| filterLayout | 筛选器布局配置，支持 input、checkbox、select | Array | ['input','checkbox'] |
+| ...attrs | 其他属性透传给[vxe-grid](https://vxetable.cn/#/grid/api) | - | - |
 
 ### columns 配置
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| field | 字段名，对应数据中的key | String | - |
-| title | 列标题 | String | - |
-| width | 列宽度 | Number/String | - |
-| minWidth | 最小列宽度 | Number/String | - |
-| fixed | 列固定位置，可选值: 'left', 'right' | String | - |
-| sortable | 是否可排序 | Boolean | false |
-| align | 对齐方式，可选值: 'left', 'center', 'right' | String | 'left' |
-| slot | 自定义插槽名称 | String | - |
-| editRender | 编辑渲染器配置 | Object | - |
-| filterRender | 筛选渲染器配置 | Object | - |
+| 参数           | 说明 | 类型 | 默认值 |
+|--------------| --- | --- | --- |
+| field        | 字段名，对应数据中的key | String | - |
+| title        | 列标题 | String | - |
+| width        | 列宽度 | Number/String | - |
+| minWidth     | 最小列宽度 | Number/String | - |
+| fixed        | 列固定位置，可选值: 'left', 'right' | String | - |
+| sortable     | 是否可排序 | Boolean | false |
+| align        | 对齐方式，可选值: 'left', 'center', 'right' | String | 'left' |
 
 ### Events
 
@@ -198,9 +173,6 @@ DraggableTable/expose/getTable
 | resizableChange | 列宽变化事件 | (params: ResizableChangeParams) |
 | checkboxChange | 复选框变化事件 | (params: CheckboxChangeParams) |
 | checkboxAll | 复选框全选事件 | (params: CheckboxAllParams) |
-| headerCellMenu | 表头右键菜单事件 | (params: HeaderCellMenuParams) |
-| pageChange | 分页变化事件 | (params: PageChangeParams) |
-| headerContextMenu | 表头右键菜单显示事件 | (params: HTMLElement) |
 
 ### Slots
 
