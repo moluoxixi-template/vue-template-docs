@@ -2,7 +2,7 @@ import type { App } from 'vue'
 import { ElMessage } from 'element-plus'
 
 const copy = {
-  mounted: function (el: any, { value }) {
+  mounted(el: any, { value }) {
     el.$value = value
 
     // el控件定义 onclick 事件
@@ -35,7 +35,7 @@ const copy = {
   // 指令与元素解绑的时候，移除事件绑定
   unmounted(el: any) {
     el.removeEventListener('click', el.handler)
-  }
+  },
 }
 
 export default (app: App) => {

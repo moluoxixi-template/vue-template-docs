@@ -4,7 +4,7 @@ import path from 'node:path'
 import type Token from 'markdown-it/lib/token.d.ts'
 import type Renderer from 'markdown-it/lib/renderer.d.ts'
 import MarkdownIt from 'markdown-it'
-import { docsPath } from '../../../../../contants/index.ts'
+import { docsPath } from '../../../../contants/index.ts'
 
 interface ContainerOpts {
   marker?: string | undefined

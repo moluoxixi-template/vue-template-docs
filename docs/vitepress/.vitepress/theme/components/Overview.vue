@@ -88,9 +88,9 @@ function getSidebars() {
 const { sidebars } = getSidebars()
 const query = ref('')
 const searchRef = ref<InputInstance>()
-console.log('sidebars.value', sidebars.value)
 const filteredSidebars = computed(() =>
   sidebars.value
+    .slice(1)
     .map(group => ({
       ...group,
       items: group.items.filter((item) => {
