@@ -9,7 +9,6 @@ docsOut
 # vue3文档
 docs/vitepress/.obsidian
 docs/vitepress/.vitepress/cache
-docs/vitepress/.vitepress/dist
 docs/vitepress/typings
 
 # vue3组件
