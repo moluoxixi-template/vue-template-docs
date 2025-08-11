@@ -2,6 +2,4 @@ packages:
   - packages/*
   - play/*
   - docs/*
-  - .docs
-  - .storybook
   

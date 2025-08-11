@@ -1,8 +1,8 @@
 {
   "workspaces": [
     "packages/*",
-    ".docs",
-    ".storybook"
+    "play/*",
+    "docs/*"
   ],
   "packageManager": "pnpm@10.8.0",
   "version": "1.3.1",
