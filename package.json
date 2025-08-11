@@ -72,7 +72,6 @@
     "@moluoxixi/components": "workspace:*",
     "@moluoxixi/docs": "workspace:*",
     "@moluoxixi/render": "workspace:*",
-    "@moluoxixi/storybook": "workspace:*",
     "@moluoxixivue2/vue2components": "workspace:*"
   },
   "devDependencies": {
