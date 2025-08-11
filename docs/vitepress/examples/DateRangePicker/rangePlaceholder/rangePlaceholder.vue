@@ -8,7 +8,9 @@
         end-placeholder="结束日期"
         range-separator="至"
       />
-      <div class="value">v-model：{{ val }}</div>
+      <div class="value">
+        v-model：{{ val }}
+      </div>
     </div>
   </ElConfigProvider>
 </template>
@@ -22,8 +24,11 @@ const val = ref<string[]>([])
 </script>
 
 <style scoped>
-.container > * + * { margin-top: 12px; }
-.value { font-size: 12px; color: #555; }
+.container > * + * {
+  margin-top: 12px;
+}
+.value {
+  font-size: 12px;
+  color: #555;
+}
 </style>
-
-

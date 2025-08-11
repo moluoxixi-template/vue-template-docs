@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import type { propsType } from './types'
-import useWatermark from './hooks/useWatermark'
+import useWatermark from './hooks/useWatermark.ts'
 
 const props = withDefaults(defineProps<propsType>(), {})
 const { className, style, zIndex, width, height, rotate, image, content, fontStyle, gap, offset }

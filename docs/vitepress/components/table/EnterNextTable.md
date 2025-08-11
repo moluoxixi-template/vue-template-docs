@@ -67,6 +67,8 @@ EnterNextTable/expose/refreshRows
 | refreshRows | 手动刷新行元素收集 | Function |
 | - | 该组件未暴露其它方法 | - |
 
-## 源码
+### 源码
 
-查看组件源码：[EnterNextTable](https://github.com/componentProject/vue-component/tree/vueComponent/packages/components/EnterNextTable)
+:::repository
+EnterNextTable
+:::

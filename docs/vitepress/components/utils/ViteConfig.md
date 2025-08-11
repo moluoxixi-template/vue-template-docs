@@ -202,4 +202,6 @@ export default viteConfig(
 ```
 ### 源码
 
-查看源码：[ViteConfig](https://github.com/componentProject/vue-component/tree/vueComponent/packages/components/ViteConfig)
+:::repository
+ViteConfig
+:::

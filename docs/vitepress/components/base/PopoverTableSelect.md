@@ -107,12 +107,14 @@ PopoverTableSelect/slots/default
 | 插槽名 | 说明 | 作用域参数 |
 | --- | --- | --- |
 | default | 弹出层默认内容 | - |
-| [动态插槽] | 透传给内部 DraggableTable 的插槽 | 参考 [DraggableTable 的 Slots](../表格组件/DraggableTable.md#slots) |
+| [动态插槽] | 透传给内部 DraggableTable 的插槽 | 参考 [DraggableTable 的 Slots](../table/DraggableTable.md#slots) |
 
 ### Expose
 
 该组件没有暴露任何方法或属性。
 
-## 源码
+### 源码
 
-查看组件源码：[PopoverTableSelect](https://github.com/componentProject/vue-component/tree/vueComponent/packages/components/PopoverTableSelect)
+:::repository
+PopoverTableSelect
+:::

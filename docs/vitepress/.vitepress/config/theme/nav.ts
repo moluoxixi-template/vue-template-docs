@@ -1,7 +1,7 @@
 import type { DefaultTheme } from 'vitepress'
-import { generateComponentNav } from './utils/generateSidebar'
-import { getRepoInfoWithFallback } from './utils/getRepoInfo'
-import { docsPath } from '../../../contants'
+import { generateComponentNav } from './utils/generateSidebar.ts'
+
+import { docsPath, repoInfo } from '../../../contants/index.ts'
 import path from 'node:path'
 import fs from 'node:fs'
 
@@ -10,22 +10,19 @@ const pkgPath = path.resolve(docsPath, './package.json')
 const pkgContent = fs.readFileSync(pkgPath, 'utf-8')
 const pkg = JSON.parse(pkgContent)
 
-// 获取仓库信息
-const repoInfo = getRepoInfoWithFallback()
-
 /**
  * 导航栏配置
  */
 export const nav: DefaultTheme.NavItem[] = [
   {
-    text: '指南',
-    link: '/guide/',
+    text: '首页',
+    link: '/',
   },
-  generateComponentNav(),
   {
-    text: '更新日志',
-    link: '/guide/changelog',
+    text: '指南',
+    link: '/guide/guide',
   },
+  generateComponentNav('/components/Overview'),
   {
     text: 'GitHub',
     link: repoInfo.url,

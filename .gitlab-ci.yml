@@ -9,7 +9,6 @@ cache:
 stages: # 流水过程，先从build->deploy
   - check
   - build
-  - deploy
 # merge校验
 merge-check:
   stage: check
@@ -19,11 +18,8 @@ merge-check:
     - if: $CI_MERGE_REQUEST_IID
   script:
     - echo 'merge check'
-npm-build:
+npm-build-deploy:
   stage: build
-  artifacts:
-    paths:
-      - ${systemCode}/ # 生成dist文件
   only:
     - develop # develop分支触发
   tags:
@@ -32,15 +28,7 @@ npm-build:
     - . /root/.nvm/nvm-0.39.3/nvm.sh # 使用nvm切换node.js版本
     - nvm use 20.12.0
     - pnpm install # 指定python版本
-    - pnpm run build # 执行npm构建命令
-
-npm-deploy:
-  stage: deploy
-  only:
-    - develop # dev分支触发
-  tags:
-    - npm-deploy # gitLab-runner的tag（表示使用哪个runner）
-  script:
+    - pnpm run docs:build
     - current_date=$(date +"%Y-%m-%d-%H-%M-%S")
     - echo $current_date
     - ssh root@192.168.209.103 "mkdir  /data/opt/hip/nginx/html/${systemCode}_BAK/$current_date"

@@ -46,13 +46,8 @@ EnterNextContainer/virtualRef
 
 该组件没有暴露任何方法或属性。
 
-## 工作原理
+### 源码
 
-1. 组件使用MutationObserver监听DOM变化，实时收集所有input和select元素
-2. 对每个input和select元素添加keyup事件监听器
-3. 当用户按下回车键时，自动跳转到下一个输入元素
-4. 如果没有下一个元素，触发`noNextInput`事件
-
-## 源码
-
-查看组件源码：[EnterNextContainer](https://github.com/componentProject/vue-component/tree/vueComponent/packages/components/EnterNextContainer)
+:::repository
+EnterNextContainer
+:::

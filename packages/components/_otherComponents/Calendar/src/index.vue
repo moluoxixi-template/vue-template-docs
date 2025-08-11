@@ -25,7 +25,7 @@ import dayjs from 'dayjs'
 import type { Dayjs } from 'dayjs'
 import { computed, inject, ref, watch } from 'vue'
 import type { propsType, slotsType } from './types'
-import type { propsType as ConfigProviderPropsType } from '@moluoxixi/components/ConfigProvider/src/types/index.ts'
+import type { propsType as ConfigProviderPropsType } from '@moluoxixi/components/components/_otherComponents/ConfigProvider/src/types'
 
 //  defineOptions  VUE 3.x  defineComponent
 defineOptions({

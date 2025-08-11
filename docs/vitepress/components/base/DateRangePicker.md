@@ -246,4 +246,6 @@ DateRangePicker/expose/focus
 
 ### 源码
 
-查看组件源码：[DateRangePicker](https://github.com/componentProject/vue-component/tree/vueComponent/packages/components/DateRangePicker)
+:::repository
+DateRangePicker
+:::

@@ -1,6 +1,6 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import { docsPath } from '../../../../contants'
+import { docsPath } from '../../../../contants/index.ts'
 import type { DefaultTheme } from 'vitepress'
 
 interface SidebarItem {
@@ -19,7 +19,6 @@ interface SidebarGroup {
 export function scanFolder(folderName: string): SidebarGroup[] {
   console.log(`🚀 开始扫描 ${folderName} 文件夹...`)
   const targetDir = path.resolve(docsPath, folderName)
-
   if (!fs.existsSync(targetDir)) {
     console.warn(`❌ ${folderName} 目录不存在，路径:`, targetDir)
     return []
@@ -47,7 +46,7 @@ export function scanFolder(folderName: string): SidebarGroup[] {
         const subFiles: SidebarItem[] = []
 
         for (const subItem of subItems) {
-          if (subItem.isFile() && subItem.name.endsWith('.md') && subItem.name !== 'index.md') {
+          if (subItem.isFile() && subItem.name.endsWith('.md')) {
             const fileName = subItem.name.replace('.md', '')
             subFiles.push({
               text: fileName,
@@ -63,8 +62,7 @@ export function scanFolder(folderName: string): SidebarGroup[] {
           })
         }
       }
-      else if (item.isFile() && item.name.endsWith('.md') && item.name !== 'index.md') {
-        // 处理 markdown 文件，排除 index.md
+      else if (item.isFile() && item.name.endsWith('.md')) {
         const fileName = item.name.replace('.md', '')
         files.push({
           text: fileName,
@@ -117,7 +115,7 @@ export function generateSidebar(folderNames: string[]): DefaultTheme.Sidebar {
 /**
  * 生成组件导航配置
  */
-export function generateComponentNav() {
+export function generateComponentNav(link: string) {
   console.log('🧭 生成组件导航...')
 
   // 扫描 components 文件夹获取组件数量
@@ -130,7 +128,7 @@ export function generateComponentNav() {
 
   const nav = {
     text: `组件 (${componentCount})`,
-    link: '/components/',
+    link,
   }
 
   console.log('✅ 组件导航生成完成:', nav.text)

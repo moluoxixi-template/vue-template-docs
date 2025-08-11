@@ -2,7 +2,9 @@
   <ElConfigProvider :locale="zhCn" :empty-values="[undefined]">
     <div class="container">
       <DateRangePicker v-model="val" type="daterange" :disabled-date-range="[today, futureWeek]" />
-      <div class="value">v-model：{{ val }}</div>
+      <div class="value">
+        v-model：{{ val }}
+      </div>
     </div>
   </ElConfigProvider>
 </template>
@@ -19,8 +21,11 @@ const futureWeek = moment().add(7, 'days').format('YYYY-MM-DD')
 </script>
 
 <style scoped>
-.container > * + * { margin-top: 12px; }
-.value { font-size: 12px; color: #555; }
+.container > * + * {
+  margin-top: 12px;
+}
+.value {
+  font-size: 12px;
+  color: #555;
+}
 </style>
-
-
