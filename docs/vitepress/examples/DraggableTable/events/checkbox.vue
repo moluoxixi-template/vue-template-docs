@@ -4,10 +4,10 @@
       v-model="tableData"
       :columns="columns"
       @checkbox-change="onChange"
-      @checkbox-all="onAll"
     />
-    <div class="value">change: {{ changeEvt }}</div>
-    <div class="value">all: {{ allEvt }}</div>
+    <div class="value">
+      change: {{ changeEvt }}
+    </div>
   </div>
 </template>
 
@@ -19,7 +19,6 @@ const tableData = ref([
   { id: 2, name: 'B' },
 ])
 const changeEvt = ref<any>(null)
-const allEvt = ref<any>(null)
 
 const columns = ref([
   { type: 'checkbox', width: 60 },
@@ -27,13 +26,18 @@ const columns = ref([
   { field: 'name', title: '姓名' },
 ])
 
-function onChange(e: any) { changeEvt.value = e }
-function onAll(e: any) { allEvt.value = e }
+function onChange(e: any) {
+  changeEvt.value = e
+}
 </script>
 
 <style scoped>
-.container { padding: 8px; }
-.value { margin-top: 8px; font-size: 12px; color: #555; }
+.container {
+  padding: 8px;
+}
+.value {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #555;
+}
 </style>
-
-

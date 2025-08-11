@@ -26,7 +26,6 @@ EnterNextContainer/virtualRef
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | virtualRef | 外部元素引用，当提供时，将监控该元素而不是容器内部 | ComponentPublicInstance \| ComponentInternalInstance \| HTMLElement \| null | null |
-| allowSelectNextInEmpty | 是否允许在select没有选中值时跳转 | Boolean | false |
 | focusNum | 默认聚焦第几个元素 | Number \| undefined | - |
 | autoNext | 禁用是否下一个 | Boolean | - |
 

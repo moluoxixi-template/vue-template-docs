@@ -1,8 +1,8 @@
 <template>
   <div class="container" style="height: 350px;">
-    <DraggableTable v-model="tableData" :columns="columns" :filterable="true">
+    <DraggableTable v-model="tableData" :columns="columns">
       <template #filter-name>
-        <input v-model="keyword" placeholder="输入关键字" @input="onFilter" />
+        <input v-model="keyword" placeholder="输入关键字" @input="onFilter">
       </template>
     </DraggableTable>
   </div>
@@ -31,8 +31,11 @@ function onFilter() {
 </script>
 
 <style scoped>
-.container { padding: 8px; }
-input { width: 100%; box-sizing: border-box; }
+.container {
+  padding: 8px;
+}
+input {
+  width: 100%;
+  box-sizing: border-box;
+}
 </style>
-
-

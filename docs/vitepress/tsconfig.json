@@ -2,29 +2,33 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "nodenext",
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
+    "allowImportingTsExtensions": true,
     "strict": true,
     "noImplicitAny": false,
     "skipLibCheck": true,
     "lib": [
+      "ESNext",
       "DOM"
     ],
-    "paths": {},
-    "jsx": "preserve",
+    "paths": {
+      "@moluoxixi/components": [
+        "../../packages/components"
+      ]
+    },
     "types": [
-      "element-plus/global",
-      "vite/client",
-      "../typings/index.d.ts",
-      "../global.d.ts",
-    ]
+      "unplugin-icons/types/vue"
+    ],
+    "jsx": "preserve"
   },
   "include": [
     "**/*",
-    ".vitepress/**/*"
+    ".vitepress/**/*",
+    "../typings/global.d.ts"
   ],
   "exclude": [
     "node_modules"

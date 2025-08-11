@@ -190,6 +190,10 @@ const props = defineProps({
     type: Boolean,
     default: () => false,
   },
+  /**
+   * 筛选器类型,full 为匹配所有全量表格数据，filter 为匹配当前表格数据
+   * @default 'filter'
+   */
   filterType: {
     type: String as PropType<'full' | 'filter'>,
     default: () => 'filter',

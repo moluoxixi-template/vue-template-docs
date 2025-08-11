@@ -44,7 +44,6 @@ EnterNextTable/expose/refreshRows
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | data | 表格数据 | Array | [] |
-| allowSelectNextInEmpty | 是否允许在select没有选中值时跳转 | Boolean | false |
 | containerType | 容器类型，用于确定EnterNextContainer的作用范围 | 'row' \| 'table' | 'row' |
 | ...attrs | 其他属性会透传给内部的ElTable组件 | - | - |
 
