@@ -9,7 +9,7 @@ import vite from './vite'
  */
 export default defineConfig({
   title: 'Moluoxixi Vue组件库',
-  outDir: '../docs/vitepress',
+  outDir: '../../docsOut/vitepress',
   description: '基于Vue3 + TypeScript + Element Plus的现代化组件库',
   lang: 'zh-CN',
   base: '/vueComponents/',
