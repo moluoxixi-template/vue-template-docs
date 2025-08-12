@@ -60,10 +60,12 @@ const presetGlobals = useExternal
       vue: 'Vue',
     }
 const peerDepList = Object.keys(presetGlobals)
-console.log('peerDepList', peerDepList)
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
-const rootDir = resolve(__dirname, '../..')
+/**
+ * 组件仓库所在路径
+ */
+const rootDir = resolve(__dirname, '../')
 
 // 主函数
 async function main() {
@@ -133,7 +135,7 @@ async function getComponentNames() {
     onlyDirectories: true,
     ignore: [`${entryBaseUrl}/_*`],
   })
-  const excludeDirs = ['node_modules', 'moluoxixi']
+  const excludeDirs = ['node_modules', LIB_NAMESPACE]
   return componentDirs
     .map(dir => dir.split('/').pop())
     .filter(dirName => !excludeDirs.includes(dirName))
@@ -1196,7 +1198,7 @@ async function doBuild(mode = 'all', shouldPublish = false) {
     if (mode === 'all') {
       // 打包整个组件库
       const { entry, outputDir, dependencies } = await getComponentConfig('')
-      const librarySuccess = await buildComponent('', entry, outputDir.replace('packages', ''), dependencies, shouldPublish)
+      const librarySuccess = await buildComponent('', entry, outputDir, dependencies, shouldPublish)
       // 打包所有单个组件
       const componentsSuccess = await buildAllComponents(shouldPublish)
       return componentsSuccess && librarySuccess
@@ -1204,7 +1206,7 @@ async function doBuild(mode = 'all', shouldPublish = false) {
     else if (mode === 'library') {
       const { entry, outputDir, dependencies } = await getComponentConfig('')
       // 打包整个组件库
-      return await buildComponent('', entry, outputDir.replace('packages', ''), dependencies, shouldPublish)
+      return await buildComponent('', entry, outputDir, dependencies, shouldPublish)
     }
     else {
       // 打包单个组件
