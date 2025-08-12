@@ -45,9 +45,5 @@
     "node_modules",
     "cypress",
     "vite.config.ts",
-    ".storybook/**/*",
-    ".storybook/**/*.tsx",
-    ".docs/.vitepress/config.ts",
-    "src/components/ViteConfig/**/*"
   ],
 }

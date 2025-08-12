@@ -13,7 +13,6 @@ import tailwindcss from '@tailwindcss/postcss'
 // 性能优化模块
 import { visualizer } from 'rollup-plugin-visualizer'
 import AutoImport from 'unplugin-auto-import/vite'
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
 import importToCDN from 'vite-plugin-cdn-import'
 import viteCompression from 'vite-plugin-compression'
@@ -57,11 +56,8 @@ export default function createViteConfig(Config: ViteConfigType) {
     const useCDN = viteEnv.VITE_USE_CDN && !useDoc && !useQianKun
     const vuePlugins = [
       createVuePlugin(),
-      // 删除这行: isDev && viteEnv.VITE_DEVTOOLS && vueDevTools(),
-      // 自动引入 - 在Vue 2中禁用Element UI自动引入
       AutoImport({
         imports: ['vue'],
-        // resolvers: [ElementPlusResolver()], // Vue 2不支持，注释掉
         dts: path.resolve(rootPath, './src/typings/auto-imports.d.ts'),
         ...config.unpluginAutoImportOptions,
       }),
@@ -245,7 +241,6 @@ export default function createViteConfig(Config: ViteConfigType) {
         extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue'],
         alias: {
           '@': path.resolve(rootPath, './src'),
-          'moluoxixivue2': path.resolve(rootPath, './moluoxixivue2'),
         },
       },
       server: {
