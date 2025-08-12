@@ -1,17 +1,19 @@
 <template>
   <div>
     测试sentry报错，点我111
-   <AButton @click="throwError">测试按钮</AButton>
+    <AButton @click="throwError">
+      测试按钮
+    </AButton>
   </div>
 </template>
 
 <script lang="ts">
-import AButton from 'moluoxixivue2/packages/Button'
+import AButton from '@moluoxixivue2/vue2components/Button'
 
-export default{
+export default {
   name: '示例sentry报错收集',
   components: {
-    AButton
+    AButton,
   },
   methods: {
     throwError() {
