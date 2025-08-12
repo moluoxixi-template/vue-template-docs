@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "es2016", // 降低到与 Vue 2 更兼容的版本
+    "useDefineForClassFields": false, // 禁用可能不兼容的特性
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "jsx": "preserve",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "lib": ["es2016", "dom"], // 降低 lib 版本
+    "types": ["vite/client"]
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}

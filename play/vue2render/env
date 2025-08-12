@@ -1,0 +1,5 @@
+VITE_PORT=6099
+VITE_OPEN=true
+VITE_PROXY_URL=http://localhost:8080
+VITE_GLOB_APP_TITLE=Vue2 Render
+VITE_GLOB_APP_CODE=vue2render
