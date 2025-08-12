@@ -29,8 +29,7 @@ export default {
   },
   methods: {
     handleClick: function(event) {
-      console.log('按钮的点击事件触发')
-      alert('按钮的点击事件触发')
+      console.log('组件里按钮的点击事件触发')
       // 触发点击事件
       this.$emit('click', event)
     }
