@@ -89,6 +89,7 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "tsx": "^4.20.3",
     "@antfu/eslint-config": "^4.16.1",
     "@commitlint/cli": "^19.8.0",
     "@commitlint/config-conventional": "^19.8.0",

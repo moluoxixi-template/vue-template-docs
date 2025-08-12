@@ -73,7 +73,8 @@
     "@moluoxixi/docs": "workspace:*",
     "@moluoxixi/storybook": "workspace:*",
     "@moluoxixi/render": "workspace:*",
-    "@moluoxixivue2/vue2components": "workspace:*"
+    "@moluoxixivue2/vue2components": "workspace:*",
+    "@moluoxixi/vue2render": "workspace:*"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.16.1",
