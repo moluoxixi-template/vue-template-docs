@@ -1,4 +1,4 @@
-import viteConfig, { wrapperEnv } from '@moluoxixi/viteconfig'
+import viteConfig, { wrapperEnv } from '../../packages/components//ViteConfig/index.ts'
 import path from 'node:path'
 import process from 'node:process'
 import { loadEnv } from 'vite'
@@ -55,6 +55,17 @@ export default viteConfig(
                   })
                 })
               },
+            },
+          },
+        },
+      },
+      autoRoutes: {
+        routeConfig: {
+          componentExamples: {
+            glob: ['/../../packages/components/**/Example.vue', '!/../../packages/components/**/components/*'],
+            baseRoute: {
+              path: '/../../packages/components',
+              name: '组件示例',
             },
           },
         },

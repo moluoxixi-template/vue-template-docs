@@ -13,8 +13,8 @@
   "type": "module",
   "readme": "README.md",
   "scripts": {
-    "vue:dev": "pnpm run -C packages/render dev",
-    "vue:build": "pnpm run -C packages/render build",
+    "vue:dev": "pnpm run -C play/render dev",
+    "vue:build": "pnpm run -C play/render build",
     "docs:dev": "pnpm run -C docs/vitepress dev",
     "docs:build": "pnpm run -C docs/vitepress build",
     "component:build&publish": "pnpm run -C packages/components build",

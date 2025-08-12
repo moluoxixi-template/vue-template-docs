@@ -6,7 +6,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 // 自动生成的路由
 const routesChildrens = autoRoutes
-console.log('autoRoutes', autoRoutes)
 const Routes = [
   {
     path: '/',

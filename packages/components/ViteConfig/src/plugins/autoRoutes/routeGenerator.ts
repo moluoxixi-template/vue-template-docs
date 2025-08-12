@@ -81,7 +81,6 @@ export function generateRoutes(
       return bLength > aLength ? -1 : 1
     })
     .reduce((modules: RouteModule[] = [], modulePath: string) => {
-      console.log('modulePath', modulePath, modules)
       const component = files[modulePath]
       if (!component || modulePath === 'install')
         return modules
@@ -98,7 +97,6 @@ export function generateRoutes(
       }
       const path = `/${pathArr.join('/')}`
       const parentPath = `/${pathArr.slice(0, -1).join('/')}`
-
       const parentRoute = findParentRouteHandle(modules, parentPath)
       if (parentRoute) {
         if (!parentRoute.children)

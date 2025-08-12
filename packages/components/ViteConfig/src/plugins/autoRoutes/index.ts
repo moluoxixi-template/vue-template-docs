@@ -106,7 +106,9 @@ function createAutoRoutesPlugin({ routeConfig, virtualModuleId, dts, root }: con
           const glob: string | string[]
             = (globVal as objRouteConfig).glob || (globVal as string | string[])
           imports.push(
-            `const ${varName} = import.meta.glob(${JSON.stringify(glob)}, { eager: true, import: 'default' });`,
+            `const ${varName} = import.meta.glob(${JSON.stringify(glob)}, { eager: true, import: 'default' });
+            console.log(${varName})
+            `,
           )
           const baseRoute: RouteModule = (globVal as objRouteConfig).baseRoute!
           routes.push(`...generateRoutes(${varName}, '${prefix}',${JSON.stringify(baseRoute)})`)
