@@ -26,7 +26,7 @@ const LIB_NAMESPACE = 'moluoxixi'
 // const entryBaseUrl = '/src/components'
 // const aliasComponentPath = 'src/components'
 /**
- * 组件的入口文件路径
+ * 组件的入口文件路径,需要以/开头，/结尾，相对于组件库根目录
  */
 const entryBaseUrl = '/'
 /**
@@ -130,10 +130,10 @@ main().then((exitCode) => {
 
 // 获取组件列表（只分目录的组件）
 async function getComponentNames() {
-  const componentDirs = await glob([`./${entryBaseUrl}/*`, `!./${entryBaseUrl}/_*`], {
+  const componentDirs = await glob([`.${entryBaseUrl}*`, `!.${entryBaseUrl}_*`], {
     cwd: rootDir,
     onlyDirectories: true,
-    ignore: [`${entryBaseUrl}/_*`],
+    ignore: [`${entryBaseUrl}_*`],
   })
   const excludeDirs = ['node_modules', LIB_NAMESPACE]
   return componentDirs
@@ -182,13 +182,13 @@ function createBaseConfig(comp: string, internalDeps: string[]): InlineConfig {
           }),
         ],
         globs: [
-          `${entryBaseUrl}/**/index.vue`,
-          `${entryBaseUrl}/**/index.ts`,
-          `!${entryBaseUrl}/**/base/**/*`,
-          `!${entryBaseUrl}/**/components/**/*`,
-          `!${entryBaseUrl}/**/src/**/*`,
-          `!${entryBaseUrl}/**/_utils/**/*`,
-          `!${entryBaseUrl}/**/_types/**/*`,
+          `${entryBaseUrl}**/index.vue`,
+          `${entryBaseUrl}**/index.ts`,
+          `!${entryBaseUrl}**/base/**/*`,
+          `!${entryBaseUrl}**/components/**/*`,
+          `!${entryBaseUrl}**/src/**/*`,
+          `!${entryBaseUrl}**/_utils/**/*`,
+          `!${entryBaseUrl}**/_types/**/*`,
         ],
         dts: path.resolve(rootDir, './typings/components.d.ts'),
       }),
@@ -204,7 +204,7 @@ function createBaseConfig(comp: string, internalDeps: string[]): InlineConfig {
       // 添加类型声明生成插件
       dts({
         root: rootDir,
-        entryRoot: `./${entryBaseUrl}/${comp}`,
+        entryRoot: `.${entryBaseUrl}${comp}`,
         tsconfigPath: './tsconfig.components.json',
         declarationOnly: false,
       }),
@@ -339,7 +339,7 @@ async function analyzeComponentDeps(comp: string) {
     const allComponents = await getComponentNames()
 
     // 组件目录和入口文件
-    const componentDir = resolve(rootDir, `./${entryBaseUrl}/${comp}`)
+    const componentDir = resolve(rootDir, `.${entryBaseUrl}${comp}`)
     const entryPoint = fs.existsSync(resolve(componentDir, 'index.ts'))
       ? resolve(componentDir, 'index.ts')
       : resolve(componentDir, 'index.vue')
@@ -494,7 +494,7 @@ async function analyzeComponentDeps(comp: string) {
               const targetPath = resolve(currentFileDir, importPath)
 
               // 检查目标路径是否在 entryBaseUrl 目录下
-              const componentsDir = resolve(rootDir, `./${entryBaseUrl}`)
+              const componentsDir = resolve(rootDir, `.${entryBaseUrl}`)
               const relativeTocComponents = resolve(targetPath).replace(componentsDir, '').replace(/\\/g, '/')
 
               // 如果路径以 / 开头且不包含 .. 说明在 components 目录下
@@ -647,7 +647,7 @@ function createComponentReferencePlugin(internalDeps: string[], currentComponent
             const targetPath = resolve(currentFileDir, importPath)
 
             // 检查目标路径是否在 entryBaseUrl 目录下
-            const componentsDir = resolve(rootDir, `./${entryBaseUrl}`)
+            const componentsDir = resolve(rootDir, `.${entryBaseUrl}`)
 
             // 使用 path.relative 来正确计算相对路径
             const relativeToComponents = path.relative(componentsDir, targetPath).replace(/\\/g, '/')
@@ -661,7 +661,7 @@ function createComponentReferencePlugin(internalDeps: string[], currentComponent
               // 检查是否是当前组件内部的自引用（包括类型文件）
               // 对于组件库模式（currentComponent为空），检查文件是否在当前组件目录下
               if (potentialComponentName === currentComponent
-                || (currentComponent === '' && id.includes(`${entryBaseUrl}/${potentialComponentName}/`))) {
+                || (currentComponent === '' && id.includes(`${entryBaseUrl}${potentialComponentName}/`))) {
                 // 组件内部自引用，保持相对路径不变
                 console.log(`✓ 保持组件内部自引用: ${importPath} 在文件 ${id}`)
                 continue
@@ -687,7 +687,7 @@ function createComponentReferencePlugin(internalDeps: string[], currentComponent
         // 处理 ${aliasComponentPath} 路径的自引用
         if (importPath.startsWith(`${aliasComponentPath}/${currentComponent}`)) {
           // 1. 目标文件的绝对路径
-          const targetAbsPath = resolve(rootDir, `./${entryBaseUrl}`, importPath.replace(`${aliasComponentPath}/`, ''))
+          const targetAbsPath = resolve(rootDir, `.${entryBaseUrl}`, importPath.replace(`${aliasComponentPath}/`, ''))
           // 2. 当前文件的绝对路径
           const currentFileDir = dirname(id)
           // 3. 计算相对路径
@@ -910,7 +910,7 @@ async function bundleComponentModule({
         },
         output: {
           preserveModules,
-          preserveModulesRoot: resolve(rootDir, `./${entryBaseUrl}/${comp}`),
+          preserveModulesRoot: resolve(rootDir, `.${entryBaseUrl}${comp}`),
           entryFileNames,
           chunkFileNames,
           globals: Object.assign(globals, presetGlobals),
@@ -932,11 +932,11 @@ async function getComponentConfig(comp: string) {
 
   // 获取入口文件
   let entry = null
-  if (fs.existsSync(resolve(rootDir, `./${entryBaseUrl}${componentName}/index.ts`))) {
-    entry = resolve(rootDir, `./${entryBaseUrl}${componentName}/index.ts`)
+  if (fs.existsSync(resolve(rootDir, `.${entryBaseUrl}${componentName}/index.ts`))) {
+    entry = resolve(rootDir, `.${entryBaseUrl}${componentName}/index.ts`)
   }
-  else if (fs.existsSync(resolve(rootDir, `./${entryBaseUrl}${componentName}/index.vue`))) {
-    entry = resolve(rootDir, `./${entryBaseUrl}${componentName}/index.vue`)
+  else if (fs.existsSync(resolve(rootDir, `.${entryBaseUrl}${componentName}/index.vue`))) {
+    entry = resolve(rootDir, `.${entryBaseUrl}${componentName}/index.vue`)
   }
   else {
     throw new Error(`组件 ${comp} 没有找到入口文件`)
@@ -1048,7 +1048,7 @@ async function buildComponent(
 
     // 复制README.md
     const componentName = `\\${comp}`
-    const readmeSrc = resolve(rootDir, `./${entryBaseUrl}${componentName}/README.md`)
+    const readmeSrc = resolve(rootDir, `.${entryBaseUrl}${componentName}/README.md`)
     const readmeDest = resolve(outputDir, 'README.md')
     if (fs.existsSync(readmeSrc)) {
       await fsp.copyFile(readmeSrc, readmeDest)

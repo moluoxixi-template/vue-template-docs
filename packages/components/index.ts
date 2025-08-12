@@ -11,25 +11,19 @@ import PopoverTableSelect from '@moluoxixi/components/PopoverTableSelect'
 import Select from '@moluoxixi/components/Select'
 import Tabs from '@moluoxixi/components/Tabs'
 import KeepAllAlive from '@moluoxixi/components/KeepAllAlive'
-import ApiDialog from '@moluoxixi/components/ApiDialog'
-import EslintConfig from '@moluoxixi/components/EslintConfig'
-import ViteConfig from '@moluoxixi/components/ViteConfig'
 
 export {
-  ApiDialog,
   ConfigForm,
   DateRangePicker,
   DraggableTable,
   EnterNextContainer,
   EnterNextDragTable,
   EnterNextTable,
-  EslintConfig,
   ExportExcel,
   KeepAllAlive,
   PopoverTableSelect,
   Select,
   Tabs,
-  ViteConfig,
 }
 
 const components = [ConfigForm, DateRangePicker, DraggableTable, EnterNextContainer, EnterNextDragTable, EnterNextTable, ExportExcel, KeepAllAlive, PopoverTableSelect, Select, Tabs]
