@@ -28,7 +28,10 @@
     "commit": "git-cz"
   },
   "lint-staged": {
-    "*.{css,scss,less,vue}": [
+    "*.{vue,jsx,tsx}": [
+      "eslint --fix"
+    ],
+    "*.{css,scss,less,vue,jsx,tsx}": [
       "stylelint --fix"
     ]
   },
