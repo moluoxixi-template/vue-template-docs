@@ -53,8 +53,3 @@ const { show: showMy } = createApiDialog(MyDialog)
 showMy({ props: { title: '自定义' } })
 ```
 
-### 源码
-
-:::repository
-ApiDialog
-:::

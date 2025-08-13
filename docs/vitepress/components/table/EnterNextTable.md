@@ -64,11 +64,5 @@ EnterNextTable/expose/refreshRows
 
 | 名称 | 说明 | 类型 |
 | --- | --- | --- |
-| refreshRows | 手动刷新行元素收集 | Function |
+| refreshRows | 手动刷新行元素收集 | ^[Function]`Function` |
 | - | 该组件未暴露其它方法 | - |
-
-### 源码
-
-:::repository
-EnterNextTable
-:::

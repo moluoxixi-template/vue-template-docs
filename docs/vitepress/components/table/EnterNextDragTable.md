@@ -62,11 +62,5 @@ EnterNextDragTable/events/noSelectValue
 
 | 名称          | 说明                            | 类型                                         |
 | ----------- | ----------------------------- |--------------------------------------------|
-| refreshRows | 手动刷新行元素收集 | Function                                   |
-| getTableRef | 获取内部 DraggableTable 引用 | () => InstanceType\<typeof DraggableTable\> |
-
-### 源码
-
-:::repository
-EnterNextDragTable
-:::
+| refreshRows | 手动刷新行元素收集 | ^[Function]`Function` |
+| getTableRef | 获取内部 DraggableTable 引用 | ^[Function]`() => InstanceType<typeof DraggableTable>` |

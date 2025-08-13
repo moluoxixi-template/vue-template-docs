@@ -112,9 +112,3 @@ PopoverTableSelect/slots/default
 ### Expose
 
 该组件没有暴露任何方法或属性。
-
-### 源码
-
-:::repository
-PopoverTableSelect
-:::

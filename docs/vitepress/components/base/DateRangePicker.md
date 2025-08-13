@@ -241,11 +241,6 @@ DateRangePicker/expose/focus
 
 | 名称 | 说明 | 类型 |
 | --- | --- | --- |
-| focus | 使 input 获取焦点 | Function |
-| blur | 使 input 失去焦点 | Function |
+| focus | 使 input 获取焦点 | ^[Function]`Function` |
+| blur | 使 input 失去焦点 | ^[Function]`Function` |
 
-### 源码
-
-:::repository
-DateRangePicker
-:::

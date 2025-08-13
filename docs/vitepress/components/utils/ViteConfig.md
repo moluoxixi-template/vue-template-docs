@@ -200,8 +200,4 @@ export default viteConfig(
 
 
 ```
-### 源码
 
-:::repository
-ViteConfig
-:::

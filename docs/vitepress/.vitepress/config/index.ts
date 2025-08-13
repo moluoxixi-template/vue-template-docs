@@ -2,7 +2,7 @@ import { defineConfig } from 'vitepress'
 import head from './head.ts'
 import themeConfig from './theme/index.ts'
 import markdown from './markdown/index.ts'
-import vite from './vite.ts'
+import vite from './vite/index.ts'
 import { baseUrl } from '../../contants/web.ts'
 
 /**

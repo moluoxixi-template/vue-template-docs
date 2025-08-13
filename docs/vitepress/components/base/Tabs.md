@@ -52,7 +52,7 @@ Tabs/events/tabChange
 | label | 标签页标题                        | String | - |
 | slot | 自定义插槽名称，不传则使用`label`的值作为默认插槽 | String | - |
 | lazy | 是否延迟渲染                       | Boolean | false |
-| show | 控制标签页是否显示的函数                 | (item: any) => boolean | - |
+| show | 控制标签页是否显示的函数                 | ^[Function]`(item: any) => boolean` | - |
 
 ### Events
 
@@ -69,9 +69,3 @@ Tabs/events/tabChange
 ### Expose
 
 该组件没有暴露任何方法或属性。
-
-### 源码
-
-:::repository
-Tabs
-:::

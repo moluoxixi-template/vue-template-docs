@@ -135,11 +135,11 @@ DraggableTable/expose/getTable
 | rowdragable | 是否启用行拖拽 | Boolean | false |
 | dragType | 拖拽模式（'vxe'\|'draggable'） | String | 'vxe' |
 | rowDisabledClass | 需要禁用拖拽的行class | String | '' |
-| rowDragDisabledMethod | 行拖拽禁用方法 | Function | - |
-| rowDragEndMethod | 行拖拽结束回调方法 | Function | - |
+| rowDragDisabledMethod | 行拖拽禁用方法 | ^[Function]`Function` | - |
+| rowDragEndMethod | 行拖拽结束回调方法 | ^[Function]`Function` | - |
 | columndragable | 是否启用列拖拽 | Boolean | false |
-| columnDragDisabledMethod | 列拖拽禁用方法 | Function | - |
-| columnDragEndMethod | 列拖拽结束回调方法 | Function | - |
+| columnDragDisabledMethod | 列拖拽禁用方法 | ^[Function]`Function` | - |
+| columnDragEndMethod | 列拖拽结束回调方法 | ^[Function]`Function` | - |
 | columns | 列配置数组 | Array\<ColumnType\> | [] |
 | border | 是否显示表格边框 | Boolean | true |
 | showOverflow | 表格内容溢出隐藏并显示 tooltip | Boolean\|String | true |
@@ -197,10 +197,5 @@ DraggableTable/expose/getTable
 
 | 名称 | 说明 | 类型 |
 | --- | --- | --- |
-| getTable | 获取VXE-Grid实例，可调用VXE-Grid的所有方法 | () => VxeGridInstance |
+| getTable | 获取VXE-Grid实例，可调用VXE-Grid的所有方法 | ^[Function]`() => VxeGridInstance` |
 
-### 源码
-
-:::repository
-DraggableTable
-:::

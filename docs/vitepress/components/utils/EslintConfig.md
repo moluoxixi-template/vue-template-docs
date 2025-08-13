@@ -23,8 +23,3 @@ export default createEslintConfig({
 })
 ```
 
-### 源码
-
-:::repository
-EslintConfig
-:::
