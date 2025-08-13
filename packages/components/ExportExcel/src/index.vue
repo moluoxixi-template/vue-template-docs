@@ -18,6 +18,7 @@ import { getTypeDefault } from '@moluoxixi/components/_utils/index.ts'
 
 // 设置组件不继承属性到根元素，而是手动通过$attrs绑定
 defineOptions({
+  name: 'ExportExcel',
   inheritAttrs: false,
 })
 
