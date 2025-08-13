@@ -17,7 +17,7 @@
 
 <script setup>
 import { ElButton, ElMessage } from 'element-plus'
-import { computed, nextTick, ref } from 'vue'
+import { computed, nextTick } from 'vue'
 import * as XLSX from 'xlsx'
 import { getTypeDefault } from '@moluoxixi/components/_utils/index.ts'
 
@@ -45,11 +45,6 @@ const props = defineProps({
     type: Array,
     default: () => ['field', 'prop'],
   },
-  // 可选：表格已有数据（当前组件不直接使用，仅为保持对外一致接口）
-  tableData: {
-    type: Array,
-    default: () => [],
-  },
 })
 
 const emits = defineEmits([
@@ -59,7 +54,7 @@ const emits = defineEmits([
   'error',
 ])
 
-const fileInputRef = ref(null)
+const fileInputRef = useTemplateRef('fileInputRef')
 
 // 规范化字符串或字符串数组为数组
 function toArray(val) {
