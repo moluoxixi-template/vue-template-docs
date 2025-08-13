@@ -1,16 +1,16 @@
 <template>
   <div class="export-excel-wrapper">
     <!-- 使用默认按钮 -->
-    <el-button v-bind="$attrs" :disabled="isDisabled" @click="handleExport">
+    <ElButton v-bind="$attrs" :disabled="isDisabled" @click="handleExport">
       <slot name="default">
         {{ buttonText }}
       </slot>
-    </el-button>
+    </ElButton>
   </div>
 </template>
 
 <script setup>
-import { ElMessage } from 'element-plus'
+import { ElButton, ElMessage } from 'element-plus'
 import fileSaver from 'file-saver'
 import { computed } from 'vue'
 import * as XLSX from 'xlsx'
@@ -32,6 +32,16 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+  // 从 columns 中匹配列头名称的字段优先级
+  titles: {
+    type: Array,
+    default: () => ['title', 'label'],
+  },
+  // 从 tableData 中匹配值的字段优先级
+  fields: {
+    type: Array,
+    default: () => ['field', 'prop'],
+  },
   // 导出文件名
   fileName: {
     type: String,
@@ -47,11 +57,6 @@ const props = defineProps({
     type: String,
     default: 'xlsx',
     validator: value => ['xlsx', 'csv'].includes(value),
-  },
-  // 工作表名称
-  sheetName: {
-    type: String,
-    default: 'Sheet1',
   },
   // 是否自动宽度
   autoWidth: {
@@ -74,20 +79,40 @@ const props = defineProps({
 const isDisabled = computed(() => {
   return !props.allowEmptyExport && (!props.tableData || props.tableData.length === 0)
 })
-const computedColumn = computed(() => getTypeDefault(props.columns, 'array').filter(col => col.prop || col.field))
+const computedColumn = computed(() => {
+  const columns = getTypeDefault(props.columns, 'array')
+  const fieldKeys = getTypeDefault(props.fields, 'array')
+  return columns.filter(col => fieldKeys.some(k => col && col[k] !== undefined && col[k] !== ''))
+})
 
 const computedHeader = computed(() => {
-  return computedColumn.value.map(col => col.label || col.title || '')
+  const titleKeys = getTypeDefault(props.titles, 'array')
+  return computedColumn.value.map((col) => {
+    for (const k of titleKeys) {
+      if (col && col[k] !== undefined && col[k] !== null) {
+        return String(col[k])
+      }
+    }
+    return ''
+  })
 })
 const computedKeys = computed(() => {
-  return computedColumn.value.map(col => col.prop || col.field || '')
+  const fieldKeys = getTypeDefault(props.fields, 'array')
+  return computedColumn.value.map((col) => {
+    for (const k of fieldKeys) {
+      if (col && col[k] !== undefined && col[k] !== null && col[k] !== '') {
+        return String(col[k])
+      }
+    }
+    return ''
+  })
 })
 /**
  * 处理导出
  */
 function handleExport() {
   if (computedColumn.value.length !== getTypeDefault(props.columns, 'array').length) {
-    console.warn('请检查列配置field/prop是否都配了')
+    console.warn(`部分列未找到字段(${getTypeDefault(props.fields, 'array').join('/')})，已被忽略`)
   }
   // 检查数据是否为空
   if (!props.tableData || props.tableData.length === 0) {
@@ -114,7 +139,6 @@ function handleExport() {
 
     // 处理数据
     const data = formatData(props.tableData, keys)
-    console.log('data000', data)
     // 导出Excel
     exportExcel(data, header, props.fileName, keys)
   }
@@ -127,14 +151,14 @@ function handleExport() {
  * @returns {Array} 格式化后的数据
  */
 function formatData(dataSource, keys) {
-  return dataSource.map((item) => {
+  return dataSource.map((item, rowIndex) => {
     const newItem = {}
 
-    keys.forEach((key) => {
-      // 处理格式化函数
-      const column = computedColumn.value
+    keys.forEach((key, colIndex) => {
+      // 处理列级格式化函数
+      const column = computedColumn.value[colIndex]
       if (column && typeof column.formatter === 'function') {
-        newItem[key] = column.formatter(item, column, dataSource.indexOf(item))
+        newItem[key] = column.formatter(item, column, rowIndex)
         return
       }
 
@@ -234,7 +258,7 @@ function exportExcel(data, header, fileName, keys = null) {
   }
 
   // 添加到工作簿
-  XLSX.utils.book_append_sheet(wb, worksheet, props.sheetName)
+  XLSX.utils.book_append_sheet(wb, worksheet, 'Sheet1')
 
   // 导出文件
   const fileType = props.exportType === 'xlsx' ? 'xlsx' : 'csv'

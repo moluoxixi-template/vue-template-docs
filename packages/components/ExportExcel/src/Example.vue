@@ -62,6 +62,46 @@
         />
       </div>
     </div>
+
+    <div class="example-section">
+      <h3>使用 title/field 键</h3>
+      <el-table :data="tableData" border>
+        <el-table-column prop="name" label="姓名" />
+        <el-table-column prop="age" label="年龄" />
+        <el-table-column prop="address" label="地址" />
+      </el-table>
+
+      <div class="export-actions">
+        <ExportExcel
+          :table-data="tableData"
+          :columns="columnsTF"
+          file-name="用户数据-title-field"
+          button-text="导出（title/field）"
+          type="warning"
+        />
+      </div>
+    </div>
+
+    <div class="example-section">
+      <h3>自定义 titles/fields 键名</h3>
+      <el-table :data="tableData" border>
+        <el-table-column prop="name" label="姓名" />
+        <el-table-column prop="age" label="年龄" />
+        <el-table-column prop="address" label="地址" />
+      </el-table>
+
+      <div class="export-actions">
+        <ExportExcel
+          :table-data="tableData"
+          :columns="columnsCustom"
+          :titles="['text']"
+          :fields="['key']"
+          file-name="用户数据-自定义键名"
+          button-text="导出（自定义键名）"
+          type="success"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -97,6 +137,20 @@ const nestedColumns = ref([
   { prop: 'name', label: '姓名' },
   { prop: 'info.age', label: '年龄' },
   { prop: 'info.address', label: '地址' },
+])
+
+// 使用 title/field 键
+const columnsTF = ref([
+  { field: 'name', title: '姓名' },
+  { field: 'age', title: '年龄' },
+  { field: 'address', title: '地址' },
+])
+
+// 自定义键名示例（titles=['text']，fields=['key']）
+const columnsCustom = ref([
+  { key: 'name', text: '姓名' },
+  { key: 'age', text: '年龄' },
+  { key: 'address', text: '地址' },
 ])
 </script>
 
