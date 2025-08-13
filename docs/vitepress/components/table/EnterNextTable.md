@@ -51,8 +51,8 @@ EnterNextTable/expose/refreshRows
 
 | 事件名 | 说明 | 回调参数 |
 | --- | --- | --- |
-| noNextInput | 当没有下一个输入元素时触发 | ({ row, rowIndex, colIndex }) |
-| noSelectValue | 当select下拉框没有选中值时但按了回车触发 | ({ row, rowIndex, colIndex }) |
+| noNextInput | 当没有下一个输入元素时触发 | ^[Function]`(payload: { row: any; rowIndex: number; colIndex: number }) => void` |
+| noSelectValue | 当select下拉框没有选中值时但按了回车触发 | ^[Function]`(payload: { row: any; rowIndex: number; colIndex: number }) => void` |
 
 ### Slots
 

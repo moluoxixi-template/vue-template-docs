@@ -97,10 +97,10 @@ PopoverTableSelect/slots/default
 | 事件名    | 说明           | 回调参数 |
 |--------|--------------| --- |
 | focus  | 输入框获得焦点时触发   | - |
-| input  | 输入框输入时触发     | (value: string) |
+| input  | 输入框输入时触发     | ^[Function]`(value: string) => void` |
 | blur   | 输入框失去焦点时触发   | - |
-| select | 选中指定行时触发        | (selectedRow: any) |
-| enter  | 按下回车键或选择行时触发 | (selectedRow: any) |
+| select | 选中指定行时触发        | ^[Function]`(selectedRow: any) => void` |
+| enter  | 按下回车键或选择行时触发 | ^[Function]`(selectedRow: any) => void` |
 
 ### Slots
 

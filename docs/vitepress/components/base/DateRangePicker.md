@@ -230,8 +230,8 @@ DateRangePicker/expose/focus
 
 | 事件名 | 说明 | 回调参数 |
 | --- | --- | --- |
-| update:modelValue | 绑定值更新 | (value: string[] \| string) |
-| change | 用户确认选定的值时触发 | (value: string[] \| string) |
+| update:modelValue | 绑定值更新 | ^[Function]`(value: string[] | string) => void` |
+| change | 用户确认选定的值时触发 | ^[Function]`(value: string[] | string) => void` |
 
 ### Slots
 
@@ -241,6 +241,6 @@ DateRangePicker/expose/focus
 
 | 名称 | 说明 | 类型 |
 | --- | --- | --- |
-| focus | 使 input 获取焦点 | ^[Function]`Function` |
-| blur | 使 input 失去焦点 | ^[Function]`Function` |
+| focus | 使 input 获取焦点 | ^[Function]`() => void` |
+| blur | 使 input 失去焦点 | ^[Function]`() => void` |
 

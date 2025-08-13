@@ -58,7 +58,7 @@ Tabs/events/tabChange
 
 | 事件名 | 说明 | 回调参数 |
 | --- | --- | --- |
-| tabChange | tab被选中时触发 | (name: string) |
+| tabChange | tab被选中时触发 | ^[Function]`(name: string) => void` |
 
 ### Slots
 

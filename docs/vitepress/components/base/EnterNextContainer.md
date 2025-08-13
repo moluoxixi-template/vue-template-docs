@@ -33,8 +33,8 @@ EnterNextContainer/virtualRef
 
 | 事件名 | 说明 | 回调参数 |
 | --- | --- | --- |
-| noNextInput | 当用户在最后一个输入元素上按下Enter键，或者只有一个输入元素时触发 | (element: HTMLElement) |
-| noSelectValue | 当select下拉框没有选中值时但按了回车触发 | (element: HTMLElement) |
+| noNextInput | 当用户在最后一个输入元素上按下Enter键，或者只有一个输入元素时触发 | ^[Function]`(element: HTMLElement) => void` |
+| noSelectValue | 当select下拉框没有选中值时但按了回车触发 | ^[Function]`(element: HTMLElement) => void` |
 
 ### Slots
 

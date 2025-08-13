@@ -167,12 +167,12 @@ DraggableTable/expose/getTable
 
 | 事件名 | 说明 | 回调参数 |
 | --- | --- | --- |
-| update:tableData | 表格数据更新事件 | (newData: Array) |
-| columnDragend | 列拖拽完成事件 | (params: ColumnDragendParams) |
-| rowDragend | 行拖拽完成事件 | (params: RowDragendParams) |
-| resizableChange | 列宽变化事件 | (params: ResizableChangeParams) |
-| checkboxChange | 复选框变化事件 | (params: CheckboxChangeParams) |
-| checkboxAll | 复选框全选事件 | (params: CheckboxAllParams) |
+| update:tableData | 表格数据更新事件 | ^[Function]`(newData: any[]) => void` |
+| columnDragend | 列拖拽完成事件 | ^[Function]`(params: ColumnDragendParams) => void` |
+| rowDragend | 行拖拽完成事件 | ^[Function]`(params: RowDragendParams) => void` |
+| resizableChange | 列宽变化事件 | ^[Function]`(params: ResizableChangeParams) => void` |
+| checkboxChange | 复选框变化事件 | ^[Function]`(params: CheckboxChangeParams) => void` |
+| checkboxAll | 复选框全选事件 | ^[Function]`(params: CheckboxAllParams) => void` |
 
 ### Slots
 
