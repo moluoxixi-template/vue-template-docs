@@ -10,6 +10,9 @@
 import { h, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
+defineOptions({
+  name: 'KeepAllAlive',
+})
 // 定义props
 const props = defineProps({
   defaultKeepAlive: {

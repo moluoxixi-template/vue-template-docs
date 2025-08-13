@@ -8,7 +8,6 @@
         :data="tableData"
         :columns="basicColumns"
         :loading="loading"
-        title="基础表格"
       />
     </div>
 
@@ -18,7 +17,6 @@
         :data="tableData"
         :columns="slotColumns"
         :loading="loading"
-        title="插槽表格"
         show-operation
       >
         <!-- 字符串方式插槽 -->
@@ -43,32 +41,7 @@
       </ConfigTable>
     </div>
 
-    <div class="example-section">
-      <h3>搜索表单示例</h3>
-      <ConfigTable
-        :data="tableData"
-        :columns="basicColumns"
-        :loading="loading"
-        :search-config="searchConfig"
-        title="搜索表格"
-        @search="handleSearch"
-      >
-        <!-- 自定义搜索表单插槽 -->
-        <template #search-gender="{ form, search }">
-          <el-radio-group v-model="form.gender" @change="search">
-            <el-radio label="">
-              全部
-            </el-radio>
-            <el-radio label="男">
-              男
-            </el-radio>
-            <el-radio label="女">
-              女
-            </el-radio>
-          </el-radio-group>
-        </template>
-      </ConfigTable>
-    </div>
+
 
     <div class="example-section">
       <h3>完整功能示例</h3>
@@ -77,31 +50,15 @@
         :data="tableData"
         :columns="fullColumns"
         :loading="loading"
-        :search-config="searchConfig"
         :pagination="pagination"
-        title="综合表格"
         show-operation
         show-selection
         show-index
-        show-export
-        export-file-name="用户数据表"
-        @search="handleSearch"
-        @reset="handleReset"
         @selection-change="handleSelectionChange"
         @sort-change="handleSortChange"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
       >
-        <!-- 顶部操作栏 -->
-        <template #actions>
-          <el-button type="primary" @click="handleAdd">
-            新增
-          </el-button>
-          <el-button type="danger" :disabled="!selection.length" @click="handleBatchDelete">
-            批量删除
-          </el-button>
-        </template>
-
         <!-- 操作列 -->
         <template #operation="{ row }">
           <el-button type="primary" size="small" @click="handleView(row)">
@@ -122,20 +79,6 @@
           </ElTag>
         </template>
 
-        <!-- 自定义搜索表单插槽 -->
-        <template #search-gender="{ form, search }">
-          <el-radio-group v-model="form.gender" @change="search">
-            <el-radio label="">
-              全部
-            </el-radio>
-            <el-radio label="男">
-              男
-            </el-radio>
-            <el-radio label="女">
-              女
-            </el-radio>
-          </el-radio-group>
-        </template>
       </ConfigTable>
     </div>
   </div>
@@ -221,35 +164,7 @@ const fullColumns = ref([
   { prop: 'email', label: '邮箱', minWidth: 180, showOverflowTooltip: true },
 ])
 
-// 搜索配置
-const searchConfig = ref([
-  {
-    type: 'input',
-    label: '姓名',
-    prop: 'name',
-    placeholder: '请输入姓名',
-  },
-  {
-    type: 'select',
-    label: '状态',
-    prop: 'status',
-    options: [
-      { label: '全部', value: '' },
-      { label: '启用', value: 1 },
-      { label: '禁用', value: 0 },
-    ],
-  },
-  {
-    type: 'slot',
-    label: '性别',
-    prop: 'gender',
-  },
-  {
-    type: 'daterange',
-    label: '日期范围',
-    prop: 'dateRange',
-  },
-])
+// 无搜索配置
 
 // 分页配置
 const pagination = reactive({
@@ -265,26 +180,7 @@ const fullTableRef = ref(null)
 const selection = ref([])
 
 // 搜索处理
-function handleSearch(params) {
-  console.log('搜索参数：', params)
-  loading.value = true
-
-  // 模拟接口请求
-  setTimeout(() => {
-    loading.value = false
-    // 这里可以根据搜索参数筛选数据或调用接口
-
-    // 更新分页信息
-    pagination.total = tableData.value.length
-    ElMessage.success('搜索成功')
-  }, 800)
-}
-
-// 重置处理
-function handleReset(params) {
-  console.log('重置参数：', params)
-  ElMessage.info('表单已重置')
-}
+// 无搜索相关方法
 
 // 选择变化
 function handleSelectionChange(selectedRows) {
@@ -326,14 +222,7 @@ function handleDelete(row) {
   ElMessage.warning(`删除: ${row.name}`)
 }
 
-function handleAdd() {
-  ElMessage.success('点击了新增按钮')
-}
-
-function handleBatchDelete() {
-  console.log('批量删除：', selection.value)
-  ElMessage.warning(`批量删除选中的 ${selection.value.length} 项`)
-}
+// 已移除顶部 actions 相关示例
 
 // 模拟加载数据
 onMounted(() => {

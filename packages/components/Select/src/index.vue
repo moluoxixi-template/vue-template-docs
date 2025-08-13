@@ -36,6 +36,9 @@ import getServerOptions from '@moluoxixi/components/Select/src/uitls'
 import type { objType } from '@moluoxixi/components/_types'
 import { getType, getTypeDefault } from '@moluoxixi/components/_utils'
 
+defineOptions({
+  name: 'Select',
+})
 /**
  * 定义组件的props
  */

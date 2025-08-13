@@ -26,11 +26,23 @@
       font-size: unset !important;
     }
   }
-  th,td{
-    &[class*=vxe-]{
+
+  th, td {
+    &[class*=vxe-] {
       border: unset;
       padding: unset;
     }
   }
+
+  ul {
+    &[class*=el-] {
+      padding: 0 !important;
+      margin: 0 !important;
+      li + li {
+        margin-top: unset !important;
+      }
+    }
+  }
+
 }
 

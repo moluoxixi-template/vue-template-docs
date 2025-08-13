@@ -19,7 +19,7 @@ hero:
       link: /guide/quickstart
     - theme: alt
       text: 组件文档
-      link: /components/
+      link: /components/Overview
     - theme: alt
       text: GitHub
       link: https://github.com/componentProject/vue-component

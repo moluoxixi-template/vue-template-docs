@@ -19,7 +19,7 @@ import { getType } from '@moluoxixi/components/_utils'
 import { cloneDeep } from 'lodash'
 
 export default defineComponent({
-  name: 'WlConfigForm',
+  name: 'ConfigForm',
   components: { ...wlComponent },
   props: {
     formOptions: {
