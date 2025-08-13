@@ -113,13 +113,13 @@ ExportExcel/formatter/formatter
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| tableData | 表格数据源 | Array\<object\> | — |
-| columns | 列配置数组，支持 `prop/label`、`field/title` 或自定义键 | Array\<object\> | — |
-| titles | 从 \`columns\` 中提取列头文本的键名优先级 | string[] | \['title','label'\] |
-| fields | 从 \`columns\` 中提取字段键名的优先级 | string[] | \['field','prop'\] |
-| fileName | 导出文件名前缀（自动追加时间戳） | string | '导出数据' |
-| buttonText | 按钮文本（未使用插槽时生效） | string | '导出' |
-| exportType | 导出类型 | \`'xlsx'\` \| \`'csv'\` | 'xlsx' |
+| tableData | 表格数据源 | `Array<object>` | — |
+| columns | 列配置数组，支持 `prop/label`、`field/title` 或自定义键 | `Array<object>` | — |
+| titles | 从 `columns` 中提取列头文本的键名优先级 | string[] | `['title','label']` |
+| fields | 从 `columns` 中提取字段键名的优先级 | string[] | `['field','prop']` |
+| fileName | 导出文件名前缀（自动追加时间戳） | string | `导出数据` |
+| buttonText | 按钮文本（未使用插槽时生效） | string | `导出` |
+| exportType | 导出类型 | `xlsx` \| `csv` | `xlsx` |
 | allowEmptyExport | 是否允许空数据导出 | boolean | true |
 | emptyMessage | 禁止空导出时的提示文案 | string | '暂无数据可导出' |
 
