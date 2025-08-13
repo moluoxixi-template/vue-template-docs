@@ -1,10 +1,10 @@
 <template>
   <div class="import-excel-wrapper">
-    <el-button v-bind="$attrs" @click="triggerSelect">
+    <ElButton v-bind="$attrs" @click="triggerSelect">
       <slot>
         导入
       </slot>
-    </el-button>
+    </ElButton>
     <input
       ref="fileInputRef"
       class="import-excel-input"
@@ -16,12 +16,13 @@
 </template>
 
 <script setup>
-import { ElMessage } from 'element-plus'
+import { ElButton, ElMessage } from 'element-plus'
 import { computed, nextTick, ref } from 'vue'
 import * as XLSX from 'xlsx'
 import { getTypeDefault } from '@moluoxixi/components/_utils/index.ts'
 
 defineOptions({
+  name: 'ImportExcel',
   inheritAttrs: false,
 })
 

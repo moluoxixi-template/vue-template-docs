@@ -142,25 +142,18 @@
           :align="column.align || 'left'"
           :show-overflow-tooltip="column.showOverflowTooltip !== false"
         >
-          <template #default="scope">
+          <template v-if="column.slots && column.slots.default" #default="scope">
             <!-- 根据插槽配置渲染单元格 -->
-            <template v-if="column.slots && column.slots.default">
-              <!-- 插槽名称方式 -->
-              <template v-if="typeof column.slots.default === 'string'">
-                <slot :name="column.slots.default" :row="scope.row" :index="scope.$index" :column="column" />
-              </template>
-              <!-- 渲染函数方式 -->
-              <template v-else-if="typeof column.slots.default === 'function'">
-                <component :is="column.slots.default(scope.row, scope.$index, column)" />
-              </template>
+            <!-- 插槽名称方式 -->
+            <template v-if="typeof column.slots.default === 'string'">
+              <slot
+                :name="column.slots.default" :row="scope.row" :index="scope.$index"
+                :column="column"
+              />
             </template>
-            <!-- 格式化函数 -->
-            <template v-else-if="column.formatter && typeof column.formatter === 'function'">
-              {{ column.formatter(scope.row, column, scope.$index) }}
-            </template>
-            <!-- 直接渲染 -->
-            <template v-else>
-              {{ scope.row[column.prop] }}
+            <!-- 渲染函数方式 -->
+            <template v-else-if="typeof column.slots.default === 'function'">
+              <component :is="column.slots.default(scope.row, scope.$index, column)" />
             </template>
           </template>
         </el-table-column>
