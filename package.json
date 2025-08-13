@@ -69,7 +69,7 @@
     "@moluoxixi/components": "workspace:*",
     "@moluoxixi/docs": "workspace:*",
     "@moluoxixi/storybook": "workspace:*",
-    "@moluoxixi/render": "workspace:*",
+    "@moluoxixi/render": "workspace:*"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.16.1",
