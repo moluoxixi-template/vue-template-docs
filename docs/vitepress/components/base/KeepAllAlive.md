@@ -15,13 +15,13 @@
     <RouterLink :to="{ path: '/demo/a', query: { keepAlive: 'true' } }">A(缓存)</RouterLink>
     <RouterLink :to="{ path: '/demo/b', query: { keepAlive: 'false' } }">B(不缓存)</RouterLink>
   </div>
-  
-  <style scoped>
+</template>
+
+<style scoped>
   .links { display: flex; gap: 12px; margin-bottom: 12px; }
   a { color: #409eff; text-decoration: none; }
   a:hover { text-decoration: underline; }
   </style>
-</template>
 ```
 
 ### 使用 meta.keepAlive
@@ -35,13 +35,13 @@
     <RouterLink to="/demo/meta-on">meta.keepAlive=true</RouterLink>
     <RouterLink to="/demo/meta-off">meta.keepAlive=false</RouterLink>
   </div>
-  
-  <style scoped>
+</template>
+
+<style scoped>
   .links { display: flex; gap: 12px; margin-bottom: 12px; }
   a { color: #409eff; text-decoration: none; }
   a:hover { text-decoration: underline; }
   </style>
-</template>
 ```
 
 ### 统一默认策略：props.defaultKeepAlive
@@ -55,13 +55,13 @@
     <RouterLink to="/demo/p1">P1</RouterLink>
     <RouterLink to="/demo/p2">P2</RouterLink>
   </div>
-  
-  <style scoped>
-  .links { display: flex; gap: 12px; margin-bottom: 12px; }
-  a { color: #409eff; text-decoration: none; }
-  a:hover { text-decoration: underline; }
-  </style>
 </template>
+
+<style scoped>
+.links { display: flex; gap: 12px; margin-bottom: 12px; }
+a { color: #409eff; text-decoration: none; }
+a:hover { text-decoration: underline; }
+</style>
 ```
 
 返回逻辑也可以基于 `route.meta` 或路径匹配。
@@ -73,8 +73,9 @@
     <RouterLink to="/cache/me">缓存页</RouterLink>
     <RouterLink to="/nocache/him">非缓存页</RouterLink>
   </div>
-  
-  <script setup lang="ts">
+</template>
+
+<script setup lang="ts">
   function keep(route: any){
     return String(route.fullPath).startsWith('/cache')
   }
@@ -84,7 +85,6 @@
   a { color: #409eff; text-decoration: none; }
   a:hover { text-decoration: underline; }
   </style>
-</template>
 ```
 
 ### 按参数区分缓存（fullPath 唯一）
@@ -98,13 +98,13 @@
     <RouterLink :to="{ path: '/detail', query: { id: 1, keepAlive: 'true' } }">详情 1</RouterLink>
     <RouterLink :to="{ path: '/detail', query: { id: 2, keepAlive: 'true' } }">详情 2</RouterLink>
   </div>
-  
-  <style scoped>
+</template>
+
+<style scoped>
   .links { display: flex; gap: 12px; margin-bottom: 12px; }
   a { color: #409eff; text-decoration: none; }
   a:hover { text-decoration: underline; }
   </style>
-</template>
 ```
 
 ### 暴露方法：清除单个或全部缓存
@@ -119,8 +119,9 @@
     <button class="btn" @click="go('/page/b')">进入B(缓存)</button>
     <button class="btn warn" @click="clear('/page/a?keepAlive=true')">清除A缓存</button>
   </div>
-  
-  <script setup lang="ts">
+</template>
+
+<script setup lang="ts">
   import { ref } from 'vue'
   import { useRouter } from 'vue-router'
   const aliveRef = ref<any>()
@@ -134,32 +135,55 @@
   .btn.warn { color: #F56C6C; border-color: #F56C6C; }
   .btn:hover { background: #f5f7fa; }
   </style>
-</template>
 ```
 
 ```vue
+
 <template>
-  <KeepAllAlive ref="aliveRef" />
+  <KeepAllAlive ref="aliveRef"/>
   <div class="ops">
     <button class="btn" @click="go('/page/c')">进入C</button>
     <button class="btn" @click="go('/page/d')">进入D</button>
     <button class="btn warn" @click="clearAll()">清空全部缓存</button>
   </div>
-  <script setup lang="ts">
-  import { ref } from 'vue'
-  import { useRouter } from 'vue-router'
+</template>
+
+<script setup lang="ts">
   const aliveRef = ref<any>()
   const router = useRouter()
-  function go(path: string){ router.push({ path, query: { keepAlive: 'true' } }) }
-  function clearAll(){ aliveRef.value?.clearAllCache?.() }
-  </script>
-  <style scoped>
-  .ops { display: flex; gap: 8px; margin-bottom: 12px; }
-  .btn { padding: 4px 8px; border: 1px solid #dcdfe6; background: #fff; border-radius: 4px; cursor: pointer; }
-  .btn.warn { color: #F56C6C; border-color: #F56C6C; }
-  .btn:hover { background: #f5f7fa; }
-  </style>
-</template>
+
+  function go(path: string) {
+    router.push({path, query: {keepAlive: 'true'}})
+  }
+
+  function clearAll() {
+    aliveRef.value?.clearAllCache?.()
+  }
+</script>
+<style scoped>
+  .ops {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .btn {
+    padding: 4px 8px;
+    border: 1px solid #dcdfe6;
+    background: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .btn.warn {
+    color: #F56C6C;
+    border-color: #F56C6C;
+  }
+
+  .btn:hover {
+    background: #f5f7fa;
+  }
+</style>
 ```
 
 ## API
