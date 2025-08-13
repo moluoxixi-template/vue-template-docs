@@ -7,6 +7,7 @@ import EnterNextContainer from '@moluoxixi/components/EnterNextContainer'
 import EnterNextDragTable from '@moluoxixi/components/EnterNextDragTable'
 import EnterNextTable from '@moluoxixi/components/EnterNextTable'
 import ExportExcel from '@moluoxixi/components/ExportExcel'
+import ImportExcel from '@moluoxixi/components/ImportExcel'
 import PopoverTableSelect from '@moluoxixi/components/PopoverTableSelect'
 import Select from '@moluoxixi/components/Select'
 import Tabs from '@moluoxixi/components/Tabs'
@@ -20,13 +21,14 @@ export {
   EnterNextDragTable,
   EnterNextTable,
   ExportExcel,
+  ImportExcel,
   KeepAllAlive,
   PopoverTableSelect,
   Select,
   Tabs,
 }
 
-const components = [ConfigForm, DateRangePicker, DraggableTable, EnterNextContainer, EnterNextDragTable, EnterNextTable, ExportExcel, KeepAllAlive, PopoverTableSelect, Select, Tabs]
+const components = [ConfigForm, DateRangePicker, DraggableTable, EnterNextContainer, EnterNextDragTable, EnterNextTable, ExportExcel, ImportExcel, KeepAllAlive, PopoverTableSelect, Select, Tabs]
 
 export default {
   install(app: App) {
