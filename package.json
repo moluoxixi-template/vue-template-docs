@@ -20,9 +20,6 @@
     "component:build&publish": "pnpm run -C packages/components build",
     "component:build": "pnpm run -C packages/components build:only",
     "component:publish": "pnpm run -C packages/components build:publish",
-    "component:vue2build&publish": "pnpm run -C packages/vue2components build",
-    "component:vue2build": "pnpm run -C packages/vue2components build:only",
-    "component:vue2publish": "pnpm run -C packages/vue2components build:publish",
     "type-check": "vue-tsc --build",
     "lint-check": "eslint --inspect-config",
     "lint:eslint": "eslint . --fix",
@@ -73,8 +70,6 @@
     "@moluoxixi/docs": "workspace:*",
     "@moluoxixi/storybook": "workspace:*",
     "@moluoxixi/render": "workspace:*",
-    "@moluoxixivue2/vue2components": "workspace:*",
-    "@moluoxixi/vue2render": "workspace:*"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.16.1",

@@ -1,6 +1,0 @@
-# 防止从工作区继承依赖
-hoist=false
-# 强制解析当前项目的依赖
-prefer-workspace-packages=false
-# 确保依赖被正确安装到当前项目
-node-linker=hoisted
