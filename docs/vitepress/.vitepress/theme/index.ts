@@ -11,6 +11,7 @@ import hljsVuePlugin from '@highlightjs/vue-plugin/dist/highlightjs-vue.esm.min.
 
 import DocsCodeDemo from './components/DocsCodeDemo/index.vue'
 import Overview from './components/Overview.vue'
+import ApiTyping from './components/ApiTyping.vue'
 
 import directive from './directives/index.ts'
 import type { Theme } from 'vitepress'
@@ -30,6 +31,7 @@ export default define<Theme>({
     app.component('highlightjs', hljsVuePlugin.component) // 注册代码高亮组件
     app.component('DocsCodeDemo', DocsCodeDemo)
     app.component('Overview', Overview)
+    app.component('ApiTyping', ApiTyping)
     directive(app)
   },
 })

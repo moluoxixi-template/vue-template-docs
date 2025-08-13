@@ -7,11 +7,9 @@
       :columns="columns"
       :virtual-ref="ipt"
       select-trigger="dblclick"
+      :input-value="val"
       @select="onSelect"
     />
-    <div class="value">
-      选择值：{{ selected }}
-    </div>
   </div>
 </template>
 
@@ -21,7 +19,6 @@ import { ElInput } from 'element-plus'
 
 const visible = ref(false)
 const val = ref('')
-const selected = ref<any>(null)
 const ipt = ref()
 
 const tableData = ref([
@@ -34,7 +31,7 @@ const columns = ref([
 ])
 
 function onSelect(row: any) {
-  selected.value = row
+  val.value = row?.name ?? ''
 }
 </script>
 
@@ -44,10 +41,5 @@ function onSelect(row: any) {
 }
 .ipt {
   width: 220px;
-}
-.value {
-  margin-top: 8px;
-  font-size: 12px;
-  color: #555;
 }
 </style>

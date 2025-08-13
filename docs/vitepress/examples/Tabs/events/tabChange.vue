@@ -1,10 +1,16 @@
 <template>
   <div class="container">
     <Tabs v-model="active" :tab-list="tabList" @tab-change="last = $event">
-      <template #A>面板 A</template>
-      <template #B>面板 B</template>
+      <template #A>
+        面板 A
+      </template>
+      <template #B>
+        面板 B
+      </template>
     </Tabs>
-    <div class="value">最近一次 tabChange：{{ last }}</div>
+    <div class="value">
+      最近一次 tabChange：{{ last }}
+    </div>
   </div>
 </template>
 
@@ -20,8 +26,12 @@ const tabList = [
 </script>
 
 <style scoped>
-.container { padding: 8px; }
-.value { margin-top: 8px; font-size: 12px; color: #555; }
+.container {
+  padding: 8px;
+}
+.value {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #555;
+}
 </style>
-
-

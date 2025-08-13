@@ -23,11 +23,11 @@ EnterNextContainer/virtualRef
 
 ### Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| virtualRef | 外部元素引用，当提供时，将监控该元素而不是容器内部 | ComponentPublicInstance \| ComponentInternalInstance \| HTMLElement \| null | null |
-| focusNum | 默认聚焦第几个元素 | Number \| undefined | - |
-| autoNext | 禁用是否下一个 | Boolean | - |
+| 参数 | 说明                                            | 类型 | 默认值 |
+| --- |-----------------------------------------------| --- | --- |
+| virtualRef | 外部元素引用，当提供时，将监控该元素而不是容器内部                     | ComponentPublicInstance \| ComponentInternalInstance \| HTMLElement \| null | null |
+| focusNum | 默认聚焦第几个元素                                     | Number \| undefined | - |
+| autoNext | 与`focusNum`配合使用，同时开启，`focusNum`将变为聚焦第几个未禁用的元素 | Boolean | - |
 
 ### Events
 
@@ -38,9 +38,9 @@ EnterNextContainer/virtualRef
 
 ### Slots
 
-| 插槽名 | 说明 |
-| --- | --- |
-| default | 默认插槽，包含需要监听的表单元素 |
+| 插槽名 | 说明                             |
+| --- |--------------------------------|
+| default | 默认插槽，用于传递需要监听的`input/select`元素 |
 
 ### Expose
 

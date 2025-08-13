@@ -1,12 +1,14 @@
 <template>
   <div class="container">
-    <ElInput v-model="val" ref="ipt" class="ipt" placeholder="外部输入框作为触发器" />
+    <ElInput ref="ipt" v-model="val" class="ipt" placeholder="外部输入框作为触发器" />
     <PopoverTableSelect
       v-model="visible"
       pop-type="default"
       :virtual-ref="ipt"
       :data="tableData"
       :columns="columns"
+      :input-value="val"
+      @select="onSelect"
     />
   </div>
 </template>
@@ -26,11 +28,17 @@ const columns = ref([
   { field: 'id', title: 'ID', width: 80 },
   { field: 'name', title: '姓名' },
 ])
+
+function onSelect(row: any) {
+  val.value = row?.name ?? ''
+}
 </script>
 
 <style scoped>
-.container { padding: 8px; }
-.ipt { width: 220px; }
+.container {
+  padding: 8px;
+}
+.ipt {
+  width: 220px;
+}
 </style>
-
-

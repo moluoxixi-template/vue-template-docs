@@ -3,8 +3,10 @@
     <PopoverTableSelect
       v-model="visible"
       pop-type="input"
+      :input-value="val"
       :data="tableData"
       :columns="columns"
+      @select="onSelect"
       placeholder="通过输入框触发"
     />
   </div>
@@ -14,6 +16,7 @@
 import { ref } from 'vue'
 
 const visible = ref(false)
+const val = ref('')
 const tableData = ref([
   { id: 1, name: '张三' },
   { id: 2, name: '李四' },
@@ -22,6 +25,10 @@ const columns = ref([
   { field: 'id', title: 'ID', width: 80 },
   { field: 'name', title: '姓名' },
 ])
+
+function onSelect(row: any) {
+  val.value = row?.name ?? ''
+}
 </script>
 
 <style scoped>

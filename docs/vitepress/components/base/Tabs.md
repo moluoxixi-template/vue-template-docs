@@ -46,13 +46,13 @@ Tabs/events/tabChange
 
 #### TabItem 接口
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| id | 标签页唯一标识符 | String | - |
-| label | 标签页标题 | String | - |
-| slot | 自定义插槽名称，不传则使用label | String | - |
-| lazy | 是否延迟渲染 | Boolean | false |
-| show | 控制标签页是否显示的函数 | (item: any) => boolean | - |
+| 参数 | 说明                           | 类型 | 默认值 |
+| --- |------------------------------| --- | --- |
+| id | 标签页唯一标识符，同时也是`el-tabs`绑定的值   | String | - |
+| label | 标签页标题                        | String | - |
+| slot | 自定义插槽名称，不传则使用`label`的值作为默认插槽 | String | - |
+| lazy | 是否延迟渲染                       | Boolean | false |
+| show | 控制标签页是否显示的函数                 | (item: any) => boolean | - |
 
 ### Events
 
@@ -62,9 +62,9 @@ Tabs/events/tabChange
 
 ### Slots
 
-| 插槽名 | 说明 |
-| --- | --- |
-| [slot\|label] | 标签页内容，插槽名称为tabList中item的slot属性或label属性（当 `slot` 未设置时使用 `label` 作为插槽名） |
+| 插槽名 | 说明                                                                     |
+| --- |------------------------------------------------------------------------|
+| [slot\|label] | 标签页内容，插槽名称为tabList中item的slot属性值或label属性值（当 `slot` 未设置时使用 `label` 作为插槽名） |
 
 ### Expose
 

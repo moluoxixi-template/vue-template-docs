@@ -104,9 +104,9 @@ PopoverTableSelect/slots/default
 
 ### Slots
 
-| 插槽名 | 说明 | 作用域参数 |
-| --- | --- | --- |
-| default | 弹出层默认内容 | - |
+| 插槽名 | 说明                       | 作用域参数 |
+| --- |--------------------------| --- |
+| default | 表格上面的默认插槽                | - |
 | [动态插槽] | 透传给内部 DraggableTable 的插槽 | 参考 [DraggableTable 的 Slots](../table/DraggableTable.md#slots) |
 
 ### Expose
