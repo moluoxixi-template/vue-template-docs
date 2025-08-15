@@ -2,8 +2,8 @@
   <div style="padding: 16px;">
     <ConfigForm
       ref="formRef"
-      :formOptions="formOptions"
       :rows="rows"
+      :form-options="formOptions"
     />
 
     <div style="margin-top: 16px;">
@@ -40,9 +40,9 @@ const formOptions = reactive({
   model: {
     field1: '',
     field2: '',
-    field3: ''
+    field3: '',
   },
-  labelWidth: '100px'
+  labelWidth: '100px',
 })
 
 const rows = reactive([
@@ -54,8 +54,8 @@ const rows = reactive([
         type: 'input',
         colConfig: { span: 24 },
         config: {
-          placeholder: '字段1'
-        }
+          placeholder: '字段1',
+        },
       },
       {
         prop: 'field2',
@@ -63,8 +63,8 @@ const rows = reactive([
         type: 'input',
         colConfig: { span: 24 },
         config: {
-          placeholder: '字段2'
-        }
+          placeholder: '字段2',
+        },
       },
       {
         prop: 'field3',
@@ -72,28 +72,28 @@ const rows = reactive([
         type: 'input',
         colConfig: { span: 24 },
         config: {
-          placeholder: '字段3'
-        }
-      }
-    ]
-  }
+          placeholder: '字段3',
+        },
+      },
+    ],
+  },
 ])
 
-const changeLayout1 = () => {
+function changeLayout1() {
   // 设置为全宽度
   formRef.value.setColConfigByProp('field1', 24, 'span')
   formRef.value.setColConfigByProp('field2', 24, 'span')
   formRef.value.setColConfigByProp('field3', 24, 'span')
 }
 
-const changeLayout2 = () => {
+function changeLayout2() {
   // 设置为半宽度
   formRef.value.setColConfigByProp('field1', 12, 'span')
   formRef.value.setColConfigByProp('field2', 12, 'span')
   formRef.value.setColConfigByProp('field3', 12, 'span')
 }
 
-const changeLayout3 = () => {
+function changeLayout3() {
   // 设置为三分之一宽度
   formRef.value.setColConfigByProp('field1', 8, 'span')
   formRef.value.setColConfigByProp('field2', 8, 'span')

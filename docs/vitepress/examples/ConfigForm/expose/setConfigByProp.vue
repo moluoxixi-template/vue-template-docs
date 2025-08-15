@@ -2,8 +2,8 @@
   <div style="padding: 16px;">
     <ConfigForm
       ref="formRef"
-      :formOptions="formOptions"
       :rows="rows"
+      :form-options="formOptions"
     />
 
     <div style="margin-top: 16px;">
@@ -30,7 +30,9 @@
     </div>
 
     <div style="margin-top: 16px; padding: 12px; background-color: #f5f5f5; border-radius: 4px;">
-      <h4 style="margin: 0 0 8px 0;">表单数据：</h4>
+      <h4 style="margin: 0 0 8px 0;">
+        表单数据：
+      </h4>
       <pre style="margin: 0; font-size: 12px;">{{ JSON.stringify(formOptions.model, null, 2) }}</pre>
     </div>
   </div>
@@ -44,9 +46,9 @@ const formRef = ref()
 const formOptions = reactive({
   model: {
     name: '',
-    city: ''
+    city: '',
   },
-  labelWidth: '100px'
+  labelWidth: '100px',
 })
 
 const rows = reactive([
@@ -58,8 +60,8 @@ const rows = reactive([
         type: 'input',
         colConfig: { span: 24 },
         config: {
-          placeholder: '请输入姓名'
-        }
+          placeholder: '请输入姓名',
+        },
       },
       {
         prop: 'city',
@@ -70,32 +72,31 @@ const rows = reactive([
           placeholder: '请选择城市',
           options: [
             { label: '北京', value: 'beijing' },
-            { label: '上海', value: 'shanghai' }
-          ]
-        }
-      }
-    ]
-  }
+            { label: '上海', value: 'shanghai' },
+          ],
+        },
+      },
+    ],
+  },
 ])
-
-const updateCityOptions = () => {
+function updateCityOptions() {
   const newOptions = [
     { label: '北京', value: 'beijing' },
     { label: '上海', value: 'shanghai' },
     { label: '广州', value: 'guangzhou' },
     { label: '深圳', value: 'shenzhen' },
     { label: '杭州', value: 'hangzhou' },
-    { label: '成都', value: 'chengdu' }
+    { label: '成都', value: 'chengdu' },
   ]
 
   formRef.value.setConfigByProp('city', newOptions, 'options')
 }
 
-const disableNameInput = () => {
+function disableNameInput() {
   formRef.value.setConfigByProp('name', true, 'disabled')
 }
 
-const enableNameInput = () => {
+function enableNameInput() {
   formRef.value.setConfigByProp('name', false, 'disabled')
 }
 </script>
