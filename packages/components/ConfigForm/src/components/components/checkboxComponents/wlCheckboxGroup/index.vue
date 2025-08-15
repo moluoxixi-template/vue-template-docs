@@ -1,6 +1,6 @@
 <template>
   <el-checkbox-group v-if="show" v-model="computedModel" v-bind="Options" v-on="Event">
-    <el-checkbox v-for="checkbox in checkboxes" :key="checkbox.label" v-bind="checkbox" />
+    <el-checkbox v-for="checkbox in checkboxs" :key="checkbox.label" v-bind="checkbox" />
   </el-checkbox-group>
 </template>
 
@@ -34,7 +34,7 @@ const emit = defineEmits(['update:model'])
 const show = ref(true)
 const Event = ref({})
 const Options = ref({})
-const checkboxes = ref<CheckboxItem[]>([])
+const checkboxs = ref<CheckboxItem[]>([])
 
 const computedModel = computed({
   get: () => props.model[props.prop],
@@ -46,11 +46,11 @@ const computedModel = computed({
 watch(
   () => props.config,
   (v) => {
-    const { show: showVal, event, checkboxes: checkboxesVal = [], ...rest } = v
+    const { show: showVal, event, checkboxs: checkboxesVal = [], ...rest } = v
     if (isType(showVal, 'boolean')) {
       show.value = !!showVal
     }
-    checkboxes.value = checkboxesVal
+    checkboxs.value = checkboxesVal
     Options.value = rest
     Event.value = event || {}
   },
