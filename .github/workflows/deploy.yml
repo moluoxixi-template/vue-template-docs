@@ -57,15 +57,11 @@ jobs:
         # npm run docs:build / pnpm docs:build / yarn docs:build / bun run docs:build
         run: pnpm storybook:build
       - name: 打包vitepress
-        # npm run docs:build / pnpm docs:build / yarn docs:build / bun run docs:build
-        run: pnpm vitepress:build
-      - name: 打包pages
-        # npm run docs:build / pnpm docs:build / yarn docs:build / bun run docs:build
-        run: pnpm pages:build
+        run: pnpm docs:build
       - name: 上传打包文件
         uses: actions/upload-pages-artifact@v3
         with:
-          path: docs
+          path: docsOut
 
   # 部署工作
   deploy:

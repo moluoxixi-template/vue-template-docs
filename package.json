@@ -17,6 +17,8 @@
     "vue:build": "pnpm run -C play/render build",
     "docs:dev": "pnpm run -C docs/vitepress dev",
     "docs:build": "pnpm run -C docs/vitepress build",
+    "storybook:dev": "pnpm run -C docs/storybook build",
+    "storybook:build": "pnpm run -C docs/storybook build",
     "component:build&publish": "pnpm run -C packages/components build",
     "component:build": "pnpm run -C packages/components build:only",
     "component:publish": "pnpm run -C packages/components build:publish",
