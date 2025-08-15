@@ -14,8 +14,7 @@ import {defineAsyncComponent, reactive, computed} from 'vue'
 import wlComponent from '@moluoxixi/components/ConfigForm/src/components/components.ts'
 import wlPopComponent from '@moluoxixi/components/ConfigForm/src/components/popComponents.ts'
 import {getType} from '@moluoxixi/components/_utils'
-import {cloneDeep} from 'lodash'
-
+import {ElForm,ElFormItem,ElRow,ElCol} from "element-plus";
 // 定义组件名称
 defineOptions({
   name: 'ConfigForm'
@@ -320,7 +319,7 @@ defineExpose({
 // 使用 computed 返回 JSX 组件
 const renderFormComponent = computed(() => {
   return (
-    <el-form
+    <ElForm
       ref={(el: Element) => setRefs(el, 'form')}
       class="p8"
       {...props.formOptions}
@@ -334,7 +333,7 @@ const renderFormComponent = computed(() => {
             && typeof row.hidden === 'function'
             && row.hidden(props.formOptions?.model)
           ) {
-            return <span/>
+            return null
           }
           // 代表这一行自定义渲染
           if (row.render) {
@@ -348,7 +347,7 @@ const renderFormComponent = computed(() => {
           }))
 
           return (
-            <el-row {...rowProps}>
+            <ElRow {...rowProps}>
               {_formItems.map((formItem: FormItemConfig) => {
                 const {
                   render,
@@ -384,29 +383,28 @@ const renderFormComponent = computed(() => {
                 }
 
                 return (
-                  <el-col {...colConfig}>
-                    <el-form-item
+                  <ElCol {...colConfig}>
+                    <ElFormItem
                       {...formItemProps}
                       v-slots={{
                         label: renderLabel ? (scope: any) => renderLabel(scope) : undefined,
                       }}
                     >
                       {component}
-                    </el-form-item>
-                  </el-col>
+                    </ElFormItem>
+                  </ElCol>
                 )
               })}
-            </el-row>
+            </ElRow>
           )
         })}
-    </el-form>
+    </ElForm>
   )
 })
 </script>
 
 <template>
-  <!--  <component :is="renderFormComponent" />-->
-  <renderFormComponent/>
+    <component :is="renderFormComponent" />
 </template>
 
 <style scoped>
